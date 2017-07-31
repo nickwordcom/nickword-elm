@@ -1,11 +1,14 @@
 # InOneWord
+
+[![Website](https://img.shields.io/website/https/www.inoneword.io.svg?label=inoneword.io)]()
+
 inoneword-elm  is a web frontend of [www.inoneword.io](https://www.inoneword.io/), written in [Elm](http://elm-lang.org/), where you can **describe anything you like in one word** and find out what people around the world think about this too.
 
 ## Running locally
 
 ### Install:
 ```
-git clone https://github.com/Lesuk/inoneword-elm.git
+git clone https://github.com/inonewordio/inoneword-elm.git
 cd inoneword-elm
 
 // Install all dependencies (npm and elm packages):
