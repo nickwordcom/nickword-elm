@@ -1,0 +1,76 @@
+@charset "UTF-8";
+// $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+// @import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins';
+@import '~breakpoint-sass/stylesheets/_breakpoint';
+@import './vendor/_leaflet';
+@import './vendor/_prune-leaflet';
+@import './vendor/_leaflet-fullscreen';
+@import './vendor/_dialog-polyfill';
+@import './modules/_select-tag';
+@import './modules/_share-dialog';
+@import './modules/_wrapper';
+@import './modules/_mdl-custom';
+@import './modules/_entries-grid';
+@import './modules/_egrid-item';
+@import './modules/_entry-page';
+@import './modules/_entry-words';
+@import './modules/_entry-votes';
+@import './modules/_entry-sidebar';
+@import './modules/_row-header';
+@import './modules/_searchbox';
+@import './modules/_header';
+@import "./modules/_new-word-field";
+// @import './modules/_similar-entries';
+// @import "./modules/_sidebar-entries";
+@import "./modules/_new-entry";
+@import "./modules/_not-found";
+@import "./modules/_votes-counter";
+@import "./modules/_votes-filter";
+@import "./modules/_vote-filters";
+@import "./modules/_filters-collapse";
+@import "./modules/_countries-select";
+@import "./modules/_word-cloud";
+@import "./modules/_login-form";
+@import "./modules/_word-progress";
+@import "./modules/_emotion-dist";
+@import './helpers/_helpers';
+
+body {
+  font-family: 'Roboto','Helvetica','Arial',sans-serif!important;
+}
+
+.image--full {
+  width: 100%;
+  height: auto;
+}
+
+.cursor--pointer {
+  cursor: pointer;
+}
+
+.padding-bottom--none {
+  padding-bottom: 0;
+}
+
+.entry-translated {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 2px;
+  border-radius: 2px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.1);
+
+  & i{
+    font-size: 18px;
+  }
+}
+
+#entry-map-votes {
+  width: 100%;
+  height: 400px;
+
+  // @include breakpoint(840px) {
+  //   height: 500px;
+  // }
+}

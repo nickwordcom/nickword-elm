@@ -1,0 +1,13 @@
+.header-mobile {
+  @include breakpoint(840px) {
+    display: none !important;
+  }
+}
+
+.header-desktop {
+  display: none !important;
+
+  @include breakpoint(840px) {
+    display: block !important;
+  }
+}

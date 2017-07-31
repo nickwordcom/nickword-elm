@@ -1,0 +1,40 @@
+.row-header {
+  width: 100%;
+  height: 48px;
+
+  &__title {
+    margin: 0;
+    padding: 14px 16px 14px 16px;
+    line-height: 20px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  &__more-link {
+    float: right;
+    padding: 4px 3px 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    margin: 8px 24px 8px 0;
+    font-size: 0px;
+    color: #757575;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e8e8e8;
+    }
+  }
+
+  &__more-text {
+    line-height: 24px;
+    display: inline-block;
+    font-size: 12px;
+    vertical-align: middle;
+  }
+
+  &__more-icon {
+    display: inline-block;
+    height: 24px;
+    vertical-align: middle;
+  }
+}

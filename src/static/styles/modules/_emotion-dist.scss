@@ -1,0 +1,87 @@
+.emotion-dist {
+  margin: 24px 0;
+
+  &__head {
+    margin: 0 0 8px 0;
+    padding: 0 24px;
+    line-height: 16px;
+    font-size: 14px;
+  }
+
+  &__wrapper {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  &__stats {
+    &-item {
+      display: table-cell;
+      width: 1%;
+      padding: 10px 5px;
+      text-align: center;
+      white-space: nowrap;
+
+      &-color {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 4px;
+        border-radius: 50%;
+
+        &.-type-positive {
+          background-color: #66BB6A;
+        }
+        &.-type-negative {
+          background-color: #EF5350;
+        }
+        &.-type-neutral {
+          background-color: #FFCA28;
+        }
+      }
+
+      &-pct {
+        display: inline-block;
+        margin-right: 4px;
+        line-height: 20px;
+      }
+
+      &-name {
+        display: block;
+        font-size: 12px;
+        vertical-align: top;
+        color: rgba(0,0,0,.54);
+
+        @include breakpoint(480px) {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  &__progress {
+    width: 100%;
+    display: table;
+    overflow: hidden;
+    white-space: nowrap;
+
+    &-item {
+      display: table-cell;
+      height: 8px;
+      -webkit-transition: width 0.5s linear;
+      -moz-transition: width 0.5s linear;
+      -o-transition: width 0.5s linear;
+      transition: width 0.5s linear;
+
+      &.-type-positive {
+        background-color: #66BB6A;
+      }
+      &.-type-negative {
+        background-color: #EF5350;
+      }
+      &.-type-neutral {
+        background-color: #FFCA28;
+      }
+    }
+  }
+}

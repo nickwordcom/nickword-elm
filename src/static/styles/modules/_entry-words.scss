@@ -1,0 +1,248 @@
+.entry-words {
+  padding: 0;
+
+  &__loading {}
+
+  &__text {
+    line-height: 32px;
+    padding: 16px 24px;
+    font-size: 18px;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    font-size: 0;
+    list-style: none;
+  }
+
+  &__item {
+    position: relative;
+    padding: 16px 0 16px 20px;
+    border-bottom: 1px solid #ededed;
+    counter-increment: word-counter;
+
+    @include breakpoint(640px) {
+      padding: 16px 24px;
+    }
+
+    &:before {
+      display: block;
+      position: absolute;
+      top: 16px;
+      left: -4px;
+      height: 24px;
+      width: 16px;
+      line-height: 26px;
+      content: counter(word-counter);
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.51);
+      text-align: right;
+    }
+
+    &.pinned:before {
+      left: 0px;
+      height: 16px;
+      margin-top: 3px;
+      line-height: 18px;
+      background: gold;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 3px;
+      text-align: center;
+    }
+
+    &:first-child {
+      border-top: 1px solid #ededed;
+    }
+
+    &:last-child {
+      border-bottom: none;
+      padding: 16px 0 16px 20px;
+
+      @include breakpoint(640px) {
+        padding: 16px 24px;
+      }
+    }
+
+    &:hover {
+      background-color: #f5f5f5;
+
+      .entry-words__item-actions {
+        color: rgba(0, 0, 0, .54);
+        fill: rgba(0, 0, 0, .54);
+      }
+    }
+
+    &-top {
+      position: relative;
+    }
+
+    &-bottom {
+      width: 100%;
+      max-width: 270px;
+      height: 18px;
+      margin-top: 6px;
+    }
+
+    &-name {
+      display: inline-block;
+      width: calc(100% - 64px);
+      margin: 0;
+      font-size: 20px;
+      line-height: 24px;
+      vertical-align: top;
+
+      @include breakpoint(640px) {
+        width: calc(100% - 80px);
+      }
+    }
+
+    &-votes {
+      display: inline-block;
+      max-width: 90px;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 18px;
+      vertical-align: top;
+
+      & b {
+        font-weight: 400;
+      }
+    }
+
+    &-actions {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      top: -4px;
+      width: 64px;
+      padding: 0;
+      vertical-align: top;
+      text-align: right;
+      color: rgba(0, 0, 0, .24);
+      fill: rgba(0, 0, 0, .24);
+
+      @include breakpoint(480px) {
+        top: 8px;
+      }
+
+      @include breakpoint(640px) {
+        width: 80px;
+      }
+    }
+
+    &-action {
+      display: inline-block;
+
+      @include breakpoint(640px) {
+        margin-left: 8px;
+      }
+    }
+
+    &-action-link {
+      display: block;
+      width: 100%;
+      color: inherit !important;
+      font-size: inherit !important;
+      font-weight: inherit !important;
+      text-decoration: none;
+
+      &:hover,
+      &:active,
+      &:visited {
+        color: inherit !important;
+      }
+    }
+
+    &-action-svg {
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+      font-size: 24px;
+      margin-bottom: 3px;
+      -webkit-user-select: none;
+    }
+
+    &-pinned {
+      position: relative;
+      top: 2px;
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+      box-sizing: border-box;
+
+      & i {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// &__header {
+//   padding: 16px 8px;
+//   border-bottom: 1px solid #ededed;
+//
+//   @include breakpoint(640px) {
+//     padding: 16px 24px;
+//   }
+//
+//   &-search {
+//     position: relative;
+//
+//     &-input {
+//       display: block;
+//       width: 100%;
+//       line-height: 32px;
+//       padding: 0 40px 0 0;
+//       box-sizing: border-box;
+//       border: none;
+//       font-size: 16px;
+//       text-align: left;
+//       background: none;
+//
+//       &:focus {
+//         outline: none;
+//       }
+//     }
+//
+//     &-clear {
+//       position: absolute;
+//       top: 4px;
+//       right: 8px;
+//       color: #757575;
+//       font-size: 0;
+//       line-height: 0;
+//     }
+//   }
+// }
+
+// &-word {
+//   display: inline-block;
+//   // width: 81.308411215%;
+//   width: calc(100% - 64px);
+//   vertical-align: top;
+//
+//   @include breakpoint(640px) {
+//     width: calc(100% - 80px);
+//   }
+//
+//   &-name {
+//     position: relative;
+//     margin: 0;
+//     font-size: 20px;
+//     line-height: 24px;
+//   }
+//
+//   &-votes {
+//     display: block;
+//     margin-top: 6px;
+//     font-size: 14px;
+//     font-weight: 300;
+//     line-height: 18px;
+//     color: rgba(0, 0, 0, 0.54);
+//   }
+// }

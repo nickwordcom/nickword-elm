@@ -1,0 +1,42 @@
+.votes-counter {
+
+  &__icon-block {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    padding: 12px;
+    // margin-right: 16px;
+    box-sizing: border-box;
+    // border: 1px solid #e7e8e9;
+    // border-radius: 2px;
+    // background-color: #f8f9fa;
+    color: #6d6d6d;
+  }
+
+  &__info {
+    display: inline-block;
+    vertical-align: top;
+    height: 48px;
+  }
+
+  &__info-number {
+    display: inline-block;
+    line-height: 48px;
+    margin-right: 8px;
+    font-size: 32px;
+    font-weight: 300;
+    color: #6d6d6d;
+  }
+
+  &__info-text {
+    display: inline-block;
+    line-height: 13px;
+    padding: 11px 0;
+    font-size: 12px;
+    font-weight: 300;
+    color: #aaa;
+    word-spacing: 9999px;
+    max-width: 50px;
+    text-transform: capitalize;
+  }
+}

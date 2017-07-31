@@ -1,0 +1,16 @@
+.countries-select {
+  position: relative;
+
+  &__select-tag {
+    padding-left: 30px;
+  }
+
+  &__flag {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+  }
+}

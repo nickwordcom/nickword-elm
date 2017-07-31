@@ -1,0 +1,46 @@
+.filters-collapse {
+  margin: 8px 0;
+  padding: 8px 16px;
+  border-radius: 2px;
+  background-color: #ededed;
+
+  @include breakpoint(640px) {
+    padding: 16px 24px;
+  }
+
+  &__head {
+
+    &-title {
+      display: inline-block;
+      float: left;
+      margin: 0;
+      font-size: 14px;
+      line-height: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      vertical-align: top;
+    }
+
+    &-action {
+      display: none;
+      float: right;
+      font-size: 13px;
+      line-height: 24px;
+      vertical-align: top;
+      color: rgba(0, 0, 0, 0.51);
+
+      &.is-visible {
+        display: inline-block;
+      }
+    }
+  }
+
+  &__content {
+    display: none;
+    margin-top: 16px;
+
+    &.is-visible {
+      display: block;
+    }
+  }
+}

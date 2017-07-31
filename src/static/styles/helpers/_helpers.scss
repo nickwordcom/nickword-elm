@@ -1,0 +1,192 @@
+/* is designed to make an element expand to enclose any floated elements within it. */
+.h-clearfix:after {
+  content:"";
+  display:table;
+  clear:both
+}
+
+/* is used to make an element appear below any floated elements that are above it. */
+.h-clear {
+  clear:both
+}
+
+.h-text-center {
+  text-align:center
+}
+
+.h-text-left {
+  text-align:left
+}
+
+.h-text-right {
+  text-align:right
+}
+
+.h-text-justify {
+  text-align:justify
+}
+
+.h-font-semibold{
+  font-weight: 600;
+}
+
+.h-font-bold{
+  font-weight: 700;
+}
+
+.h-remove-margin {
+  margin:0 !important
+}
+
+.h-remove-padding {
+  padding:0 !important
+}
+
+.h-clickable {
+  cursor:pointer
+}
+
+.h-float-right {
+  float:right
+}
+
+.h-float-left {
+  float:left
+}
+
+.h-float-none {
+  float:none!important
+}
+
+.h-no-bullet {
+  list-style:none
+}
+
+.h-flexible {
+  max-width:100%
+}
+
+.h-position-absolute {
+  position:absolute
+}
+
+.h-position-relative {
+  position:relative
+}
+
+.h-spacing-above--xsmall {
+  margin-top:8px
+}
+
+.h-spacing-above--small {
+  margin-top:16px
+}
+
+.h-spacing-above--normal {
+  margin-top:48px
+}
+
+.h-spacing-above--large {
+  margin-top:80px
+}
+
+.h-spacing-below--normal {
+  margin-bottom:48px
+}
+
+.h-spacing-below--xsmall {
+  margin-bottom:8px
+}
+
+.h-spacing-below--small {
+  margin-bottom:16px
+}
+
+.h-spacing-below--large {
+  margin-bottom:80px
+}
+
+.h-margin-none{
+  margin: 0 !important;
+}
+
+.h-padding {
+  padding: 16px;
+}
+
+.h-padding--large {
+  padding: 48px;
+}
+
+.h-full-width {
+  width: 100%;
+}
+
+.h-full-height {
+  min-height: 100vh;
+}
+
+.h-spacing-auto{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.h-hidden{
+  display: none !important;
+}
+
+/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
+.h-visually-hidden{
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.h-invisible {
+  opacity: 0;
+  cursor: default;
+}
+
+.h-border-bottom {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.h-bottom-sidebar-border{
+  border-bottom: 2px solid #364354;
+  box-shadow: 0px 1px 0px 0px rgba(84, 97, 116, 1);
+}
+
+.h-bg-white{
+  background-color: #fff;
+}
+
+.h-box-border{
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+}
+
+.h-overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.h-absolute-position {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.h-webkit-box {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

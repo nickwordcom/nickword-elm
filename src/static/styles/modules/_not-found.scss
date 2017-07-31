@@ -1,0 +1,16 @@
+.not-found {
+
+  &__title {
+    min-height: 200px;
+    color: #fff;
+    background-color: rgba(33,150,243,0.6);
+
+    @include breakpoint(480px) {
+      background: url(https://getmdl.io/assets/demos/dog.png) bottom right 15% no-repeat rgba(33,150,243,0.6);
+    }
+  }
+
+  &__title-text {
+    font-weight: 400;
+  }
+}

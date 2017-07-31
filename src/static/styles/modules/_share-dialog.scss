@@ -1,0 +1,76 @@
+.share-dialog {
+  width: 100%;
+  max-width: 332px;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: rgba(0,0,0,0.87);
+
+  & .mdl-dialog__title {
+    padding: 28px 24px 8px;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  & .mdl-dialog__content {
+    padding: 8px 0;
+  }
+
+  & .mdl-dialog__actions {
+    padding: 0 24px 16px;
+  }
+
+  &__links {
+    &-list {
+      margin: 0;
+      padding: 0;
+      line-height: 0;
+      font-size: 0;
+      list-style: none;
+    }
+    &-item {
+      display: block;
+      width: 100%;
+    }
+    &-link {
+      display: block;
+      padding: 12px 24px;
+      width: 100%;
+      box-sizing: border-box;
+      line-height: 24px;
+      font-size: 15px;
+      font-weight: 400;
+      text-decoration: none;
+      color: initial;
+
+      &:hover {
+        background-color: #eee;
+        color: initial;
+      }
+
+      &:visited {
+        color: initial;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+    &-link-svg {
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      margin: -2px 10px 0 0;
+      transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+      font-size: 24px;
+      -webkit-user-select: none;
+      pointer-events: none;
+      vertical-align: middle;
+      fill: rgba(0,0,0,0.54);
+    }
+  }
+
+  &__editor {
+    padding: 0px 24px;
+  }
+}

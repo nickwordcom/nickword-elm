@@ -1,0 +1,38 @@
+.similar-entries {
+
+  &__item {
+    min-height: auto;
+    margin-bottom: 4px !important;
+    background-color: transparent;
+    font-size: 0;
+    line-height: 0;
+
+    &:nth-child(odd) {
+      padding-right: 2px;
+    }
+
+    &:nth-child(even) {
+      padding-left: 2px;
+    }
+  }
+
+  &__item-wrap {
+    position: relative;
+    height: 140px;
+  }
+
+  &__name-bg {
+    position: absolute;
+    bottom: 0;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  
+  &__name {
+    display: block;
+    line-height: 20px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}

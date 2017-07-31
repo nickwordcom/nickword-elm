@@ -1,0 +1,40 @@
+.vote-filters {
+
+  &__filter {
+    margin-bottom: 16px;
+
+    @include breakpoint(640px) {
+      margin-bottom: 24px;
+    }
+
+    &.-type-country {}
+    &.-type-emotions {}
+
+    &-title {
+      line-height: 24px;
+      font-size: 14px;
+      margin: 0 0 8px 0;
+    }
+
+    &-select {
+      color: rgba(0, 0, 0, .65);
+    }
+
+    &-toggles {
+      .mdl-radio {
+        font-size: 14px;
+      }
+    }
+
+    &-checkbox {
+      .mdl-checkbox {
+        height: auto;
+      }
+
+      .mdl-checkbox__label {
+        font-size: 14px;
+        line-height: 21px;
+      }
+    }
+  }
+}

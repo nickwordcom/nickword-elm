@@ -1,0 +1,41 @@
+.votes-filter {
+  padding: 8px;
+  background: #f5f5f5;
+  color: #4A5960;
+
+  @include breakpoint(480px) {
+    padding: 8px 24px;
+  }
+
+  &__label {
+    display: block;
+    line-height: 20px;
+    font-size: 14px;
+
+    @include breakpoint(640px) {
+      display: inline-block;
+      margin-right: 16px;
+      line-height: 40px;
+    }
+  }
+
+  &__select-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 2px 0;
+    vertical-align: top;
+  }
+
+  &__votes-count {
+    display: inline-block;
+    margin-left: 10px;
+    line-height: 40px;
+    font-size: 13px;
+    opacity: .8;
+    vertical-align: top;
+
+    & b {
+      font-weight: 500;
+    }
+  }
+}

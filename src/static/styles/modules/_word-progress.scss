@@ -1,0 +1,33 @@
+.word-progress {
+  display: inline-block;
+  width: 100%;
+  max-width: 180px;
+
+  &__background {
+    display: block;
+    height: 4px;
+    margin: 7px 0;
+    overflow: hidden;
+    background-color: #eaecef;
+    border-radius: 3px;
+  }
+
+  &__active {
+    display: block;
+    height: 100%;
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+
+    &.-type-positive {
+      background-color: #66BB6A;
+    }
+    &.-type-negative {
+      background-color: #EF5350;
+    }
+    &.-type-neutral {
+      background-color: #FFCA28;
+    }
+  }
+}

@@ -1,0 +1,147 @@
+.entries-grid {
+  max-width: 1070px;
+  margin: 0 auto 80px;
+
+  &__block {
+    position: relative;
+    margin: 40px 0 0;
+    padding: 0 8px;
+
+    @include breakpoint(640px) {
+      padding: 0 16px;
+    }
+
+    @include breakpoint(1100px) {
+      padding: 0;
+    }
+
+    &.cropped {
+      & .egrid-item {
+        @include breakpoint(max-width 479px) {
+          &:nth-child(n+5) {
+            display: none;
+          }
+        }
+
+        @include breakpoint(480px 839px) {
+          &:nth-child(n+7) {
+            display: none;
+          }
+        }
+
+        @include breakpoint(840px) {
+          &:nth-child(n+6) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  &__header {
+    margin-bottom: 20px;
+
+    &-info {
+      float: left;
+    }
+
+    &-actions {
+      float: right;
+      padding: 0;
+
+      @include breakpoint(480px) {
+        padding: 3px 0;
+      }
+
+      @include breakpoint(640px) {
+        padding: 7px 0;
+      }
+    }
+
+    &-title {
+      margin: 0 0 4px 0;
+      line-height: 24px;
+      font-size: 20px;
+      font-weight: 300;
+
+      @include breakpoint(640px) {
+        line-height: 32px;
+        font-size: 28px;
+      }
+    }
+    &-subtitle {
+      display: block;
+      line-height: 16px;
+      color: #757575;
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: .01em;
+    }
+
+  }
+  &__list {
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+  }
+
+  &__all-btn {
+    display: inline-block;
+    padding: 8px 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 18px;
+    color: inherit;
+    text-decoration: none;
+    text-transform: uppercase;
+    background-color: transparent;
+
+    @include breakpoint(480px) {
+      padding: 8px 16px;
+    }
+
+    &:hover {
+      color: inherit;
+      background-color: #e0e0e0;
+    }
+
+    &:visited {
+      color: inherit;
+    }
+
+    &-text {
+      display: none;
+
+      @include breakpoint(480px) {
+        display: block;
+      }
+    }
+
+    &-icon {
+      display: block;
+      width: 24px;
+      height: 24px;
+
+      @include breakpoint(480px) {
+        display: none;
+      }
+    }
+  }
+
+  &__loading {
+    margin: 40px 0;
+    text-align: center;
+  }
+
+  &__load-more {
+    margin: 20px auto;
+    padding: 12px;
+    line-height: 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    text-align: center;
+    background-color: #ffeb3b;
+  }
+}

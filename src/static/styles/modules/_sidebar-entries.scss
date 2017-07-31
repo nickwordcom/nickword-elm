@@ -1,0 +1,121 @@
+.sidebar-entries {
+
+  &--trending {
+    display: none;
+
+    @include breakpoint(840px) {
+      display: block;
+    }
+  }
+
+  &__header {
+
+    &-icon {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      padding: 12px;
+      margin-right: 4px;
+      vertical-align: top;
+      box-sizing: border-box;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    &-title {
+      display: inline-block;
+      margin: 0;
+      max-width: 156px;
+      padding: 12px 0;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      color: rgba(0, 0, 0, 0.54);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: top;
+    }
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0;
+    line-height: 0;
+
+    &-item {
+      position: relative;
+      // margin-bottom: 16px;
+      margin-bottom: 8px;
+
+      &-link {
+        display: block;
+        position: relative;
+        padding-top: 56.363636364%;
+        overflow: hidden;
+        background-color: #fff;
+      }
+
+      &-img {
+        margin: auto;
+      }
+
+      &-shadow {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 24px 16px;
+        background: -webkit-linear-gradient(transparent,rgba(0,0,0,.7));
+        background: -o-linear-gradient(transparent,rgba(0,0,0,.7));
+        background: -moz-linear-gradient(transparent,rgba(0,0,0,.7));
+        background: linear-gradient(transparent,rgba(0,0,0,.7));
+      }
+
+      &-title {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 12px;
+        padding: 0 16px;
+        line-height: 18px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #fff;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+      }
+    }
+  }
+
+  &__show-more {
+    display: block;
+    padding: 8px 0;
+    line-height: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__loading {
+    margin: 16px 0;
+    text-align: center;
+  }
+
+  &__text {
+    line-height: 20px;
+    font-size: 16px;
+  }
+}

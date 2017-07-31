@@ -1,0 +1,15 @@
+.word-cloud {
+  position: relative;
+  padding: 10px;
+
+  &__block {
+    width: 100%;
+    height: 400px;
+  }
+
+  &__text {
+    line-height: 32px;
+    padding: 16px 24px;
+    font-size: 18px;
+  }
+}

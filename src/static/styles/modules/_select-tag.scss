@@ -1,0 +1,31 @@
+.select-tag {
+  display: block;
+  width: 100%;
+  // max-width: 400px;
+  padding: 8px 16px;
+  margin: 0;
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+  vertical-align: middle;
+  font: 14px/22px Roboto,sans-serif;
+  color: inherit;
+  background: #fff url('../img/button-down-black.svg') no-repeat right;
+  box-shadow: none;
+  cursor: pointer;
+  outline: 0;
+  text-align: left;
+  text-overflow: ellipsis;
+  transition: background-color .2s;
+  white-space: nowrap;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  &:focus,
+  &:hover {
+    background-color: #f7f7f7;
+  }
+
+  &:active {
+    background-color: #ebebeb;
+  }
+}

@@ -1,0 +1,27 @@
+.entry-sidebar {
+
+  &__section {
+    margin-bottom: 32px;
+
+    &-title {
+      width: 100%;
+      margin: 0 0 24px 0;
+      padding: 12px 0;
+      font-size: 14px;
+      line-height: 24px;
+      border-bottom: 1px solid #e0e0e0;
+      // color: rgba(0, 0, 0, 0.54);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      vertical-align: top;
+    }
+
+    &-subtitle {
+      line-height: 24px;
+      font-size: 14px;
+      margin: 0 0 8px 0;
+    }
+
+    &-content {}
+  }
+}

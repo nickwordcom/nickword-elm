@@ -1,0 +1,55 @@
+.entry-votes {
+  padding: 24px;
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    font-size: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: inline-block;
+    // width: 31.671858775%;
+    width: 48.130841121%;
+    padding: 16px;
+    // margin: 0 2.492211838% 16px 0;
+    margin: 0 3.738317757% 24px 0;
+    border-radius: 2px;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
+
+    &-title {
+      margin: 0;
+      line-height: 24px;
+      font-size: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-info {
+      display: block;
+      margin-top: 6px;
+      line-height: 18px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+
+  &__loading {
+    margin: 40px 0;
+    text-align: center;
+  }
+
+  &__text {
+    line-height: 32px;
+    padding: 16px 24px;
+    font-size: 18px;
+  }
+}
