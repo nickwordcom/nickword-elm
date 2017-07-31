@@ -1,5 +1,15 @@
-elm-stuff/
-node_modules/
-tmp/
-dist/
+# Logs
+logs
 *.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+elm-stuff/
+
+# elm-repl generated files
+repl-temp-*
+
+# Compiled files
+dist/
+tmp/
