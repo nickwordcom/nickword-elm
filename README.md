@@ -1,6 +1,6 @@
 # InOneWord
 
-[![Website](https://img.shields.io/website/https/www.inoneword.io.svg?label=inoneword.io)]()
+[![Website](https://img.shields.io/website/https/www.inoneword.io.svg?label=inoneword.io)](https://www.inoneword.io/)
 
 inoneword-elm  is a web frontend of [www.inoneword.io](https://www.inoneword.io/), written in [Elm](http://elm-lang.org/), where you can **describe anything you like in one word** and find out what people around the world think about this too.
 
