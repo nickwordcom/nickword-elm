@@ -15,25 +15,29 @@ facebookShareDialog dialog =
         appId =
             "1847230732200619"
 
+        redirect =
+            "http://www.facebook.com/"
+
         link =
             rootUrl ++ "/e/" ++ dialog.entrySlug ++ "/" ++ dialog.entryId
 
-        picture =
-            cloudinaryPosterUrl dialog Facebook
+        quote =
+            dialog.title ++ " " ++ dialog.subTitle ++ " - " ++ dialog.word
 
-        name =
-            dialog.word ++ " - " ++ dialog.title ++ " " ++ dialog.subTitle
-
-        caption =
-            ""
-
-        description =
-            ""
-
-        redirect =
-            "http://www.facebook.com/"
+        -- fields are deprecated in v2.9
+        -- picture =
+        --     cloudinaryPosterUrl dialog Facebook
+        --
+        -- name =
+        --     dialog.word ++ " - " ++ dialog.title ++ " " ++ dialog.subTitle
+        --
+        -- caption =
+        --     ""
+        --
+        -- description =
+        --     ""
     in
-    encodeUrl base [ ( "app_id", appId ), ( "link", link ), ( "name", name ), ( "picture", picture ), ( "caption", caption ), ( "description", description ), ( "redirect_uri", redirect ) ]
+    encodeUrl base [ ( "app_id", appId ), ( "redirect_uri", redirect ), ( "link", link ), ( "quote", quote ) ]
 
 
 pinItLink : ShareDialog -> String
