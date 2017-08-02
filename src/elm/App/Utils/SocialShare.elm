@@ -16,7 +16,7 @@ facebookShareDialog dialog =
             "1847230732200619"
 
         link =
-            rootUrl ++ "/" ++ dialog.entryId ++ "/" ++ dialog.entrySlug
+            rootUrl ++ "/e/" ++ dialog.entrySlug ++ "/" ++ dialog.entryId
 
         picture =
             cloudinaryPosterUrl dialog Facebook
@@ -43,7 +43,7 @@ pinItLink dialog =
             "https://www.pinterest.com/pin/create/button"
 
         url =
-            rootUrl ++ "/" ++ dialog.entryId ++ "/" ++ dialog.entrySlug
+            rootUrl ++ "/e/" ++ dialog.entrySlug ++ "/" ++ dialog.entryId
 
         media =
             cloudinaryPosterUrl dialog Pinterest
@@ -61,7 +61,7 @@ vkLink dialog =
             "https://vk.com/share.php"
 
         url =
-            rootUrl ++ "/" ++ dialog.entryId ++ "/" ++ dialog.entrySlug
+            rootUrl ++ "/e/" ++ dialog.entrySlug ++ "/" ++ dialog.entryId
 
         title =
             dialog.word ++ " - " ++ dialog.title ++ " " ++ dialog.subTitle
