@@ -6,6 +6,13 @@
     padding: 0 24px;
     line-height: 16px;
     font-size: 14px;
+
+    &--placeholder {
+      width: 40px;
+      min-height: 16px;
+      margin-left: 24px;
+      background-color: #f8f8f8;
+    }
   }
 
   &__wrapper {

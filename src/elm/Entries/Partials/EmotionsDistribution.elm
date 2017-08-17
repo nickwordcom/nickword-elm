@@ -18,7 +18,10 @@ view distribution language =
                 ]
 
         Nothing ->
-            div [] []
+            div [ class "emotion-dist" ]
+                [ h3 [ class "emotion-dist__head emotion-dist__head--placeholder" ] []
+                , distStats language <| normalizePct emptyDistribution
+                ]
 
 
 distStats : Language -> Dict String String -> Html msg
@@ -104,3 +107,12 @@ votesAmountText distribution language =
 pctSign : String -> String
 pctSign pct =
     pct ++ "%"
+
+
+emptyDistribution : List EmotionInfo
+emptyDistribution =
+    [ { emotion = "negative", sum = 0, percent = 0 }
+    , { emotion = "positive", sum = 0, percent = 0 }
+    , { emotion = "neutral", sum = 0, percent = 0 }
+    , { emotion = "none", sum = 0, percent = 0 }
+    ]
