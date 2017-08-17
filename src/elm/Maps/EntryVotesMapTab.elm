@@ -7,5 +7,5 @@ import Html.Attributes exposing (class, id, style)
 view : Html a
 view =
     section [ class "entry-map" ]
-        [ div [ id "entry-map-votes" ] []
+        [ section [ id "entry-map-votes" ] []
         ]
