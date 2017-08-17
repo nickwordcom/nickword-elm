@@ -126,12 +126,13 @@ urlUpdate location model =
                 , categories = categories
                 , entryTabIndex = 0
                 , entryFilters = entryFilters
-                , entryEmotionsInfo = Nothing
                 , wordSearchValue = ""
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
                 , searchDialogOpen = False
+
+                -- , entryEmotionsInfo = Nothing
             }
                 ! [ updateGA (routeToPath model.route)
                   , popularEntriesCmd
@@ -160,7 +161,6 @@ urlUpdate location model =
                 , countries = countries
                 , entryTabIndex = 1
                 , entryFilters = filtersConfigInit
-                , entryEmotionsInfo = Nothing
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
@@ -193,7 +193,6 @@ urlUpdate location model =
                 , countries = countries
                 , entryTabIndex = 2
                 , entryFilters = filtersConfigInit
-                , entryEmotionsInfo = Nothing
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
@@ -229,7 +228,6 @@ urlUpdate location model =
                 , similarEntries = Loading
                 , entryTabIndex = 3
                 , entryFilters = filtersConfigInit
-                , entryEmotionsInfo = Nothing
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
@@ -257,7 +255,6 @@ urlUpdate location model =
                 , countries = countries
                 , entryTabIndex = 4
                 , entryFilters = filtersConfigInit
-                , entryEmotionsInfo = Nothing
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
