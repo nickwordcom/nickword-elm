@@ -56,7 +56,7 @@ showMoreWordsButton : List Word -> FiltersConfig -> Language -> Material.Model -
 showMoreWordsButton words entryFilters language mdlModel =
     if entryFilters.moreWordsLoading then
         wordsLoadingSpinner
-    else if List.length words == 10 && entryFilters.limit /= Nothing then
+    else if List.length words == 10 && entryFilters.limit == Just 10 then
         div [ class "h-spacing-above--small h-text-center" ]
             [ Button.render MDL
                 [ 2 ]
