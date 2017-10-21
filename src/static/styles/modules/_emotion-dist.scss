@@ -13,6 +13,18 @@
       margin-left: 24px;
       background-color: #f8f8f8;
     }
+
+    &-votes {
+      display: inline-block;
+      margin: 0;
+      line-height: inherit;
+      font-size: inherit;
+    }
+
+    &-info {
+      display: inline-block;
+      padding-left: 4px;
+    }
   }
 
   &__wrapper {

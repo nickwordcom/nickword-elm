@@ -79,7 +79,7 @@ view { entry, entryPrefetched, entryWords, entryTopWord, entryVotes, entryVotesS
                             , div [ class "entry-page__entry-filters-collapse" ]
                                 [ FiltersCollapse.view countries entryVotedCountries entryFilters appLanguage mdl ]
                             , div [ class "entry-page__emotion-dist" ]
-                                [ EmotionsDistribution.view entryEmotionsInfo appLanguage ]
+                                [ EmotionsDistribution.view entryEmotionsInfo entryFilters countries appLanguage ]
                             , currentPageTab
                             ]
                         ]

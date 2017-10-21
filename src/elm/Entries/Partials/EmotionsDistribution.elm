@@ -1,19 +1,26 @@
 module Entries.Partials.EmotionsDistribution exposing (view)
 
+import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (..)
+import Countries.Models exposing (Country)
 import Dict exposing (Dict)
+import Entries.Models exposing (FiltersConfig)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import List.Extra as ListEx
 import Words.Models exposing (EmotionInfo)
 
 
-view : Maybe (List EmotionInfo) -> Language -> Html msg
-view distribution language =
+view : Maybe (List EmotionInfo) -> FiltersConfig -> WebData (List Country) -> Language -> Html msg
+view distribution filtersConfig countries language =
     case distribution of
         Just distribution ->
             div [ class "emotion-dist" ]
-                [ h3 [ class "emotion-dist__head" ]
-                    [ text <| votesAmountText distribution language ]
+                [ div [ class "emotion-dist__head" ]
+                    [ h3 [ class "emotion-dist__head-votes" ]
+                        [ text <| votesAmountText distribution language ]
+                    , votesFilterInfo filtersConfig countries language
+                    ]
                 , distStats language <| normalizePct distribution
                 ]
 
@@ -116,3 +123,75 @@ emptyDistribution =
     , { emotion = "neutral", sum = 0, percent = 0 }
     , { emotion = "none", sum = 0, percent = 0 }
     ]
+
+
+votesFilterInfo : FiltersConfig -> WebData (List Country) -> Language -> Html msg
+votesFilterInfo { country, emotions } countriesData language =
+    let
+        emotionsText =
+            emotionsValue emotions language
+
+        countryText =
+            countryValue country countriesData
+
+        filterPresent =
+            (/=) emotionsText Nothing
+                || (/=) countryText Nothing
+
+        filterInfoText =
+            [ countryText, emotionsText ]
+                |> List.map (Maybe.withDefault "")
+                |> List.filter (\t -> t /= "")
+                |> String.join ", "
+                |> addColon filterPresent
+    in
+    span [ class "emotion-dist__head-info mdl-color-text--grey-600" ]
+        [ text filterInfoText ]
+
+
+emotionsValue : Maybe String -> Language -> Maybe String
+emotionsValue emotions language =
+    let
+        emotionsFilter =
+            Maybe.withDefault "" emotions
+
+        emotionsTranslation =
+            case emotionsFilter of
+                "positive" ->
+                    Just PositiveText
+
+                "neutral" ->
+                    Just NeutralText
+
+                "negative" ->
+                    Just NegativeText
+
+                _ ->
+                    Nothing
+    in
+    emotionsTranslation
+        |> Maybe.map (\t -> translate language t)
+        |> Maybe.map String.toLower
+
+
+countryValue : Maybe String -> WebData (List Country) -> Maybe String
+countryValue country countriesData =
+    let
+        selectedCountry =
+            case ( countriesData, country ) of
+                ( Success countries, Just countryCode ) ->
+                    countries
+                        |> ListEx.find (\c -> c.code == countryCode)
+
+                ( _, _ ) ->
+                    Nothing
+    in
+    Maybe.map (\c -> c.name) selectedCountry
+
+
+addColon : Bool -> String -> String
+addColon filterPresent filterValue =
+    if filterPresent then
+        String.append ": " filterValue
+    else
+        ""
