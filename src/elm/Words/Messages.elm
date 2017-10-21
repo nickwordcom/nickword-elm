@@ -27,6 +27,7 @@ type Msg
     | UpdateShareDialogValues Entry String
     | SelectMenuItem String
     | SetElevation Bool
+    | ShowTopLoginForm
     | VotesMsg VotesMsgs.Msg
     | Snackbar (Snackbar.Msg Int)
     | MDL (Material.Msg Msg)

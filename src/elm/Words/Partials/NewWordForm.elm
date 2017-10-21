@@ -1,7 +1,7 @@
 module Words.Partials.NewWordForm exposing (..)
 
 import App.Models exposing (RemoteData(Success), WebData)
-import App.Translations exposing (Language, TranslationId(DescribeIOWText, DescribeText, IEJustText, NewWordFormWarning, YourWordText), translate)
+import App.Translations exposing (Language, TranslationId(DescribeIOWText, DescribeText, IEJustText, LoginText, NewWordFormWarning, YourWordText), translate)
 import Entries.Models exposing (EntryId)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -11,7 +11,7 @@ import Material exposing (Model)
 import Material.Button as Button
 import Material.Options as Options exposing (cs, nop, onClick)
 import Users.Models exposing (UserStatus(..))
-import Words.Messages exposing (Msg(AddNewWord, MDL, NoOp, SetElevation, UpdateNewWordValue))
+import Words.Messages exposing (Msg(AddNewWord, MDL, NoOp, SetElevation, ShowTopLoginForm, UpdateNewWordValue))
 import Words.Models exposing (EntryVotedWords, Word)
 
 
@@ -79,7 +79,14 @@ newWordDescription newWordFieldActive entryTopWord userStatus language =
                     , ( "-type-warning", newWordFieldActive )
                     ]
                 ]
-                [ text <| translate language NewWordFormWarning ]
+                [ text <| translate language NewWordFormWarning
+                , text ". "
+                , span
+                    [ class "new-word-field__login-text h-clickable"
+                    , Html.Events.onClick ShowTopLoginForm
+                    ]
+                    [ text <| translate language LoginText ]
+                ]
 
         ( Active, Just word ) ->
             span [ class "new-word-field__description" ]

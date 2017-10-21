@@ -8,13 +8,16 @@ import App.Routing exposing (Route(EntryCloudRoute, EntryRoute))
 import App.Translations exposing (..)
 import Dict
 import Dict.Extra as DictEx
+import Dom.Scroll as DScroll
 import Entries.Models exposing (Entry, EntryId, FiltersConfig)
 import List exposing (append, partition)
 import List.Extra as ListEx
 import Material
 import Material.Helpers exposing (map1st, map2nd)
+import Material.Layout exposing (mainId)
 import Material.Snackbar as Snackbar
 import String exposing (filter, toLower)
+import Task
 import Users.Models exposing (User, UserStatus(Active), UserToken)
 import Votes.Commands as VotesCmds exposing (addNewVote)
 import Votes.Update as VotesUpdate
@@ -175,6 +178,10 @@ update msg model =
         SetElevation bool ->
             { model | newWordFieldActive = bool }
                 ! []
+
+        ShowTopLoginForm ->
+            { model | loginFormTopBlockOpen = True }
+                ! [ DScroll.toTop mainId |> Task.attempt (always NoOp) ]
 
         VotesMsg subMsg ->
             let
