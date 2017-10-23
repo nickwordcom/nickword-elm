@@ -99,6 +99,35 @@ urlUpdate location model =
                   , materialCmd
                   ]
 
+        UserEntriesRoute ->
+            let
+                userEntriesCmd =
+                    EntriesCmds.fetchUserEntries model.user model.appLanguage 1
+                        |> Cmd.map EntriesMsg
+
+                updatedAppTitle =
+                    newAppTitle <| translate model.appLanguage MyEntriesText
+
+                updatedAppDescription =
+                    translate model.appLanguage MyEntriesDescText
+            in
+            { model
+                | categories = categories
+                , allEntries = Loading
+                , pageNumber = 1
+                , loginFormTopBlockOpen = False
+                , searchValue = ""
+                , searchDialogOpen = False
+            }
+                ! [ updateGA (routeToPath model.route)
+                  , userEntriesCmd
+                  , categoriesCmd
+                  , scrollToTop
+                  , appTitle updatedAppTitle
+                  , appDescription updatedAppDescription
+                  , materialCmd
+                  ]
+
         EntryRoute entrySlug entryId ->
             let
                 ( entry, entryCmd ) =

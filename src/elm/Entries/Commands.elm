@@ -3,12 +3,13 @@ module Entries.Commands exposing (..)
 import App.Translations exposing (Language(English), decodeLang)
 import App.Utils.Config exposing (apiUrl)
 import App.Utils.Converters exposing (fromResult)
-import App.Utils.Requests exposing (encodeUrl)
+import App.Utils.Requests exposing (encodeUrl, getWithAuth)
 import Categories.Models exposing (CategoryId)
 import Entries.Messages exposing (..)
 import Entries.Models exposing (Entry, EntryId, EntryImage)
 import Http
 import Json.Decode as Decode exposing (field)
+import Users.Models exposing (User)
 
 
 -- HTTP Requests
@@ -18,6 +19,12 @@ fetchAllFromCategory : CategoryId -> Language -> Int -> Cmd Msg
 fetchAllFromCategory categoryId language pageNumber =
     Http.get (categoryEntriesUrl categoryId language pageNumber) entryListDecoder
         |> Http.send (CategoryEntriesResponse << fromResult)
+
+
+fetchUserEntries : User -> Language -> Int -> Cmd Msg
+fetchUserEntries { jwt } language pageNumber =
+    getWithAuth (userEntriesUrl language pageNumber) entryListDecoder jwt
+        |> Http.send (UserEntriesResponse << fromResult)
 
 
 fetchPopular : Language -> Cmd Msg
@@ -111,6 +118,15 @@ categoryEntriesUrl categoryId language pageNumber =
     let
         baseUrl =
             apiUrl ++ "/categories/" ++ categoryId ++ "/entries"
+    in
+    encodeUrl baseUrl [ ( "locale", decodeLang language ), ( "page", toString pageNumber ) ]
+
+
+userEntriesUrl : Language -> Int -> String
+userEntriesUrl language pageNumber =
+    let
+        baseUrl =
+            entriesUrl ++ "/my"
     in
     encodeUrl baseUrl [ ( "locale", decodeLang language ), ( "page", toString pageNumber ) ]
 

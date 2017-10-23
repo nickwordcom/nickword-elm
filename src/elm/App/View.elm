@@ -20,6 +20,7 @@ import Material.Snackbar as Snackbar
 import Pages.NotFoundPage as NotFoundPage
 import Pages.PopularPage as PopularPage
 import Pages.SearchPage as SearchPage
+import Pages.UserEntriesPage as UserEntriesPage
 import ShareDialog.Dialog as Dialog
 
 
@@ -78,6 +79,10 @@ page model =
 
                 CategoryRoute slug id ->
                     categoryShowPage model id
+
+                UserEntriesRoute ->
+                    UserEntriesPage.view model.allEntries model.appLanguage
+                        |> Html.map EntriesMsg
 
                 PopularRoute ->
                     PopularPage.view model.allEntries model.appLanguage

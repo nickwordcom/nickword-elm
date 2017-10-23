@@ -13,6 +13,7 @@ type Route
     = EntriesRoute
     | EntriesNewRoute
     | RandomEntryRoute
+    | UserEntriesRoute
     | EntryRoute EntrySlug EntryId
     | EntryCloudRoute EntrySlug EntryId
     | EntryMapRoute EntrySlug EntryId
@@ -35,6 +36,7 @@ matchers =
         [ map EntriesRoute top
         , map EntriesNewRoute (s "e" </> s "new")
         , map RandomEntryRoute (s "e" </> s "random")
+        , map UserEntriesRoute (s "e" </> s "my")
         , map EntryCloudRoute (s "e" </> string </> string </> s "cloud")
         , map EntryMapRoute (s "e" </> string </> string </> s "map")
         , map EntryVotesRoute (s "e" </> string </> string </> s "votes")
@@ -73,6 +75,9 @@ routeToPath route =
 
         RandomEntryRoute ->
             "/e/random"
+
+        UserEntriesRoute ->
+            "/e/my"
 
         EntryRoute entrySlug entryId ->
             "/e/" ++ entrySlug ++ "/" ++ entryId

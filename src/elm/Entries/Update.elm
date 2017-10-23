@@ -28,7 +28,14 @@ update msg model =
 
         CategoryEntriesResponse response ->
             { model
-                | allEntries = updateCategoryEntries response model.allEntries model.pageNumber
+                | allEntries = updateEntriesList response model.allEntries
+                , loadMoreState = updateLoadMoreState response
+            }
+                ! []
+
+        UserEntriesResponse response ->
+            { model
+                | allEntries = updateEntriesList response model.allEntries
                 , loadMoreState = updateLoadMoreState response
             }
                 ! []
@@ -227,12 +234,13 @@ loadMoreEntiresCmd route language pageNumber =
             Cmd.none
 
 
-updateCategoryEntries : WebData (List Entry) -> WebData (List Entry) -> Int -> WebData (List Entry)
-updateCategoryEntries response allEntries pageNumber =
+updateEntriesList : WebData (List Entry) -> WebData (List Entry) -> WebData (List Entry)
+updateEntriesList response allEntries =
     case ( response, allEntries ) of
         ( Success entries, Success allEntries ) ->
             Success (List.append allEntries entries)
 
+        -- TODO: add more cases without deleting previous entries
         _ ->
             response
 

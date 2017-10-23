@@ -42,6 +42,8 @@ type TranslationId
     | NumberOfVotesText Int
     | CreateEntryText
     | RandomEntryText
+    | MyEntriesText
+    | MyEntriesDescText
     | CategoriesText
     | IEText String
     | IEJustText
@@ -285,6 +287,20 @@ translate language translationId =
                     , ukrainian = "Випадковий Запис"
                     , russian = "Случайная Запись"
                     , spanish = "Entrada al azar"
+                    }
+
+                MyEntriesText ->
+                    { english = "My Entries"
+                    , ukrainian = "Мої записи"
+                    , russian = "Мои записи"
+                    , spanish = "Mis Entradas"
+                    }
+
+                MyEntriesDescText ->
+                    { english = "Entries created by me"
+                    , ukrainian = "Записи, створені мною"
+                    , russian = "Записи, созданные мной"
+                    , spanish = "Entradas creadas por mí"
                     }
 
                 CategoriesText ->
