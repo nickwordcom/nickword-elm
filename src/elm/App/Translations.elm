@@ -79,7 +79,7 @@ type TranslationId
     | IncludeVotesFromText
     | NoVotesText
     | LatestHundredText
-    | NVotesFromText String
+    | NVotesOutOfText Int Int
     | GoogleImagesText
     | PageNotFoundText
     | PageNotFoundDescription
@@ -550,11 +550,18 @@ translate language translationId =
                     , spanish = "últimos 100"
                     }
 
-                NVotesFromText value ->
-                    { english = " out of " ++ value
-                    , ukrainian = " з " ++ value
-                    , russian = " из " ++ value
-                    , spanish = " de " ++ value
+                NVotesOutOfText a b ->
+                    let
+                        aStr =
+                            toString a
+
+                        bStr =
+                            toString b
+                    in
+                    { english = aStr ++ " out of " ++ bStr ++ " votes"
+                    , ukrainian = aStr ++ " із " ++ bStr ++ " голосів"
+                    , russian = aStr ++ " из " ++ bStr ++ " голосов"
+                    , spanish = aStr ++ " fuera de " ++ bStr ++ " votos"
                     }
 
                 GoogleImagesText ->

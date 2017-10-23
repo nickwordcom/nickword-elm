@@ -47,14 +47,23 @@ update msg model =
                 updatedEntryEmotionsInfo =
                     updateEmotionsInfo voteResponse model.entryEmotionsInfo
 
-                toastMessage =
+                numberOfVotes =
+                    countNumberOfVotes updatedEntryVotedWords
+
+                notCountedMessage =
                     translate model.appLanguage <| VoteIsNotCounted voteResponse.word.name
 
+                numberOfVotesMessage =
+                    translate model.appLanguage <| NVotesOutOfText numberOfVotes 5
+
                 ( snackbar, snackEffect ) =
-                    if voteResponse.counted then
+                    if voteResponse.counted && numberOfVotes >= 4 then
+                        Snackbar.add (Snackbar.toast 0 numberOfVotesMessage) model.snackbar
+                            |> map2nd (Cmd.map Snackbar)
+                    else if voteResponse.counted then
                         ( model.snackbar, Cmd.none )
                     else
-                        Snackbar.add (Snackbar.toast 0 toastMessage) model.snackbar
+                        Snackbar.add (Snackbar.toast 0 notCountedMessage) model.snackbar
                             |> map2nd (Cmd.map Snackbar)
 
                 ( newUser, jwtCmd ) =
@@ -244,6 +253,16 @@ distributionFromResponse response =
 
         Success { votes, distribution } ->
             Just distribution
+
+
+countNumberOfVotes : WebData EntryVotedWords -> Int
+countNumberOfVotes votedWords =
+    case votedWords of
+        Success { ids } ->
+            List.length ids
+
+        _ ->
+            0
 
 
 translateWords : List VoteSlim -> List VoteSlim
