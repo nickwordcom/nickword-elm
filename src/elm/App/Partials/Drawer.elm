@@ -2,7 +2,7 @@ module App.Partials.Drawer exposing (drawer)
 
 import App.Messages exposing (Msg(MDL, Navigate))
 import App.Models exposing (RemoteData(..), WebData)
-import App.Routing exposing (Route(CategoryRoute, PopularRoute), routeToPath)
+import App.Routing exposing (Route(CategoryRoute, PopularRoute, UserEntriesRoute), routeToPath)
 import App.Translations exposing (..)
 import App.Utils.Links exposing (linkTo)
 import Categories.Models exposing (Category, loremCategory)
@@ -16,8 +16,15 @@ import Material.Layout as Layout
 drawer : WebData (List Category) -> Language -> List (Html Msg)
 drawer categories language =
     [ Layout.title [] [ text <| translate language CategoriesText ]
-    , Layout.navigation [] (categoryLinks categories language)
+    , Layout.navigation [] (navLinks categories language)
     ]
+
+
+navLinks : WebData (List Category) -> Language -> List (Html Msg)
+navLinks categories language =
+    categoryLinks categories language
+        |> (::) (popularLink language)
+        |> appendToEnd (userEntriesLink language)
 
 
 categoryLinks : WebData (List Category) -> Language -> List (Html Msg)
@@ -36,35 +43,37 @@ categoryLinks categories language =
 
         activeCategories =
             List.filterMap withEntries allCategories
-
-        popularPath =
-            routeToPath PopularRoute
-
-        popularLink =
-            linkTo popularPath
-                (Navigate popularPath)
-                [ class "mdl-navigation__link"
-                , onMouseUp (Layout.toggleDrawer MDL)
-                , tabindex 1
-                ]
-                [ text <| translate language TrendingTitle ]
     in
-    List.append [ popularLink ] <| List.map categoryLink activeCategories
+    List.map categoryLink activeCategories
 
 
-categoryLink : Category -> Html Msg
-categoryLink category =
-    let
-        categoryPath =
-            routeToPath <| CategoryRoute category.slug category.id
-    in
-    linkTo categoryPath
-        (Navigate categoryPath)
+navLink : String -> String -> Html Msg
+navLink linkPath linkText =
+    linkTo linkPath
+        (Navigate linkPath)
         [ class "mdl-navigation__link"
         , onMouseUp (Layout.toggleDrawer MDL)
         , tabindex 1
         ]
-        [ text category.title ]
+        [ text linkText ]
+
+
+categoryLink : Category -> Html Msg
+categoryLink category =
+    category.title
+        |> navLink (routeToPath <| CategoryRoute category.slug category.id)
+
+
+popularLink : Language -> Html Msg
+popularLink language =
+    translate language TrendingTitle
+        |> navLink (routeToPath PopularRoute)
+
+
+userEntriesLink : Language -> Html Msg
+userEntriesLink language =
+    translate language MyEntriesText
+        |> navLink (routeToPath UserEntriesRoute)
 
 
 withEntries : Category -> Maybe Category
@@ -73,3 +82,8 @@ withEntries category =
         Just category
     else
         Nothing
+
+
+appendToEnd : link -> List link -> List link
+appendToEnd link list =
+    List.append list [ link ]
