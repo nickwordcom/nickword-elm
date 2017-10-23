@@ -21,6 +21,6 @@ view newEntry categories user language route =
                 [ text <| translate language CreateEntryText ]
             , div [ class "new-entry__login-form" ]
                 [ LoginLinks.view user language route ]
-            , Html.map NewEntryMsg (NewEntryForm.view newEntry categories language)
+            , Html.map NewEntryMsg (NewEntryForm.view newEntry categories user language)
             ]
         ]

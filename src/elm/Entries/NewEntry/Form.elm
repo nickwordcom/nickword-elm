@@ -16,10 +16,12 @@ import Material.Options as Options exposing (cs, css)
 import Material.Spinner as Spinner
 import String
 import String.Extra exposing (isBlank)
+import Users.Models exposing (User)
+import Users.Utils exposing (userIsActive)
 
 
-view : NewEntryModel -> WebData (List Category) -> Language -> Html Msg
-view newEntry categories language =
+view : NewEntryModel -> WebData (List Category) -> User -> Language -> Html Msg
+view newEntry categories user language =
     div [ class "new-entry__form" ]
         [ -- TITLE
           div [ class "new-entry__field-block" ]
@@ -105,7 +107,7 @@ view newEntry categories language =
 
         -- TODO: Add link to terms page
         , div [ class "new-entry__submit-block" ]
-            [ submitButton newEntry language
+            [ submitButton newEntry user language
             , Spinner.spinner
                 [ Spinner.active newEntry.formSubmitted
                 , css "vertical-align" "middle"
@@ -185,11 +187,11 @@ descriptionCharCounter description =
     140 - String.length description
 
 
-submitButton : NewEntryModel -> Language -> Html Msg
-submitButton model language =
+submitButton : NewEntryModel -> User -> Language -> Html Msg
+submitButton model user language =
     let
         canAddEntry =
-            noErrors model && fieldsFilled model
+            userIsActive user && noErrors model && fieldsFilled model
 
         msg =
             if canAddEntry && not model.formSubmitted then
