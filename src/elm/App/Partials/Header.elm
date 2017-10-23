@@ -4,7 +4,6 @@ import App.Messages exposing (Msg(..))
 import App.Models exposing (Model)
 import App.Routing exposing (Route(EntriesNewRoute, RandomEntryRoute), routeToPath)
 import App.Translations exposing (..)
-import App.Utils.Checkers exposing (isUserAnonymous)
 import App.Utils.Links exposing (linkTo)
 import Html exposing (Html, text)
 import Html.Attributes exposing (class, tabindex)
@@ -15,6 +14,7 @@ import Material.Menu as Menu
 import Material.Options as Options exposing (cs, css, div, nop, span)
 import Search.SearchBox exposing (searchBox)
 import Users.Models exposing (User)
+import Users.Utils exposing (userIsUnknown)
 
 
 appHeader : Model -> List (Html Msg)
@@ -66,7 +66,7 @@ headerNavigation mdlModel searchOpen user language =
             [ Options.onClick ToggleTopLoginForm
             , Options.attribute <| Html.Attributes.tabindex 1
             , cs "mdl-navigation__link header-desktop h-clickable"
-            , if isUserAnonymous user then
+            , if userIsUnknown user then
                 nop
               else
                 cs "h-hidden"
@@ -114,7 +114,7 @@ headerNavigation mdlModel searchOpen user language =
                 , Menu.item
                     [ Menu.onSelect ToggleTopLoginForm
                     , css "padding-right" "24px"
-                    , if isUserAnonymous user then
+                    , if userIsUnknown user then
                         nop
                       else
                         cs "h-hidden"

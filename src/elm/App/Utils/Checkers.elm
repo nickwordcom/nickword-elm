@@ -3,23 +3,6 @@ module App.Utils.Checkers exposing (..)
 import App.Translations exposing (Language, TranslationId(..), translate)
 import List exposing (member)
 import String
-import Users.Models exposing (User, UserStatus(..))
-
-
-isUserAnonymous : User -> Bool
-isUserAnonymous user =
-    if user.status == Unknown then
-        True
-    else
-        False
-
-
-isUserActive : User -> Bool
-isUserActive user =
-    if user.status == Active then
-        True
-    else
-        False
 
 
 checkForTitleError : String -> Language -> String

@@ -7,12 +7,13 @@ import Html.Attributes exposing (class, classList, href)
 import OAuth.Config exposing (..)
 import Svg
 import Svg.Attributes
-import Users.Models exposing (User, UserStatus(Unknown))
+import Users.Models exposing (User)
+import Users.Utils exposing (userIsUnknown)
 
 
 view : User -> Language -> Route -> Html msg
 view user language route =
-    if user.status == Unknown then
+    if userIsUnknown user then
         loginForm (routeToPath route) language
     else
         div [] []

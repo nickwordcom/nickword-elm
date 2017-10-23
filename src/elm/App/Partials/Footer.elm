@@ -7,7 +7,8 @@ import Html exposing (Html, text)
 import Html.Attributes exposing (target)
 import Material.Footer as Footer
 import Material.Options as Options exposing (attribute, cs, css)
-import Users.Models exposing (User, UserStatus(Active))
+import Users.Models exposing (User)
+import Users.Utils exposing (userIsActive)
 
 
 view : User -> Language -> Html Msg
@@ -75,7 +76,7 @@ websiteSection user language =
 
 logoutLink : Language -> User -> Footer.Content Msg
 logoutLink language user =
-    if user.status == Active then
+    if userIsActive user then
         Footer.linkItem
             [ Options.onClick RemoveLocalJWT
             , Options.onMouseUp ScrollToTop

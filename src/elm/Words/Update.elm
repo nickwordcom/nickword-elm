@@ -18,7 +18,8 @@ import Material.Layout exposing (mainId)
 import Material.Snackbar as Snackbar
 import String exposing (filter, toLower)
 import Task
-import Users.Models exposing (User, UserStatus(Active), UserToken)
+import Users.Models exposing (User, UserToken)
+import Users.Utils exposing (userIsActive)
 import Votes.Commands as VotesCmds exposing (addNewVote)
 import Votes.Update as VotesUpdate
 import Words.Commands as WCmd exposing (addNewWord, fetchEntryWords)
@@ -72,7 +73,7 @@ update msg model =
                 ! [ applyEntryFilters model.route updatedEntryFilters ]
 
         VoteForWord wordId entryId ->
-            if model.user.status == Active then
+            if userIsActive model.user then
                 { model | entryWords = updateVotedForWord model.entryWords wordId }
                     ! [ VotesCmds.addNewVote entryId wordId model.user.jwt |> Cmd.map VotesMsg ]
             else
@@ -114,7 +115,7 @@ update msg model =
                     { message = logInMsg, action = Nothing, payload = 0, timeout = 5000, fade = 250 }
 
                 ( snackbar, command ) =
-                    if model.user.status /= Active then
+                    if not (userIsActive model.user) then
                         Snackbar.add customToast model.snackbar
                             |> map2nd (Cmd.map Snackbar)
                     else if String.length value < 2 then

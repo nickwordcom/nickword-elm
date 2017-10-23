@@ -22,6 +22,7 @@ import String exposing (isEmpty)
 import Task
 import Users.Commands as UsersCmds
 import Users.Models as UserModels exposing (User)
+import Users.Utils exposing (userIsActive, userIsUnknown)
 import Votes.Commands as VotesCmds
 import Words.Commands as WordsCmds
 import Words.Models exposing (EntryVotedWords)
@@ -446,7 +447,7 @@ checkEntryVotedWords : WebData EntryVotedWords -> EntryId -> User -> ( WebData E
 checkEntryVotedWords entryVotedWords entryId user =
     let
         fetchCmd =
-            if user.status == UserModels.Active then
+            if userIsActive user then
                 Cmd.map WordsMsg <| WordsCmds.fetchEntryVotedWords entryId user.jwt
             else
                 Cmd.none
@@ -499,7 +500,7 @@ authorizeUser location provider user =
             else
                 newUrl "/"
     in
-    if user.status == UserModels.Unknown && oauthResponsePresent then
+    if userIsUnknown user && oauthResponsePresent then
         { user | status = UserModels.Loading }
             ! [ newUrlCmd, UsersCmds.authorizeUser oauthResponse ]
     else
