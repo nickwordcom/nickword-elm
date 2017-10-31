@@ -1,2 +1,5 @@
+# proxy to API to get entry badge
+/badge/*  https://api.inoneword.io/badge/:splat  200
+
 # serve the index.html instead of giving a 404
 /*    /index.html   200
