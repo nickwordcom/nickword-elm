@@ -3,7 +3,7 @@ module App.UrlUpdate exposing (..)
 import App.Messages exposing (Msg(..))
 import App.Models exposing (Model, RemoteData(..), WebData)
 import App.Ports exposing (appDescription, appTitle, updateGA)
-import App.Routing as Routing exposing (Route(..), routeToPath)
+import App.Routing exposing (..)
 import App.Translations exposing (..)
 import App.Utils.Title exposing (..)
 import Categories.Commands as CategoriesCmds
@@ -105,6 +105,12 @@ urlUpdate location model =
                     EntriesCmds.fetchUserEntries model.user model.appLanguage 1
                         |> Cmd.map EntriesMsg
 
+                userCmd =
+                    if userIsActive model.user then
+                        userEntriesCmd
+                    else
+                        navigateTo EntriesNewRoute
+
                 updatedAppTitle =
                     newAppTitle <| translate model.appLanguage MyEntriesText
 
@@ -120,7 +126,7 @@ urlUpdate location model =
                 , searchDialogOpen = False
             }
                 ! [ updateGA (routeToPath model.route)
-                  , userEntriesCmd
+                  , userCmd
                   , categoriesCmd
                   , scrollToTop
                   , appTitle updatedAppTitle
