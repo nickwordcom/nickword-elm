@@ -3,7 +3,6 @@ module Entries.ShowPage exposing (..)
 import App.Models exposing (Model, RemoteData(..))
 import App.Routing exposing (Route(EntryCloudRoute, EntryMapRoute, EntryRoute, EntryVotesRoute))
 import App.Translations exposing (Language, TranslationId(ErrorText, LoadingText), translate)
-import App.Utils.Converters exposing (votesSize, votesSlimSize, wordsVotesCount)
 import Entries.Messages exposing (Msg(WordsMsg))
 import Entries.Partials.EmotionsDistribution as EmotionsDistribution
 import Entries.Partials.EntryInfo exposing (entryInfo)
@@ -38,34 +37,23 @@ view { entry, entryPrefetched, entryWords, entryTopWord, entryVotes, entryVotesS
 
         Success entry ->
             let
-                ( currentPageTab, countryVotesCount, isVotesTab ) =
+                currentPageTab =
                     case route of
                         EntryRoute _ _ ->
-                            ( EntryWordsTab.view entry entryWords entryFilters entryVotedWords appLanguage mdl |> Html.map WordsMsg
-                            , wordsVotesCount entryWords
-                            , False
-                            )
+                            EntryWordsTab.view entry entryWords entryFilters entryVotedWords appLanguage mdl
+                                |> Html.map WordsMsg
 
                         EntryCloudRoute _ _ ->
-                            ( EntryWordsCloudTab.view entryWords appLanguage
-                            , wordsVotesCount entryWords
-                            , False
-                            )
+                            EntryWordsCloudTab.view entryWords appLanguage
 
                         EntryMapRoute _ _ ->
-                            ( EntryVotesMapTab.view
-                            , votesSlimSize entryVotesSlim
-                            , False
-                            )
+                            EntryVotesMapTab.view
 
                         EntryVotesRoute _ _ ->
-                            ( EntryVotesTab.votesList entryVotes appLanguage
-                            , votesSize entryVotes
-                            , True
-                            )
+                            EntryVotesTab.votesList entryVotes appLanguage
 
                         _ ->
-                            ( div [] [], Nothing, False )
+                            div [] []
             in
             div []
                 [ div [ class "entry-page" ]
