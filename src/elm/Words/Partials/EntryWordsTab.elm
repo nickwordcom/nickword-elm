@@ -31,7 +31,8 @@ view entry entryWords entryFilters entryVotedWords language mdlModel =
         wordsContent =
             case entryWords of
                 Loading ->
-                    wordsLoadingSpinner
+                    div [ style [ ( "min-height", "400px" ) ] ]
+                        [ wordsLoadingSpinner ]
 
                 Failure err ->
                     div [ class "entry-words__text mdl-color-text--red-A700" ]
