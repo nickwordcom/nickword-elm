@@ -236,29 +236,3 @@ wordsLoadingSpinner =
             , css "margin" "2px 0"
             ]
         ]
-
-
-
--- wordsHeaderSearch : String -> Language -> Html Msg
--- wordsHeaderSearch searchQuery language =
---   div [ class "entry-words__header-search" ]
---     [ input
---        [ class "entry-words__header-search-input"
---        , value searchQuery
---        , onInput UpdateWordSearchField
---        , placeholder <| translate language SearchWordPlaceholder
---        , type_ "text"
---        ] []
---      , div [ class "entry-words__header-search-clear cursor--pointer"
---          , if (String.length searchQuery > 0) then style [("display", "block")] else style [("display", "none")]
---          , onClick ClearWordsSearchValue
---          ]
---        [ Icon.i "clear" ]
---     ]
--- pinnedStar : Bool -> Html Msg
--- pinnedStar pinned =
---   if pinned then
---     span [ class "entry-words__item-pinned mdl-color-text--primary-dark" ]
---         [ Icon.i "star" ]
---   else
---     span [] []
