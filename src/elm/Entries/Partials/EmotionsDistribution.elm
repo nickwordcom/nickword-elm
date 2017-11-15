@@ -4,14 +4,16 @@ import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (..)
 import Countries.Models exposing (Country)
 import Dict exposing (Dict)
-import Entries.Models exposing (FiltersConfig)
+import Entries.Messages exposing (Msg(ApplyFilters))
+import Entries.Models exposing (FilterType(..), FiltersConfig)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import List.Extra as ListEx
+import Material.Chip as Chip
 import Words.Models exposing (EmotionInfo)
 
 
-view : Maybe (List EmotionInfo) -> FiltersConfig -> WebData (List Country) -> Language -> Html msg
+view : Maybe (List EmotionInfo) -> FiltersConfig -> WebData (List Country) -> Language -> Html Msg
 view distribution filtersConfig countries language =
     case distribution of
         Just distribution ->
@@ -125,38 +127,50 @@ emptyDistribution =
     ]
 
 
-votesFilterInfo : FiltersConfig -> WebData (List Country) -> Language -> Html msg
+votesFilterInfo : FiltersConfig -> WebData (List Country) -> Language -> Html Msg
 votesFilterInfo { country, emotions } countriesData language =
-    let
-        emotionsText =
-            emotionsValue emotions language
-
-        countryText =
-            countryValue country countriesData
-
-        filterPresent =
-            (/=) emotionsText Nothing
-                || (/=) countryText Nothing
-
-        filterInfoText =
-            [ countryText, emotionsText ]
-                |> List.map (Maybe.withDefault "")
-                |> List.filter (\t -> t /= "")
-                |> String.join ", "
-                |> addColon filterPresent
-    in
-    span [ class "emotion-dist__head-info mdl-color-text--grey-600" ]
-        [ text filterInfoText ]
+    div [ class "emotion-dist__head-filters" ]
+        [ countryFilterChip country countriesData
+        , emotionsFilterChip emotions language
+        ]
 
 
-emotionsValue : Maybe String -> Language -> Maybe String
+countryFilterChip : Maybe String -> WebData (List Country) -> Html Msg
+countryFilterChip country countriesData =
+    case country of
+        Just country_ ->
+            ApplyFilters (SelectFromCountry Nothing)
+                |> filterChip (countryValue country_ countriesData)
+
+        Nothing ->
+            text ""
+
+
+emotionsFilterChip : Maybe String -> Language -> Html Msg
+emotionsFilterChip emotions language =
+    case emotions of
+        Just emotions_ ->
+            ApplyFilters (SelectWithEmotions Nothing)
+                |> filterChip (emotionsValue emotions_ language)
+
+        Nothing ->
+            text ""
+
+
+filterChip : String -> Msg -> Html Msg
+filterChip filterText filterMsg =
+    Chip.span
+        [ Chip.deleteIcon "cancel"
+        , Chip.deleteClick filterMsg
+        ]
+        [ Chip.text [] filterText ]
+
+
+emotionsValue : String -> Language -> String
 emotionsValue emotions language =
     let
-        emotionsFilter =
-            Maybe.withDefault "" emotions
-
         emotionsTranslation =
-            case emotionsFilter of
+            case emotions of
                 "positive" ->
                     Just PositiveText
 
@@ -171,27 +185,18 @@ emotionsValue emotions language =
     in
     emotionsTranslation
         |> Maybe.map (\t -> translate language t)
-        |> Maybe.map String.toLower
+        |> Maybe.withDefault ""
+        |> String.toLower
 
 
-countryValue : Maybe String -> WebData (List Country) -> Maybe String
+countryValue : String -> WebData (List Country) -> String
 countryValue country countriesData =
-    let
-        selectedCountry =
-            case ( countriesData, country ) of
-                ( Success countries, Just countryCode ) ->
-                    countries
-                        |> ListEx.find (\c -> c.code == countryCode)
+    case countriesData of
+        Success countries ->
+            countries
+                |> ListEx.find (\c -> c.code == country)
+                |> Maybe.andThen (\c -> Just c.name)
+                |> Maybe.withDefault ""
 
-                ( _, _ ) ->
-                    Nothing
-    in
-    Maybe.map (\c -> c.name) selectedCountry
-
-
-addColon : Bool -> String -> String
-addColon filterPresent filterValue =
-    if filterPresent then
-        String.append ": " filterValue
-    else
-        ""
+        _ ->
+            ""
