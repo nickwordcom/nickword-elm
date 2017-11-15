@@ -228,11 +228,9 @@ openShareModal entry wordName mdlModel =
 
 wordsLoadingSpinner : Html Msg
 wordsLoadingSpinner =
-    div [ class "entry-words__loading h-text-center h-spacing-above--normal h-spacing-below--normal" ]
+    div [ class "entry-words__loading h-text-center h-spacing-above--normal" ]
         [ Spinner.spinner
             [ Spinner.active True
             , Spinner.singleColor True
-            , css "vertical-align" "middle"
-            , css "margin" "2px 0"
             ]
         ]

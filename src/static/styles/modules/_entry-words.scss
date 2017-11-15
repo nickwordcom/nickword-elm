@@ -1,7 +1,9 @@
 .entry-words {
   padding: 0;
 
-  &__loading {}
+  &__loading {
+    min-height: 400px;
+  }
 
   &__text {
     line-height: 32px;

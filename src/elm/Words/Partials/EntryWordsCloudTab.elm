@@ -35,7 +35,5 @@ wordsLoadingSpinner =
         [ Spinner.spinner
             [ Spinner.active True
             , Spinner.singleColor True
-            , css "vertical-align" "middle"
-            , css "margin" "2px 0"
             ]
         ]
