@@ -4,8 +4,12 @@
   &__head {
     margin: 0 0 8px 0;
     padding: 0 24px;
-    line-height: 26px;
+    line-height: 30px;
     font-size: 14px;
+
+    @include breakpoint(840px) {
+      line-height: 24px;
+    }
 
     &--placeholder {
       width: 40px;
@@ -34,9 +38,15 @@
       & .mdl-chip {
         height: 26px;
         line-height: 26px;
-        margin: 0 8px 0 0;
+        margin: 2px 8px 2px 0;
         padding-left: 10px;
         vertical-align: middle;
+
+        @include breakpoint(840px) {
+          height: 24px;
+          line-height: 24px;
+          margin: 0 8px 0 0;
+        }
 
         &:last-child {
           margin-right: 0;
