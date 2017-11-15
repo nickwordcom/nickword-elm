@@ -48,7 +48,10 @@ update msg model =
                     model.entryFilters
 
                 updatedEntryFilters =
-                    { entryFilters | moreWordsLoading = False }
+                    { entryFilters
+                        | moreWordsLoading = False
+                        , limit = checkRouteForLimit model.route
+                    }
             in
             { model
                 | entryWords = words
@@ -298,6 +301,16 @@ checkForTopWord entryWords =
     case entryWords of
         Success words ->
             List.head words
+
+        _ ->
+            Nothing
+
+
+checkRouteForLimit : Route -> Maybe Int
+checkRouteForLimit route =
+    case route of
+        EntryRoute _ _ ->
+            Just 10
 
         _ ->
             Nothing
