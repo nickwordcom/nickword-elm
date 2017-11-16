@@ -87,7 +87,7 @@ update msg model =
                             { entryFilters | emotions = emotions }
 
                         Translate ->
-                            { entryFilters | translate = not entryFilters.translate, limit = Nothing }
+                            { entryFilters | translate = not entryFilters.translate }
             in
             { model
                 | entryFilters = updatedEntryFilters

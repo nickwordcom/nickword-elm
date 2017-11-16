@@ -265,6 +265,10 @@ countNumberOfVotes votedWords =
             0
 
 
+
+-- TODO: update translateWords like in combineEntryWords
+
+
 translateWords : List VoteSlim -> List VoteSlim
 translateWords votes =
     votes

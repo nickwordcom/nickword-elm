@@ -39,25 +39,40 @@ view entry entryWords entryFilters entryVotedWords language mdlModel =
                         [ text <| translate language <| ErrorText (toString err) ]
 
                 Success words ->
-                    if List.isEmpty words then
+                    let
+                        numberOfWords =
+                            List.length words
+
+                        wordsToShow =
+                            if entryFilters.showOnlyTopWords then
+                                List.take 10 words
+                            else
+                                words
+
+                        votesMaxNumber : Maybe Int
+                        votesMaxNumber =
+                            wordsToShow
+                                |> List.take 2
+                                |> List.map (\w -> w.votesCount)
+                                |> List.maximum
+                    in
+                    if numberOfWords == 0 then
                         div [ class "entry-words__text" ]
                             [ text <| translate language WordListEmptyText ]
                     else
                         div []
                             [ ol [ class "entry-words__list" ]
-                                (List.map (listItem (votesMaxNumber words)) words)
-                            , showMoreWordsButton words entryFilters language mdlModel
+                                (List.map (listItem votesMaxNumber) wordsToShow)
+                            , showMoreWordsButton entryFilters numberOfWords language mdlModel
                             ]
     in
     section [ class "entry-words" ]
         [ wordsContent ]
 
 
-showMoreWordsButton : List Word -> FiltersConfig -> Language -> Material.Model -> Html Msg
-showMoreWordsButton words entryFilters language mdlModel =
-    if entryFilters.moreWordsLoading then
-        wordsLoadingSpinner
-    else if List.length words == 10 && entryFilters.limit == Just 10 then
+showMoreWordsButton : FiltersConfig -> Int -> Language -> Material.Model -> Html Msg
+showMoreWordsButton { showOnlyTopWords } numberOfWords language mdlModel =
+    if showOnlyTopWords && numberOfWords > 10 then
         div [ class "h-spacing-above--small h-text-center" ]
             [ Button.render MDL
                 [ 2 ]
@@ -69,7 +84,7 @@ showMoreWordsButton words entryFilters language mdlModel =
                 [ text <| translate language ShowMoreText ]
             ]
     else
-        div [] []
+        text ""
 
 
 wordRow : Entry -> WebData EntryVotedWords -> Maybe Int -> Language -> Material.Model -> Word -> Html Msg
@@ -127,14 +142,6 @@ wordActions word entryVotedWords entry mdlModel =
 filterWords : List Word -> String -> List Word
 filterWords words query =
     List.filter (\w -> String.contains query (String.toLower w.name)) words
-
-
-votesMaxNumber : List Word -> Maybe Int
-votesMaxNumber words =
-    words
-        |> List.take 5
-        |> List.map (\w -> w.votesCount)
-        |> List.maximum
 
 
 calcPercent : Maybe Int -> Int -> String

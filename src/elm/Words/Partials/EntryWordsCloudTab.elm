@@ -4,7 +4,6 @@ import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (Language, TranslationId(ErrorText), translate)
 import Html exposing (Html, div, section, text)
 import Html.Attributes exposing (class, id, style)
-import Material.Options exposing (cs, css)
 import Material.Spinner as Spinner
 import Words.Models exposing (Word)
 

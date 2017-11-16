@@ -41,6 +41,7 @@ update msg model =
                 distribution =
                     distributionFromResponse response
 
+                -- TODO: remove then top word will be with entry response
                 topWord =
                     checkForTopWord words
 
@@ -48,10 +49,7 @@ update msg model =
                     model.entryFilters
 
                 updatedEntryFilters =
-                    { entryFilters
-                        | moreWordsLoading = False
-                        , limit = checkRouteForLimit model.route
-                    }
+                    { entryFilters | showOnlyTopWords = True }
             in
             { model
                 | entryWords = words
@@ -70,10 +68,9 @@ update msg model =
                     model.entryFilters
 
                 updatedEntryFilters =
-                    { entryFilters | limit = Just 100, moreWordsLoading = True }
+                    { entryFilters | showOnlyTopWords = False }
             in
-            { model | entryFilters = updatedEntryFilters }
-                ! [ applyEntryFilters model.route updatedEntryFilters ]
+            { model | entryFilters = updatedEntryFilters } ! []
 
         VoteForWord wordId entryId ->
             if userIsActive model.user then
@@ -268,7 +265,7 @@ voteForNewWordCmd entry wordId token =
 
 
 wordsFromResponse : WebData WordsResponse -> FiltersConfig -> WebData (List Word)
-wordsFromResponse response filtersConfig =
+wordsFromResponse response { translate } =
     case response of
         Loading ->
             Loading
@@ -277,7 +274,7 @@ wordsFromResponse response filtersConfig =
             Failure error
 
         Success { words, distribution } ->
-            if filtersConfig.translate then
+            if translate then
                 Success <| combineEntryWords words
             else
                 Success words
@@ -306,16 +303,6 @@ checkForTopWord entryWords =
             Nothing
 
 
-checkRouteForLimit : Route -> Maybe Int
-checkRouteForLimit route =
-    case route of
-        EntryRoute _ _ ->
-            Just 10
-
-        _ ->
-            Nothing
-
-
 entryWordsResponseCmd : WebData (List Word) -> Route -> Cmd Msg
 entryWordsResponseCmd response route =
     case route of
@@ -331,16 +318,6 @@ sendWordsToCloud entryWords =
     case entryWords of
         Success words ->
             entryWordCloud words
-
-        _ ->
-            Cmd.none
-
-
-applyEntryFilters : Route -> FiltersConfig -> Cmd Msg
-applyEntryFilters route filtersConfig =
-    case route of
-        EntryRoute slug id ->
-            fetchEntryWords id filtersConfig
 
         _ ->
             Cmd.none

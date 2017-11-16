@@ -67,7 +67,7 @@ type alias FiltersConfig =
     , translate : Bool
     , limit : Maybe Int
     , filtersExpanded : Bool
-    , moreWordsLoading : Bool
+    , showOnlyTopWords : Bool
     }
 
 
@@ -76,7 +76,7 @@ filtersConfigInit =
     { country = Nothing
     , emotions = Nothing
     , translate = False
-    , limit = Nothing
+    , limit = Just 100
     , filtersExpanded = False
-    , moreWordsLoading = False
+    , showOnlyTopWords = True
     }

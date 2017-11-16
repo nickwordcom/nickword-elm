@@ -145,11 +145,8 @@ urlUpdate location model =
                 updatedPrefetchedEntry =
                     checkPrefetchedEntry model.entryPrefetched entryId
 
-                entryFilters =
-                    { filtersConfigInit | limit = Just 10 }
-
                 entryWordsCmd =
-                    Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId entryFilters
+                    Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId filtersConfigInit
             in
             { model
                 | entry = entry
@@ -161,7 +158,7 @@ urlUpdate location model =
                 , entryVotedWords = entryVotedWords
                 , categories = categories
                 , entryTabIndex = 0
-                , entryFilters = entryFilters
+                , entryFilters = filtersConfigInit
                 , wordSearchValue = ""
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
