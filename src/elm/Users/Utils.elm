@@ -19,24 +19,24 @@ activateUser token =
 
 
 userIsActive : User -> Bool
-userIsActive user =
-    if user.status == Active then
+userIsActive { status } =
+    if status == Active then
         True
     else
         False
 
 
 userIsUnknown : User -> Bool
-userIsUnknown user =
-    if user.status == Unknown then
+userIsUnknown { status } =
+    if status == Unknown then
         True
     else
         False
 
 
 userIsLoading : User -> Bool
-userIsLoading user =
-    if user.status == Loading then
+userIsLoading { status } =
+    if status == Loading then
         True
     else
         False
