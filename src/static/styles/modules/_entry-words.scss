@@ -1,5 +1,10 @@
 .entry-words {
   padding: 0;
+  min-height: 200px;
+
+  @include breakpoint(840px) {
+    min-height: 400px;
+  }
 
   &__loading {}
 

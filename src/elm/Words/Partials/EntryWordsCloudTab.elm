@@ -15,8 +15,10 @@ view words language =
             wordsLoadingSpinner
 
         Failure err ->
-            div [ class "word-cloud__text mdl-color-text--red-A700" ]
-                [ text <| translate language <| ErrorText (toString err) ]
+            div [ class "word-cloud" ]
+                [ div [ class "word-cloud__text mdl-color-text--red-A700" ]
+                    [ text <| translate language <| ErrorText (toString err) ]
+                ]
 
         Success _ ->
             section [ class "word-cloud" ]
@@ -30,9 +32,11 @@ view words language =
 
 wordsLoadingSpinner : Html a
 wordsLoadingSpinner =
-    div [ class "word-cloud__block h-text-center h-spacing-above--normal" ]
-        [ Spinner.spinner
-            [ Spinner.active True
-            , Spinner.singleColor True
+    div [ class "word-cloud" ]
+        [ div [ class "word-cloud__block h-text-center h-padding--large" ]
+            [ Spinner.spinner
+                [ Spinner.active True
+                , Spinner.singleColor True
+                ]
             ]
         ]

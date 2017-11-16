@@ -1,7 +1,5 @@
 module Words.Partials.EntryWordsTab exposing (view)
 
--- import Html.Events exposing (onClick, onInput)
-
 import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (..)
 import Entries.Models exposing (Entry, EntryId, FiltersConfig)
@@ -31,8 +29,7 @@ view entry entryWords entryFilters entryVotedWords language mdlModel =
         wordsContent =
             case entryWords of
                 Loading ->
-                    div [ style [ ( "min-height", "400px" ) ] ]
-                        [ wordsLoadingSpinner ]
+                    div [] [ wordsLoadingSpinner ]
 
                 Failure err ->
                     div [ class "entry-words__text mdl-color-text--red-A700" ]
@@ -236,7 +233,7 @@ openShareModal entry wordName mdlModel =
 
 wordsLoadingSpinner : Html Msg
 wordsLoadingSpinner =
-    div [ class "entry-words__loading h-text-center h-spacing-above--normal" ]
+    div [ class "entry-words__loading h-text-center h-padding--large" ]
         [ Spinner.spinner
             [ Spinner.active True
             , Spinner.singleColor True
