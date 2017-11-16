@@ -12,7 +12,7 @@ import Countries.Commands as CountriesCmds
 import Countries.Models exposing (Country, EntryVotedCountries)
 import Dom.Scroll
 import Entries.Commands as EntriesCmds
-import Entries.Models exposing (Entry, EntryId, filtersConfigInit)
+import Entries.Models exposing (Entry, EntryId, FiltersConfig, filtersConfigInit)
 import Entries.NewEntry.Models exposing (newEntryModelInit)
 import Http exposing (decodeUri)
 import Material.Layout
@@ -89,6 +89,7 @@ urlUpdate location model =
         RandomEntryRoute ->
             { model
                 | categories = categories
+                , entryFilters = filtersConfigInit
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
                 , searchDialogOpen = False
@@ -145,8 +146,11 @@ urlUpdate location model =
                 updatedPrefetchedEntry =
                     checkPrefetchedEntry model.entryPrefetched entryId
 
+                updatedEntryFilters =
+                    checkEntryFilters model.entry entryId model.entryFilters
+
                 entryWordsCmd =
-                    Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId filtersConfigInit
+                    Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId updatedEntryFilters
             in
             { model
                 | entry = entry
@@ -158,7 +162,7 @@ urlUpdate location model =
                 , entryVotedWords = entryVotedWords
                 , categories = categories
                 , entryTabIndex = 0
-                , entryFilters = filtersConfigInit
+                , entryFilters = updatedEntryFilters
                 , wordSearchValue = ""
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
@@ -186,14 +190,13 @@ urlUpdate location model =
                     checkEntry model.entry entryId model.appLanguage
 
                 entryWordsCmd =
-                    Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId filtersConfigInit
+                    Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId model.entryFilters
             in
             { model
                 | entry = entry
                 , categories = categories
                 , countries = countries
                 , entryTabIndex = 1
-                , entryFilters = filtersConfigInit
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
@@ -218,14 +221,13 @@ urlUpdate location model =
                     checkEntry model.entry entryId model.appLanguage
 
                 entryVotesSlimCmd =
-                    Cmd.map VotesMsg <| VotesCmds.fetchEntryVotesSlim entryId filtersConfigInit
+                    Cmd.map VotesMsg <| VotesCmds.fetchEntryVotesSlim entryId model.entryFilters
             in
             { model
                 | entry = entry
                 , categories = categories
                 , countries = countries
                 , entryTabIndex = 2
-                , entryFilters = filtersConfigInit
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
@@ -250,7 +252,7 @@ urlUpdate location model =
                     checkEntry model.entry entryId model.appLanguage
 
                 entryVotesCmd =
-                    Cmd.map VotesMsg <| VotesCmds.fetchEntryVotes entryId filtersConfigInit
+                    Cmd.map VotesMsg <| VotesCmds.fetchEntryVotes entryId model.entryFilters
             in
             { model
                 | entry = entry
@@ -260,7 +262,6 @@ urlUpdate location model =
                 , popularEntries = popularEntries
                 , similarEntries = Loading
                 , entryTabIndex = 3
-                , entryFilters = filtersConfigInit
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
@@ -287,7 +288,6 @@ urlUpdate location model =
                 , categories = categories
                 , countries = countries
                 , entryTabIndex = 4
-                , entryFilters = filtersConfigInit
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
@@ -504,6 +504,19 @@ checkEntryVotedCountries entryVotedCountries entryId =
         Cmd.none
     else
         Cmd.map VotesMsg <| VotesCmds.fetchEntryVotedCountries entryId
+
+
+checkEntryFilters : WebData Entry -> EntryId -> FiltersConfig -> FiltersConfig
+checkEntryFilters entry currentEntryId entryFilters =
+    case entry of
+        Success { id } ->
+            if id == currentEntryId then
+                entryFilters
+            else
+                filtersConfigInit
+
+        _ ->
+            filtersConfigInit
 
 
 authorizeUser : Navigation.Location -> String -> User -> ( User, Cmd Msg )
