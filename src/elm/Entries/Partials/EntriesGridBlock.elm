@@ -73,7 +73,7 @@ entryItem language entry =
             , class "egrid-item__link"
             ]
             [ img
-                [ class "egrid-item__img image--full h-absolute-position"
+                [ class "egrid-item__img h-full-width h-absolute-position"
                 , src entryImgSrc
                 ]
                 []

@@ -18,7 +18,7 @@ searchBox searchOpen searchInputValue language =
         clearIcon =
             if length searchInputValue > 0 then
                 link
-                    [ cs "searchbox__clear-icon cursor--pointer"
+                    [ cs "searchbox__clear-icon h-clickable"
                     , Options.onClick ClearSearchField
                     ]
                     [ Icon.i "clear" ]

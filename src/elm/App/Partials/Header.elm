@@ -32,7 +32,7 @@ appHeader { searchDialogOpen, searchValue, appLanguage, user, mdl } =
 primaryTitle : String -> Bool -> Html Msg
 primaryTitle title searchOpen =
     Layout.title
-        [ cs "cursor--pointer"
+        [ cs "h-clickable"
         , if searchOpen then
             css "display" "none"
           else
@@ -76,7 +76,7 @@ headerNavigation mdlModel searchOpen user language =
         -- Open Search icon
         , Layout.link
             [ Options.onClick ToggleSearchDialog
-            , cs "cursor--pointer header-mobile"
+            , cs "h-clickable header-mobile"
             , if searchOpen then
                 css "display" "none"
               else
@@ -128,7 +128,7 @@ headerNavigation mdlModel searchOpen user language =
         -- Close Search icon
         , Layout.link
             [ Options.onClick ToggleSearchDialog
-            , cs "cursor--pointer header-mobile"
+            , cs "h-clickable header-mobile"
             , if searchOpen then
                 css "display" "block"
               else
