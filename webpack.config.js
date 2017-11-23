@@ -5,17 +5,30 @@ var HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 var autoprefixer      = require( 'autoprefixer' );
 var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 var CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+var InlineChunkWebpackPlugin
+                      = require('html-webpack-inline-chunk-plugin');
 var entryPath         = path.join( __dirname, 'src/static/index.js' );
 var outputPath        = path.join( __dirname, 'dist' );
 
 // determine build env
 var TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? 'production' : 'development';
-var outputFilename = TARGET_ENV == 'production' ? '[name]-[hash].js' : '[name].js'
+var outputFilename = TARGET_ENV == 'production' ? '[name]-[chunkhash].js' : '[name].js'
 
 console.log( 'WEBPACK GO!');
 
 // common webpack config
 var commonConfig = {
+
+  entry: {
+    vendor: [
+      "./src/static/js/vendor/d3.custom.min",
+      "./src/static/js/vendor/d3.layout.cloud.min",
+      "./src/static/js/vendor/dialog-polyfill-0.4.9.min",
+      "./src/static/js/vendor/leaflet-1.2.0.min",
+      "./src/static/js/vendor/prunecluster-2.1.0.min",
+      "./src/static/js/vendor/leaflet.fullscreen-1.0.1.min",
+    ],
+  },
 
   output: {
     path:       outputPath,
@@ -41,8 +54,18 @@ var commonConfig = {
     new HtmlWebpackPlugin({
       template: 'src/static/index.html',
       inject:   'body',
-      filename: 'index.html'
-    })
+      filename: 'index.html',
+      chunksSortMode: 'dependency',
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['vendor'],
+      minChunks: Infinity
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['manifest']
+    }),
   ],
 
   postcss: [ autoprefixer( { browsers: ['last 2 versions'] } ) ],
@@ -55,10 +78,12 @@ if ( TARGET_ENV === 'development' ) {
 
   module.exports = merge( commonConfig, {
 
-    entry: [
-      'webpack-dev-server/client?http://localhost:8080',
-      entryPath
-    ],
+    entry: {
+      app: [
+        'webpack-dev-server/client?http://localhost:8080',
+        entryPath
+      ]
+    },
 
     devServer: {
       // Serve index.html in place of 404 responses,
@@ -95,7 +120,9 @@ if ( TARGET_ENV === 'production' ) {
 
   module.exports = merge( commonConfig, {
 
-    entry: entryPath,
+    entry: {
+      app: entryPath
+    },
 
     module: {
       loaders: [
@@ -132,6 +159,10 @@ if ( TARGET_ENV === 'production' ) {
 
       // extract CSS into a separate file
       new ExtractTextPlugin( 'static/css/[name]-[contenthash].css', { allChunks: true } ),
+
+      new InlineChunkWebpackPlugin({
+        inlineChunks: ['manifest']
+      }),
 
       // minify & mangle JS/CSS
       new webpack.optimize.UglifyJsPlugin({
