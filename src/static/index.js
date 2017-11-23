@@ -2,8 +2,9 @@ require( './styles/main.scss' );
 
 var entryCloudBuilder = require( './js/entry-cloud-builder' );
 var navigatorLanguage = require( './js/navigator-language' );
-var L = require( './js/vendor/leaflet-1.2.0.min' );
-var PruneCluster = require("./js/vendor/prunecluster-2.1.0.min.js").PruneCluster;
+var waitForElement    = require( './js/wait-for-element' );
+var L                 = require( './js/vendor/leaflet-1.2.0.min' );
+var PruneCluster      = require("./js/vendor/prunecluster-2.1.0.min.js").PruneCluster;
 var PruneClusterForLeaflet = require("./js/vendor/prunecluster-2.1.0.min.js").PruneClusterForLeaflet;
 require( './js/vendor/leaflet.fullscreen-1.0.1.min' );
 require( './js/vendor/dialog-polyfill-0.4.9.min' );
@@ -56,24 +57,6 @@ app.ports.updateGA.subscribe(function(page) {
     ga('set', 'page', page);
     ga('send', 'pageview');
 });
-
-
-/**
- * Wait for selector to appear before invoking related functions.
- */
-function waitForElement(selector, fn, itemsList, tryCount) {
-  tryCount = tryCount || 5;
-  --tryCount;
-  if (tryCount == 0) { return; }
-
-  setTimeout(function() {
-    var result = fn.call(null, selector, itemsList, tryCount);
-    if (!result) {
-      // Element still doesn't exist, so wait more time
-      waitForElement(selector, fn, itemsList, tryCount);
-    }
-  }, 50);
-}
 
 
 /**
