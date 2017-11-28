@@ -6,9 +6,13 @@ var autoprefixer      = require( 'autoprefixer' );
 var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 var CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 var InlineChunkWebpackPlugin
-                      = require('html-webpack-inline-chunk-plugin');
+                      = require( 'html-webpack-inline-chunk-plugin' );
+var StyleExtHtmlWebpackPlugin
+                      = require( 'style-ext-html-webpack-plugin' );
 var entryPath         = path.join( __dirname, 'src/static/index.js' );
 var outputPath        = path.join( __dirname, 'dist' );
+var extractMDL = new ExtractTextPlugin( 'static/css/mdl.css' );
+var extractCSS = new ExtractTextPlugin( 'static/css/[name]-[contenthash].css', { allChunks: true } );
 
 // determine build env
 var TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? 'production' : 'development';
@@ -46,6 +50,10 @@ var commonConfig = {
       {
         test: /\.(png|eot|ttf|woff|woff2|svg)$/,
         loader: 'url-loader?limit=100000'
+      },
+      {
+        test: /\mdl.min.css$/,
+        loader: extractMDL.extract( 'style-loader', [ 'css-loader' ])
       }
     ]
   },
@@ -66,6 +74,8 @@ var commonConfig = {
     new webpack.optimize.CommonsChunkPlugin({
       name: ['manifest']
     }),
+
+    extractMDL
   ],
 
   postcss: [ autoprefixer( { browsers: ['last 2 versions'] } ) ],
@@ -100,7 +110,7 @@ if ( TARGET_ENV === 'development' ) {
           loader:  'elm-hot!elm-webpack?verbose=true&warn=true'
         },
         {
-          test: /\.(css|scss)$/,
+          test: /\.scss$/,
           loaders: [
             'style-loader',
             'css-loader',
@@ -132,8 +142,8 @@ if ( TARGET_ENV === 'production' ) {
           loader:  'elm-webpack'
         },
         {
-          test: /\.(css|scss)$/,
-          loader: ExtractTextPlugin.extract( 'style-loader', [
+          test: /\.scss$/,
+          loader: extractCSS.extract( 'style-loader', [
             'css-loader',
             'postcss-loader',
             'sass-loader'
@@ -157,8 +167,9 @@ if ( TARGET_ENV === 'production' ) {
 
       new webpack.optimize.OccurenceOrderPlugin(),
 
-      // extract CSS into a separate file
-      new ExtractTextPlugin( 'static/css/[name]-[contenthash].css', { allChunks: true } ),
+      extractCSS,
+
+      new StyleExtHtmlWebpackPlugin( 'static/css/mdl.css' ),
 
       new InlineChunkWebpackPlugin({
         inlineChunks: ['manifest']

@@ -1,3 +1,4 @@
+require( './styles/vendor/mdl.min.css' );
 require( './styles/main.scss' );
 
 var entryCloudBuilder = require( './js/entry-cloud-builder' );
