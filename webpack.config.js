@@ -7,11 +7,9 @@ var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 var CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 var InlineChunkWebpackPlugin
                       = require( 'html-webpack-inline-chunk-plugin' );
-var StyleExtHtmlWebpackPlugin
-                      = require( 'style-ext-html-webpack-plugin' );
 var entryPath         = path.join( __dirname, 'src/static/index.js' );
 var outputPath        = path.join( __dirname, 'dist' );
-var extractMDL = new ExtractTextPlugin( 'static/css/mdl.css' );
+var extractMDL = new ExtractTextPlugin( 'static/css/mdl-[contenthash].css' );
 var extractCSS = new ExtractTextPlugin( 'static/css/[name]-[contenthash].css', { allChunks: true } );
 
 // determine build env
@@ -168,8 +166,6 @@ if ( TARGET_ENV === 'production' ) {
       new webpack.optimize.OccurenceOrderPlugin(),
 
       extractCSS,
-
-      new StyleExtHtmlWebpackPlugin( 'static/css/mdl.css' ),
 
       new InlineChunkWebpackPlugin({
         inlineChunks: ['manifest']
