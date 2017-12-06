@@ -38,6 +38,12 @@
 
   &__img {
     margin: auto;
+    opacity: 0;
+    transition: opacity 300ms;
+
+    &.lazyloaded {
+      opacity: 1;
+    }
   }
 
   &__shadow {

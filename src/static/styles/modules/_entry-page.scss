@@ -132,7 +132,14 @@
       margin: -72px 0 8px 0;
     }
 
-    &-tag {}
+    &-tag {
+      opacity: 0;
+      transition: opacity 300ms;
+
+      &.lazyloaded {
+        opacity: 1;
+      }
+    }
   }
 
   &__image-source {

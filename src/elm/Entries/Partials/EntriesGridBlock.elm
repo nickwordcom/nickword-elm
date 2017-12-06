@@ -6,8 +6,8 @@ import App.Utils.Cloudinary exposing (cloudinaryUrl_240)
 import App.Utils.Links exposing (linkTo)
 import Entries.Messages exposing (Msg(Navigate, PrefetchEntry, ScrollToTop))
 import Entries.Models exposing (Entry)
-import Html exposing (Html, a, div, h2, h3, h4, img, li, span, text, ul)
-import Html.Attributes exposing (class, href, src, style, title)
+import Html exposing (..)
+import Html.Attributes exposing (..)
 import Html.Events exposing (onMouseUp)
 import Material.Icon as Icon
 
@@ -73,8 +73,11 @@ entryItem language entry =
             , class "egrid-item__link"
             ]
             [ img
-                [ class "egrid-item__img h-full-width h-absolute-position"
-                , src entryImgSrc
+                [ class "egrid-item__img h-full-width h-absolute-position lazyload"
+                , attribute "data-src" entryImgSrc
+                , src "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                , alt entry.title
+                , title entry.title
                 ]
                 []
             , div [ class "egrid-item__caption" ]

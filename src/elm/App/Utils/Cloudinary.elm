@@ -21,7 +21,7 @@ cloudinaryBase =
 cloudinaryUrl_240 : ImageUrl -> String
 cloudinaryUrl_240 imageUrl =
     if String.isEmpty imageUrl then
-        cloudinaryBase ++ "/image/upload/t_fill_240,f_auto/placeholder"
+        "/static/img/placeholder240.jpeg"
     else
         cloudinaryBase ++ "/image/fetch/t_fill_grav_240,f_auto/" ++ imageUrl
 

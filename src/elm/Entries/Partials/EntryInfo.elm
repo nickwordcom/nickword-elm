@@ -50,8 +50,10 @@ entryImage : String -> String -> Html Msg
 entryImage imageUrl entryTitle =
     div [ class "entry-page__profile-image mdl-shadow--2dp" ]
         [ img
-            [ class "entry-page__profile-image-tag h-full-width"
-            , src (cloudinaryUrl_240 imageUrl)
+            [ class "entry-page__profile-image-tag h-full-width lazyload"
+            , attribute "data-src" (cloudinaryUrl_240 imageUrl)
+            , src "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            , alt entryTitle
             , title entryTitle
             ]
             []

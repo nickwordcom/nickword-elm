@@ -9,6 +9,7 @@ var PruneCluster      = require("./js/vendor/prunecluster-2.1.0.min.js").PruneCl
 var PruneClusterForLeaflet = require("./js/vendor/prunecluster-2.1.0.min.js").PruneClusterForLeaflet;
 require( './js/vendor/leaflet.fullscreen-1.0.1.min' );
 require( './js/vendor/dialog-polyfill-0.4.9.min' );
+require( './js/vendor/lazysizes-4.0.1.min' );
 
 var Elm = require( '../elm/Main' );
 var mountNode = document.getElementById( 'main' );
