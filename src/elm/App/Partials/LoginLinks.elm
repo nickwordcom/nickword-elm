@@ -39,9 +39,11 @@ loginForm path language =
                 [ h3 [ class "login-form__header-title" ]
                     [ text <| translate language LoginFormHeader ]
                 ]
+            , p [ class "login-form__description h-font-size-16" ]
+                [ text <| translate language ItIsSecureAndReliable ]
             , p [ class "login-form__description" ]
                 [ text <| translate language LoginFormPrimaryDescr ]
-            , div [ class "login-form__actions" ]
+            , div [ class "login-form__actions h-spacing-above--small h-spacing-below--small" ]
                 [ a
                     [ href <| buildAuthUrl (facebookAuthClient path)
                     , class "login-form__action facebook h-overflow-ellipsis"

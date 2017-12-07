@@ -100,6 +100,7 @@ type TranslationId
     | ContWtFacebookText
     | ContWtGoogleText
     | ContWtVkText
+    | ItIsSecureAndReliable
       -- Form texts
     | TitleText
     | TitlePlaceholder
@@ -666,10 +667,10 @@ translate language translationId =
                     }
 
                 LoginFormPrimaryDescr ->
-                    { english = "This is necessary to prevent cheating votes."
-                    , ukrainian = "Це необхідно для запобігання накрутки голосів."
-                    , russian = "Это необходимо для предотвращения накрутки голосов."
-                    , spanish = "Esto es necesario para evitar el engaño votos."
+                    { english = "To prevent cheating votes."
+                    , ukrainian = "Для запобігання накрутки голосів."
+                    , russian = "Для предотвращения накрутки голосов."
+                    , spanish = "Para evitar el engaño votos."
                     }
 
                 LoginFormSecondaryDescr ->
@@ -698,6 +699,13 @@ translate language translationId =
                     , ukrainian = "Продовжити з VK"
                     , russian = "Продолжить с VK"
                     , spanish = "Сontinue con VK"
+                    }
+
+                ItIsSecureAndReliable ->
+                    { english = "It's secure and reliable"
+                    , ukrainian = "Це безпечно і надійно"
+                    , russian = "Это безопасно и надежно"
+                    , spanish = "Es seguro y confiable"
                     }
 
                 -- Form texts
