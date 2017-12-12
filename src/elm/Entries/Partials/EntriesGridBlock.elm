@@ -9,6 +9,7 @@ import Entries.Models exposing (Entry)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onMouseUp)
+import Html.Keyed as Keyed
 import Material.Icon as Icon
 
 
@@ -37,7 +38,7 @@ entriesGridBlock entries title subTitle showAllUrl crop language =
             , div [ class "entries-grid__header-actions" ]
                 [ showAllButton showAllUrl language ]
             ]
-        , ul [ class "entries-grid__list" ]
+        , Keyed.ul [ class "entries-grid__list" ]
             (List.map (entryItem language) entries)
         ]
 
@@ -54,7 +55,7 @@ gridBlockClass crop =
         base
 
 
-entryItem : Language -> Entry -> Html Msg
+entryItem : Language -> Entry -> ( String, Html Msg )
 entryItem language entry =
     let
         entryPath =
@@ -62,32 +63,36 @@ entryItem language entry =
 
         entryImgSrc =
             cloudinaryUrl_240 entry.image.url
+
+        listItem =
+            li
+                [ id entry.id
+                , class "egrid-item"
+                , onMouseUp (PrefetchEntry entry)
+                ]
+                [ linkTo entryPath
+                    (Navigate entryPath)
+                    [ onMouseUp ScrollToTop
+                    , class "egrid-item__link"
+                    ]
+                    [ img
+                        [ class "egrid-item__img h-full-width h-absolute-position lazyload"
+                        , attribute "data-src" entryImgSrc
+                        , src "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                        , alt entry.title
+                        , title entry.title
+                        ]
+                        []
+                    , div [ class "egrid-item__caption" ]
+                        [ h2 [ class "egrid-item__caption-title h-overflow-ellipsis", title entry.title ]
+                            [ text entry.title ]
+                        , h3 [ class "egrid-item__caption-subtitle h-overflow-ellipsis" ]
+                            [ text <| translate language <| NumberOfVotesText entry.votesCount ]
+                        ]
+                    ]
+                ]
     in
-    li
-        [ class "egrid-item"
-        , onMouseUp (PrefetchEntry entry)
-        ]
-        [ linkTo entryPath
-            (Navigate entryPath)
-            [ onMouseUp ScrollToTop
-            , class "egrid-item__link"
-            ]
-            [ img
-                [ class "egrid-item__img h-full-width h-absolute-position lazyload"
-                , attribute "data-src" entryImgSrc
-                , src "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                , alt entry.title
-                , title entry.title
-                ]
-                []
-            , div [ class "egrid-item__caption" ]
-                [ h2 [ class "egrid-item__caption-title h-overflow-ellipsis", title entry.title ]
-                    [ text entry.title ]
-                , h3 [ class "egrid-item__caption-subtitle h-overflow-ellipsis" ]
-                    [ text <| translate language <| NumberOfVotesText entry.votesCount ]
-                ]
-            ]
-        ]
+    ( entry.id, listItem )
 
 
 showAllButton : Maybe ShowAllUrl -> Language -> Html Msg
