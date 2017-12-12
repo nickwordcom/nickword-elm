@@ -2,11 +2,11 @@ module App.Partials.Header exposing (appHeader)
 
 import App.Messages exposing (Msg(..))
 import App.Models exposing (Model)
-import App.Routing exposing (Route(EntriesNewRoute, RandomEntryRoute), routeToPath)
+import App.Routing exposing (Route(EntriesNewRoute, RandomEntryRoute, UserEntriesRoute), routeToPath)
 import App.Translations exposing (..)
 import App.Utils.Links exposing (linkTo)
 import Html exposing (Html, text)
-import Html.Attributes exposing (class, tabindex)
+import Html.Attributes exposing (class, classList, tabindex)
 import Material
 import Material.Icon as Icon
 import Material.Layout as Layout
@@ -34,7 +34,7 @@ primaryTitle title searchOpen =
     Layout.title
         [ cs "h-clickable"
         , if searchOpen then
-            css "display" "none"
+            cs "h-hidden"
           else
             nop
         ]
@@ -62,6 +62,15 @@ headerNavigation mdlModel searchOpen user language =
             , tabindex 1
             ]
             [ text <| translate language RandomEntryText ]
+        , linkTo userEntriesPath
+            (Navigate userEntriesPath)
+            [ classList
+                [ ( "mdl-navigation__link header-desktop", True )
+                , ( "h-hidden", userIsUnknown user )
+                ]
+            , tabindex 1
+            ]
+            [ text <| translate language MyEntriesText ]
         , Layout.link
             [ Options.onClick ToggleTopLoginForm
             , Options.attribute <| Html.Attributes.tabindex 1
@@ -78,7 +87,7 @@ headerNavigation mdlModel searchOpen user language =
             [ Options.onClick ToggleSearchDialog
             , cs "h-clickable header-mobile"
             , if searchOpen then
-                css "display" "none"
+                cs "h-hidden"
               else
                 nop
             ]
@@ -89,7 +98,7 @@ headerNavigation mdlModel searchOpen user language =
             [ cs "mdl-navigation__link header-mobile"
             , css "position" "relative"
             , if searchOpen then
-                css "display" "none"
+                cs "h-hidden"
               else
                 nop
             ]
@@ -112,6 +121,17 @@ headerNavigation mdlModel searchOpen user language =
                     , text <| translate language RandomEntryText
                     ]
                 , Menu.item
+                    [ Menu.onSelect (Navigate userEntriesPath)
+                    , css "padding-right" "24px"
+                    , if userIsUnknown user then
+                        cs "h-hidden"
+                      else
+                        nop
+                    ]
+                    [ Icon.view "collections" [ css "width" "40px" ]
+                    , text <| translate language MyEntriesText
+                    ]
+                , Menu.item
                     [ Menu.onSelect ToggleTopLoginForm
                     , css "padding-right" "24px"
                     , if userIsUnknown user then
@@ -130,9 +150,9 @@ headerNavigation mdlModel searchOpen user language =
             [ Options.onClick ToggleSearchDialog
             , cs "h-clickable header-mobile"
             , if searchOpen then
-                css "display" "block"
+                nop
               else
-                css "display" "none"
+                cs "h-hidden"
             ]
             [ Icon.i "close" ]
         ]
@@ -146,3 +166,8 @@ newEntryPath =
 randomEntryPath : String
 randomEntryPath =
     routeToPath RandomEntryRoute
+
+
+userEntriesPath : String
+userEntriesPath =
+    routeToPath UserEntriesRoute
