@@ -160,7 +160,6 @@ if ( TARGET_ENV === 'production' ) {
           from: 'src/static/img/',
           to:   'static/img/'
         },
-        { from: 'src/static/_redirects' },
       ]),
 
       new webpack.optimize.OccurenceOrderPlugin(),
