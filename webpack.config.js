@@ -64,6 +64,10 @@ var commonConfig = {
       chunksSortMode: 'dependency',
     }),
 
+    new CopyWebpackPlugin([
+      { from: 'src/static/favicons' },
+    ]),
+
     new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor'],
       minChunks: Infinity
@@ -156,10 +160,6 @@ if ( TARGET_ENV === 'production' ) {
           from: 'src/static/img/',
           to:   'static/img/'
         },
-        { from: 'src/static/favicons' },
-        { from: 'src/favicon.ico' },
-        { from: 'src/favicon-16x16.png' },
-        { from: 'src/favicon-32x32.png' },
         { from: 'src/static/_redirects' },
       ]),
 
