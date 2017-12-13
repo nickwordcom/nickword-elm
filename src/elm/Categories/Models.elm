@@ -19,22 +19,6 @@ type alias Category =
     }
 
 
-type alias CategoryWithEntries =
-    { id : CategoryId
-    , slug : String
-    , title : String
-    , entriesCount : Int
-    , entries : List Entry
-    }
-
-
-
--- type alias CategoryWithEntries a =
---   { a
---   | entries : List Entry
---   }
-
-
 loremCategory : Category
 loremCategory =
     { id = ""

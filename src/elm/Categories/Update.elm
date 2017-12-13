@@ -16,9 +16,6 @@ update msg model =
         CategoriesResponse response ->
             ( { model | categories = response }, checkAndSetCategoryTitle response model.route )
 
-        CategoriesWithEntriesResponse response ->
-            ( { model | categoriesWithEntries = response }, Cmd.none )
-
 
 checkAndSetCategoryTitle : WebData (List Category) -> Route -> Cmd Msg
 checkAndSetCategoryTitle categories route =

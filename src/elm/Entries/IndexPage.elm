@@ -3,7 +3,9 @@ module Entries.IndexPage exposing (..)
 import App.Models exposing (RemoteData(..), WebData)
 import App.Routing exposing (Route(CategoryRoute, PopularRoute), routeToPath)
 import App.Translations exposing (..)
-import Categories.Models exposing (CategoryWithEntries)
+import Categories.Models exposing (..)
+import Dict
+import Dict.Extra as DictEx
 import Entries.Messages exposing (Msg)
 import Entries.Models exposing (Entry)
 import Entries.Partials.EntriesGridBlock exposing (entriesGridBlock)
@@ -13,32 +15,43 @@ import Entries.Partials.TrendingEntriesBlock as TrendingEntriesBlock
 import Html exposing (Html, div, text)
 import Html.Attributes exposing (class)
 import List exposing (isEmpty, take)
+import List.Extra as ListEx
 
 
-view : WebData (List Entry) -> WebData (List CategoryWithEntries) -> Language -> Html Msg
-view trendingEntries categoriesWithEntries language =
+view : WebData (List Entry) -> WebData (List Entry) -> WebData (List Category) -> Language -> Html Msg
+view trendingEntries featuredEntries categories language =
     div [ class "entries-grid h-full-height" ]
         [ TrendingEntriesBlock.view trendingEntries language
-        , categoriesWithEntriesBlock categoriesWithEntries language
+        , featuredEntriesBlock featuredEntries categories language
         ]
 
 
-categoriesWithEntriesBlock : WebData (List CategoryWithEntries) -> Language -> Html Msg
-categoriesWithEntriesBlock categoriesWithEntries language =
-    case categoriesWithEntries of
-        Loading ->
-            gridBlockLoading (translate language LoadingText) ""
+featuredEntriesBlock : WebData (List Entry) -> WebData (List Category) -> Language -> Html Msg
+featuredEntriesBlock featuredEntries categoriesData language =
+    case ( featuredEntries, categoriesData ) of
+        ( Success entries, Success categories ) ->
+            let
+                groupedEntries =
+                    DictEx.groupBy (\c -> c.categoryId) entries
+                        |> Dict.toList
+            in
+            div [] (List.map (setCategoryBlock language categories) groupedEntries)
 
-        Failure error ->
+        ( Failure error, _ ) ->
             gridBlockFailure (translate language <| ErrorText (toString error)) ""
 
-        Success categories ->
-            div [] (List.map (setCategoryBlock language) categories)
+        ( _, _ ) ->
+            gridBlockLoading (translate language LoadingText) ""
 
 
-setCategoryBlock : Language -> CategoryWithEntries -> Html Msg
-setCategoryBlock language category =
+setCategoryBlock : Language -> List Category -> ( CategoryId, List Entry ) -> Html Msg
+setCategoryBlock language categories ( categoryId, entries ) =
     let
+        category =
+            categories
+                |> ListEx.find (\c -> c.id == categoryId)
+                |> Maybe.withDefault loremCategory
+
         title =
             category.title
 
@@ -48,8 +61,4 @@ setCategoryBlock language category =
         showAllUrl =
             routeToPath (CategoryRoute category.slug category.id)
     in
-    -- category.entries - check if there are some featured entries in category
-    if isEmpty category.entries then
-        div [] []
-    else
-        entriesGridBlock (take 6 category.entries) title subTitle (Just showAllUrl) True language
+    entriesGridBlock (take 6 entries) title subTitle (Just showAllUrl) True language

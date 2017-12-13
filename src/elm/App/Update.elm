@@ -134,7 +134,7 @@ update msg model =
                 , entry = Loading
                 , countries = Loading
                 , categories = Loading
-                , categoriesWithEntries = Loading
+                , featuredEntries = Loading
                 , popularEntries = Loading
             }
                 ! [ setLocalLanguage <| toString language

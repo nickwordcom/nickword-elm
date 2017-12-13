@@ -5,7 +5,7 @@ import App.Utils.Config exposing (apiUrl)
 import App.Utils.Converters exposing (fromResult)
 import App.Utils.Requests exposing (encodeUrl)
 import Categories.Messages exposing (Msg(..))
-import Categories.Models exposing (Category, CategoryId, CategoryWithEntries)
+import Categories.Models exposing (Category, CategoryId)
 import Entries.Commands exposing (entryDecoder)
 import Http
 import Json.Decode as Decode exposing (field)
@@ -20,12 +20,6 @@ fetchAll language =
         |> Http.send (CategoriesResponse << fromResult)
 
 
-fetchAllWE : Language -> Cmd Msg
-fetchAllWE language =
-    Http.get (categoriesUrl True language) categoryWEListDecoder
-        |> Http.send (CategoriesWithEntriesResponse << fromResult)
-
-
 
 -- URLs
 
@@ -36,23 +30,13 @@ categoriesUrl includeEntries language =
         baseUrl =
             apiUrl ++ "/categories"
 
-        includeParam =
-            if includeEntries then
-                ( "include", "entries" )
-            else
-                ( "", "" )
-
         localeParam =
-            if language /= English then
-                ( "locale", decodeLang language )
+            if language == English then
+                ( "locale", "en" )
             else
-                ( "", "" )
-
-        params =
-            [ includeParam, localeParam ]
-                |> List.filter (\p -> p /= ( "", "" ))
+                ( "locale", decodeLang language )
     in
-    encodeUrl baseUrl params
+    encodeUrl baseUrl [ localeParam ]
 
 
 
@@ -72,19 +56,3 @@ categoryDecoder =
         (field "slug" Decode.string)
         (field "title" Decode.string)
         (field "entries_count" Decode.int)
-
-
-categoryWEListDecoder : Decode.Decoder (List CategoryWithEntries)
-categoryWEListDecoder =
-    Decode.map identity
-        (field "data" (Decode.list categoryWEDecoder))
-
-
-categoryWEDecoder : Decode.Decoder CategoryWithEntries
-categoryWEDecoder =
-    Decode.map5 CategoryWithEntries
-        (field "id" Decode.string)
-        (field "slug" Decode.string)
-        (field "title" Decode.string)
-        (field "entries_count" Decode.int)
-        (field "entries" (Decode.list entryDecoder))

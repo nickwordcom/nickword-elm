@@ -13,6 +13,7 @@ type Msg
     = NoOp
     | CategoryEntriesResponse (WebData (List Entry))
     | EntriesPopularResponse (WebData (List Entry))
+    | EntriesFeaturedResponse (WebData (List Entry))
     | UserEntriesResponse (WebData (List Entry))
     | AllPopularEntriesResponse (WebData (List Entry))
     | SearchEntriesResponse (WebData (List Entry))

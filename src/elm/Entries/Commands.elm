@@ -39,6 +39,12 @@ fetchAllPopular language =
         |> Http.send (AllPopularEntriesResponse << fromResult)
 
 
+fetchFeatured : Language -> Cmd Msg
+fetchFeatured language =
+    Http.get (entriesFeaturedUrl language) entryListDecoder
+        |> Http.send (EntriesFeaturedResponse << fromResult)
+
+
 fetchSimilar : EntryId -> Cmd Msg
 fetchSimilar entryId =
     Http.get (entrySimilarUrl entryId) entryListDecoder
@@ -106,6 +112,21 @@ entriesPopularUrl maybeLimit language =
                 |> List.filter (\p -> p /= ( "", "" ))
     in
     encodeUrl baseUrl params
+
+
+entriesFeaturedUrl : Language -> String
+entriesFeaturedUrl language =
+    let
+        baseUrl =
+            entriesUrl ++ "/featured"
+
+        localeParam =
+            if language == English then
+                ( "locale", "en" )
+            else
+                ( "locale", decodeLang language )
+    in
+    encodeUrl baseUrl [ localeParam ]
 
 
 entrySimilarUrl : EntryId -> String

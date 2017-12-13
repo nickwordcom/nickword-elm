@@ -43,6 +43,9 @@ update msg model =
         EntriesPopularResponse response ->
             { model | popularEntries = response } ! []
 
+        EntriesFeaturedResponse response ->
+            { model | featuredEntries = response } ! []
+
         AllPopularEntriesResponse response ->
             { model | allEntries = response } ! []
 

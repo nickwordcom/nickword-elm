@@ -7,7 +7,7 @@ import App.Routing exposing (..)
 import App.Translations exposing (..)
 import App.Utils.Title exposing (..)
 import Categories.Commands as CategoriesCmds
-import Categories.Models exposing (Category, CategoryWithEntries)
+import Categories.Models exposing (Category)
 import Countries.Commands as CountriesCmds
 import Countries.Models exposing (Country, EntryVotedCountries)
 import Dom.Scroll
@@ -37,8 +37,8 @@ urlUpdate location model =
         ( popularEntries, popularEntriesCmd ) =
             checkPopularEntries model.popularEntries model.appLanguage
 
-        ( categoriesWithEntries, categoriesWithEntriesCmd ) =
-            checkCategoriesWEntries model.categoriesWithEntries model.appLanguage
+        ( featuredEntries, featuredEntriesCmd ) =
+            checkFeaturedEntries model.featuredEntries model.appLanguage
 
         ( categories, categoriesCmd ) =
             checkCategories model.categories model.appLanguage
@@ -57,13 +57,13 @@ urlUpdate location model =
             { model
                 | popularEntries = popularEntries
                 , categories = categories
-                , categoriesWithEntries = categoriesWithEntries
+                , popularEntries = popularEntries
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
                 , searchDialogOpen = False
             }
                 ! [ updateGA (routeToPath model.route)
-                  , categoriesWithEntriesCmd
+                  , featuredEntriesCmd
                   , popularEntriesCmd
                   , categoriesCmd
                   , scrollToTop
@@ -403,6 +403,19 @@ checkPopularEntries entries language =
             ( Success entries, Cmd.none )
 
 
+checkFeaturedEntries : WebData (List Entry) -> Language -> ( WebData (List Entry), Cmd Msg )
+checkFeaturedEntries entries language =
+    case entries of
+        Loading ->
+            ( Loading, Cmd.map EntriesMsg <| EntriesCmds.fetchFeatured language )
+
+        Failure error ->
+            ( Failure error, Cmd.map EntriesMsg <| EntriesCmds.fetchFeatured language )
+
+        Success entries ->
+            ( Success entries, Cmd.none )
+
+
 checkCategories : WebData (List Category) -> Language -> ( WebData (List Category), Cmd Msg )
 checkCategories categories language =
     case categories of
@@ -427,19 +440,6 @@ checkCountries countries language =
 
         Success countries ->
             ( Success countries, Cmd.none )
-
-
-checkCategoriesWEntries : WebData (List CategoryWithEntries) -> Language -> ( WebData (List CategoryWithEntries), Cmd Msg )
-checkCategoriesWEntries categoriesWithEntries language =
-    case categoriesWithEntries of
-        Loading ->
-            ( Loading, Cmd.map CategoriesMsg <| CategoriesCmds.fetchAllWE language )
-
-        Failure error ->
-            ( Failure error, Cmd.map CategoriesMsg <| CategoriesCmds.fetchAllWE language )
-
-        Success categoriesWithEntries ->
-            ( Success categoriesWithEntries, Cmd.none )
 
 
 checkEntry : WebData Entry -> EntryId -> Language -> ( WebData Entry, Cmd Msg )

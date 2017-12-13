@@ -2,7 +2,7 @@ module App.Models exposing (..)
 
 import App.Routing as Routing
 import App.Translations exposing (Language(Ukrainian))
-import Categories.Models exposing (Category, CategoryWithEntries)
+import Categories.Models exposing (Category)
 import Countries.Models exposing (..)
 import Entries.Models exposing (Entry, FiltersConfig, LoadMoreState(EntriesNotAsked), filtersConfigInit)
 import Entries.NewEntry.Models exposing (NewEntryModel, newEntryModelInit)
@@ -36,8 +36,8 @@ type alias Flags =
 type alias Model =
     { user : User
     , allEntries : WebData (List Entry)
-    , categoriesWithEntries : WebData (List CategoryWithEntries)
     , popularEntries : WebData (List Entry)
+    , featuredEntries : WebData (List Entry)
     , similarEntries : WebData (List Entry)
     , entry : WebData Entry
     , entryPrefetched : Maybe Entry
@@ -75,8 +75,8 @@ initialModel : Routing.Route -> User -> Language -> Model
 initialModel route user language =
     { user = user
     , allEntries = Loading
-    , categoriesWithEntries = Loading
     , popularEntries = Loading
+    , featuredEntries = Loading
     , similarEntries = Loading
     , entry = Loading
     , entryPrefetched = Nothing
