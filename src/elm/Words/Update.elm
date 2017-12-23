@@ -36,7 +36,7 @@ update msg model =
         EntryWordsResponse response ->
             let
                 words =
-                    wordsFromResponse response model.entryFilters
+                    wordsFromResponse response
 
                 distribution =
                     distributionFromResponse response
@@ -264,8 +264,8 @@ voteForNewWordCmd entry wordId token =
             Cmd.none
 
 
-wordsFromResponse : WebData WordsResponse -> FiltersConfig -> WebData (List Word)
-wordsFromResponse response { translate } =
+wordsFromResponse : WebData WordsResponse -> WebData (List Word)
+wordsFromResponse response =
     case response of
         Loading ->
             Loading
@@ -274,10 +274,7 @@ wordsFromResponse response { translate } =
             Failure error
 
         Success { words, distribution } ->
-            if translate then
-                Success <| combineEntryWords words
-            else
-                Success words
+            Success words
 
 
 distributionFromResponse : WebData WordsResponse -> Maybe (List EmotionInfo)
@@ -323,46 +320,47 @@ sendWordsToCloud entryWords =
             Cmd.none
 
 
-combineEntryWords : List Word -> List Word
-combineEntryWords words =
-    words
-        |> ListEx.updateIf wordTranslated updateWordNameToEn
-        -- |> List.filter (\w -> Regex.contains (Regex.regex wordNameRegex) w.name)
-        |> List.filter (\w -> w.lang == "en")
-        |> DictEx.groupBy .name
-        |> Dict.map sumUpWords
-        |> Dict.values
-        |> List.concat
-        |> List.sortBy .votesCount
-        |> List.reverse
 
-
-wordTranslated : Word -> Bool
-wordTranslated word =
-    word.lang /= "en" && not (String.isEmpty word.en)
-
-
-updateWordNameToEn : Word -> Word
-updateWordNameToEn word =
-    { word | name = word.en, lang = "en", en = "" }
-
-
-sumUpWords : String -> List Word -> List Word
-sumUpWords key words =
-    let
-        counter =
-            List.map .votesCount words
-                |> List.sum
-
-        firstWord =
-            words
-                |> List.head
-                |> Maybe.withDefault initWord
-
-        mainWord =
-            words
-                |> List.filter (\w -> w.lang == "en")
-                |> List.head
-                |> Maybe.withDefault firstWord
-    in
-    { mainWord | votesCount = counter } :: []
+-- combineEntryWords : List Word -> List Word
+-- combineEntryWords words =
+--     words
+--         |> ListEx.updateIf wordTranslated updateWordNameToEn
+--         -- |> List.filter (\w -> Regex.contains (Regex.regex wordNameRegex) w.name)
+--         |> List.filter (\w -> w.lang == "en")
+--         |> DictEx.groupBy .name
+--         |> Dict.map sumUpWords
+--         |> Dict.values
+--         |> List.concat
+--         |> List.sortBy .votesCount
+--         |> List.reverse
+--
+--
+-- wordTranslated : Word -> Bool
+-- wordTranslated word =
+--     word.lang /= "en" && not (String.isEmpty word.en)
+--
+--
+-- updateWordNameToEn : Word -> Word
+-- updateWordNameToEn word =
+--     { word | name = word.en, lang = "en", en = "" }
+--
+--
+-- sumUpWords : String -> List Word -> List Word
+-- sumUpWords key words =
+--     let
+--         counter =
+--             List.map .votesCount words
+--                 |> List.sum
+--
+--         firstWord =
+--             words
+--                 |> List.head
+--                 |> Maybe.withDefault initWord
+--
+--         mainWord =
+--             words
+--                 |> List.filter (\w -> w.lang == "en")
+--                 |> List.head
+--                 |> Maybe.withDefault firstWord
+--     in
+--     { mainWord | votesCount = counter } :: []

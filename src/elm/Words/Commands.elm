@@ -38,7 +38,7 @@ addNewWord wordName entryId token =
 
 
 entryWordsUrl : EntryId -> FiltersConfig -> String
-entryWordsUrl entryId { country, emotions, limit } =
+entryWordsUrl entryId { country, emotions, translate, limit } =
     let
         baseUrl =
             apiUrl ++ "/entries/" ++ entryId ++ "/words"
@@ -59,6 +59,14 @@ entryWordsUrl entryId { country, emotions, limit } =
                 Nothing ->
                     ( "", "" )
 
+        translateParam =
+            case translate of
+                True ->
+                    ( "translate", "en" )
+
+                False ->
+                    ( "", "" )
+
         limitParam =
             case limit of
                 Just number ->
@@ -68,7 +76,7 @@ entryWordsUrl entryId { country, emotions, limit } =
                     ( "", "" )
 
         params =
-            [ countryParam, emotionsParam, limitParam ]
+            [ countryParam, emotionsParam, translateParam, limitParam ]
                 |> List.filter (\p -> p /= ( "", "" ))
     in
     encodeUrl baseUrl params
