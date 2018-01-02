@@ -21,7 +21,7 @@ appHeader : Model -> List (Html Msg)
 appHeader { searchDialogOpen, searchValue, appLanguage, user, mdl } =
     [ Layout.row
         [ css "transition" "height 333ms ease-in-out 0s" ]
-        [ primaryTitle "InOneWord" searchDialogOpen
+        [ primaryTitle "Nickword" searchDialogOpen
         , searchBox searchDialogOpen searchValue appLanguage
         , Layout.spacer
         , headerNavigation mdl searchDialogOpen user appLanguage

@@ -1,6 +1,6 @@
 {
-    "name": "InOneWord",
-    "short_name": "InOneWord",
+    "name": "Nickword",
+    "short_name": "Nickword",
     "start_url": "/?utm_source=homescreen",
     "display": "standalone",
     "icons": [

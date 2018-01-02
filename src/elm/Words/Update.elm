@@ -162,7 +162,7 @@ update msg model =
                 updatedDialog =
                     { oldDialog
                         | title = entry.title
-                        , subTitle = translate model.appLanguage InOneWord
+                        , subTitle = translate model.appLanguage InOneWordText
                         , word = wordName
                         , imageUrl = entry.image.url
                         , editing = False

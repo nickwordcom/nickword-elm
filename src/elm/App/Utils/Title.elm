@@ -12,7 +12,7 @@ newAppTitle : String -> String
 newAppTitle pageTitle =
     let
         base =
-            "InOneWord"
+            "Nickword"
 
         newTitle =
             if String.length pageTitle == 0 then

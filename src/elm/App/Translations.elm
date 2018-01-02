@@ -19,7 +19,7 @@ type alias TranslationSet =
 
 
 type TranslationId
-    = InOneWord
+    = InOneWordText
     | DescribeIOWText
     | DescribeText
     | WordText
@@ -129,7 +129,7 @@ translate language translationId =
     let
         translationSet =
             case translationId of
-                InOneWord ->
+                InOneWordText ->
                     { english = "in one word"
                     , ukrainian = "одним словом"
                     , russian = "одним словом"
