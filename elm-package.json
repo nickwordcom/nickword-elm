@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Describe in one word",
-    "repository": "https://github.com/Lesuk/inoneword-elm.git",
+    "repository": "https://github.com/nickwordcom/nickword-elm.git",
     "license": "MIT",
     "source-directories": [
         "src/elm"

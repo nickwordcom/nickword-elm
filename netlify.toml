@@ -4,7 +4,7 @@
 
 [[redirects]]
   from = "/badge/*"
-  to = "https://api.inoneword.io/badge/:splat"
+  to = "https://api.nickword.com/badge/:splat"
   status = 200
 
 # Rule for Single Page Applications

@@ -1,17 +1,17 @@
-# InOneWord
+# Nickword
 
 [![Elm](https://img.shields.io/badge/elm-v0.18.0-blue.svg)](http://elm-lang.org/)
-[![Website](https://img.shields.io/website/https/www.inoneword.io.svg?label=inoneword.io)](https://www.inoneword.io/)
-[![InOneWord](https://www.inoneword.io/badge/e22.svg)](https://www.inoneword.io/e/inoneword/e22/)
+[![Website](https://img.shields.io/website/https/www.nickword.com.svg?label=nickword.com)](https://www.nickword.com/)
+[![Nickword](https://www.nickword.com/badge/e22.svg)](https://www.nickword.com/e/nickword/e22/)
 
-inoneword-elm  is a web frontend of [www.inoneword.io](https://www.inoneword.io/), written in [Elm](http://elm-lang.org/), where you can **describe anything you like in one word** and find out what people around the world think about this too.
+This repository contains frond-end code of [www.nickword.com](https://www.nickword.com/), written in [Elm](http://elm-lang.org/), where you can **describe anything you like in one word** and find out what people around the world think about this too.
 
 ## Running locally
 
 ### Install:
 ```
-git clone https://github.com/inonewordio/inoneword-elm.git
-cd inoneword-elm
+git clone https://github.com/nickwordcom/nickword-elm.git
+cd nickword-elm
 
 // Install all dependencies (npm and elm packages):
 npm run reinstall
