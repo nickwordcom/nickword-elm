@@ -82,7 +82,7 @@ newWordDescription newWordFieldActive entryTopWord userStatus language =
                 [ text <| translate language NewWordFormWarning
                 , text ". "
                 , span
-                    [ class "new-word-field__login-text h-clickable"
+                    [ class "new-word-field__login-text mdl-color-text--primary h-clickable"
                     , Html.Events.onClick ShowTopLoginForm
                     ]
                     [ text <| translate language LoginText ]

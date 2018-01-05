@@ -1,6 +1,16 @@
 
 // HEADER
 
+.mdl-layout__header {
+  background-color: #fff;
+  color: rgba(0,0,0,.87);
+}
+
+.mdl-layout__header .mdl-layout__drawer-button,
+.mdl-layout__header-row .mdl-navigation__link {
+  color: inherit;
+}
+
 .mdl-navigation__link {
   opacity: 1;
 }

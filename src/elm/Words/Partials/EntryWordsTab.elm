@@ -176,7 +176,7 @@ voteForWordButton word entryId entryVotedWords mdlModel =
                 [ 3, hashString word.id ]
                 mdlModel
                 [ Button.icon
-                , cs "entry-words__item-action mdl-color-text--primary-dark"
+                , cs "entry-words__item-action mdl-color-text--primary"
                 ]
                 [ Icon.i "thumb_up" ]
 
