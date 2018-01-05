@@ -1,6 +1,6 @@
 module App.Utils.Checkers exposing (..)
 
-import App.Translations exposing (Language, TranslationId(..), translate)
+import App.Translations exposing (..)
 import List exposing (member)
 import String
 

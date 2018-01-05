@@ -53,9 +53,6 @@ update msg model =
         SearchEntriesResponse response ->
             { model | allEntries = response } ! []
 
-        EntrySimilarResponse response ->
-            { model | similarEntries = response } ! []
-
         EntryResponse response ->
             { model | entry = response }
                 ! [ modifyEntryUrl response model.route
@@ -192,9 +189,6 @@ modifyEntryUrl entry route =
 
                         EntryVotesRoute slug _ ->
                             ( slug, EntryVotesRoute entry.slug entry.id )
-
-                        EntryStatisticsRoute slug _ ->
-                            ( slug, EntryStatisticsRoute entry.slug entry.id )
 
                         _ ->
                             ( "", NotFoundRoute )

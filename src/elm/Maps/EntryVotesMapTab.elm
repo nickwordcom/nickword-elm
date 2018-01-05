@@ -1,7 +1,7 @@
 module Maps.EntryVotesMapTab exposing (view)
 
-import Html exposing (Html, div, section)
-import Html.Attributes exposing (class, id, style)
+import Html exposing (Html, section)
+import Html.Attributes exposing (class, id)
 
 
 view : Html a

@@ -75,9 +75,6 @@ page model =
                     EntriesShow.view model
                         |> Html.map EntriesMsg
 
-                EntryStatisticsRoute slug id ->
-                    div [] []
-
                 CategoryRoute slug id ->
                     categoryShowPage model id
 

@@ -279,30 +279,6 @@ urlUpdate location model =
                   , materialCmd
                   ]
 
-        EntryStatisticsRoute entrySlug entryId ->
-            let
-                ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.appLanguage
-            in
-            { model
-                | entry = entry
-                , categories = categories
-                , countries = countries
-                , entryTabIndex = 4
-                , newWordValue = ""
-                , loginFormTopBlockOpen = False
-                , searchValue = ""
-                , searchDialogOpen = False
-            }
-                ! [ updateGA (routeToPath model.route)
-                  , entryVotedCountriesCmd entryId
-                  , countriesCmd
-                  , categoriesCmd
-                  , setEntryTitle entry
-                  , entryCmd
-                  , materialCmd
-                  ]
-
         CategoryRoute categorySlug categoryId ->
             let
                 categoryEntriesCmd =

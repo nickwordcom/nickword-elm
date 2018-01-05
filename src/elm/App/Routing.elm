@@ -18,7 +18,6 @@ type Route
     | EntryCloudRoute EntrySlug EntryId
     | EntryMapRoute EntrySlug EntryId
     | EntryVotesRoute EntrySlug EntryId
-    | EntryStatisticsRoute EntrySlug EntryId
     | CategoryRoute CategorySlug CategoryId
     | PopularRoute
     | SearchRoute String
@@ -40,7 +39,6 @@ matchers =
         , map EntryCloudRoute (s "e" </> string </> string </> s "cloud")
         , map EntryMapRoute (s "e" </> string </> string </> s "map")
         , map EntryVotesRoute (s "e" </> string </> string </> s "votes")
-        , map EntryStatisticsRoute (s "e" </> string </> string </> s "statistics")
         , map EntryRoute (s "e" </> string </> string)
         , map EntriesRoute (s "e")
         , map CategoryRoute (s "c" </> string </> string)
@@ -90,9 +88,6 @@ routeToPath route =
 
         EntryVotesRoute entrySlug entryId ->
             "/e/" ++ entrySlug ++ "/" ++ entryId ++ "/votes"
-
-        EntryStatisticsRoute entrySlug entryId ->
-            "/e/" ++ entrySlug ++ "/" ++ entryId ++ "/statistics"
 
         CategoryRoute categorySlug categoryId ->
             "/c/" ++ categorySlug ++ "/" ++ categoryId

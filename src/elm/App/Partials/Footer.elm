@@ -1,7 +1,7 @@
 module App.Partials.Footer exposing (view)
 
 import App.Messages exposing (Msg(ChangeLanguage, RemoveLocalJWT, ScrollToTop))
-import App.Translations exposing (Language(..), TranslationId(LanguagesText, LogoutText), translate)
+import App.Translations exposing (..)
 import App.Utils.Config exposing (githubRepoLink)
 import Html exposing (Html, text)
 import Html.Attributes exposing (target)

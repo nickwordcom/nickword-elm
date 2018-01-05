@@ -17,11 +17,10 @@ type Msg
     | UserEntriesResponse (WebData (List Entry))
     | AllPopularEntriesResponse (WebData (List Entry))
     | SearchEntriesResponse (WebData (List Entry))
-    | EntrySimilarResponse (WebData (List Entry))
+    | RandomEntryResponse (WebData Entry)
     | EntryResponse (WebData Entry)
     | PrefetchEntry Entry
     | LoadMoreEntries
-    | RandomEntryResponse (WebData Entry)
     | ApplyFilters FilterType
     | Navigate String
     | SelectEntryTab Int

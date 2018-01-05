@@ -50,13 +50,6 @@ fetchFeatured language =
         |> Cmd.map EntriesFeaturedResponse
 
 
-fetchSimilar : EntryId -> Cmd Msg
-fetchSimilar entryId =
-    Http.get (entrySimilarUrl entryId) entryListDecoder
-        |> RemoteData.sendRequest
-        |> Cmd.map EntrySimilarResponse
-
-
 fetchEntry : EntryId -> Language -> Cmd Msg
 fetchEntry entryId language =
     Http.get (entryUrl entryId language) entrySingleDecoder
@@ -92,8 +85,11 @@ entryUrl entryId language =
     let
         baseUrl =
             entriesUrl ++ "/" ++ entryId
+
+        params =
+            [ ( "locale", decodeLang language ) ]
     in
-    encodeUrl baseUrl [ ( "locale", decodeLang language ) ]
+    encodeUrl baseUrl params
 
 
 entriesPopularUrl : Maybe Int -> Language -> String
@@ -111,10 +107,7 @@ entriesPopularUrl maybeLimit language =
                     ( "", "" )
 
         localeParam =
-            if language /= English then
-                ( "locale", decodeLang language )
-            else
-                ( "", "" )
+            ( "locale", decodeLang language )
 
         params =
             [ limitParam, localeParam ]
@@ -129,18 +122,10 @@ entriesFeaturedUrl language =
         baseUrl =
             entriesUrl ++ "/featured"
 
-        localeParam =
-            if language == English then
-                ( "locale", "en" )
-            else
-                ( "locale", decodeLang language )
+        params =
+            [ ( "locale", decodeLang language ) ]
     in
-    encodeUrl baseUrl [ localeParam ]
-
-
-entrySimilarUrl : EntryId -> String
-entrySimilarUrl entryId =
-    entriesUrl ++ "/similar"
+    encodeUrl baseUrl params
 
 
 categoryEntriesUrl : CategoryId -> Language -> Int -> String
@@ -148,8 +133,13 @@ categoryEntriesUrl categoryId language pageNumber =
     let
         baseUrl =
             apiUrl ++ "/categories/" ++ categoryId ++ "/entries"
+
+        params =
+            [ ( "locale", decodeLang language )
+            , ( "page", toString pageNumber )
+            ]
     in
-    encodeUrl baseUrl [ ( "locale", decodeLang language ), ( "page", toString pageNumber ) ]
+    encodeUrl baseUrl params
 
 
 userEntriesUrl : Language -> Int -> String
@@ -157,8 +147,13 @@ userEntriesUrl language pageNumber =
     let
         baseUrl =
             entriesUrl ++ "/my"
+
+        params =
+            [ ( "locale", decodeLang language )
+            , ( "page", toString pageNumber )
+            ]
     in
-    encodeUrl baseUrl [ ( "locale", decodeLang language ), ( "page", toString pageNumber ) ]
+    encodeUrl baseUrl params
 
 
 entriesRandomUrl : Language -> String
@@ -166,8 +161,11 @@ entriesRandomUrl language =
     let
         baseUrl =
             entriesUrl ++ "/random"
+
+        params =
+            [ ( "locale", decodeLang language ) ]
     in
-    encodeUrl baseUrl [ ( "locale", decodeLang language ) ]
+    encodeUrl baseUrl params
 
 
 searchUrl : String -> Language -> String
@@ -175,8 +173,13 @@ searchUrl query language =
     let
         baseUrl =
             entriesUrl ++ "/search"
+
+        params =
+            [ ( "locale", decodeLang language )
+            , ( "title", query )
+            ]
     in
-    encodeUrl baseUrl [ ( "title", query ), ( "locale", decodeLang language ) ]
+    encodeUrl baseUrl params
 
 
 
