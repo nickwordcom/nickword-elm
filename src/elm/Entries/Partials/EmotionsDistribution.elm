@@ -1,6 +1,5 @@
 module Entries.Partials.EmotionsDistribution exposing (view)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (..)
 import Countries.Models exposing (Country)
 import Dict exposing (Dict)
@@ -10,6 +9,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import List.Extra as ListEx
 import Material.Chip as Chip
+import RemoteData exposing (RemoteData(..), WebData)
 import Words.Models exposing (EmotionInfo)
 
 

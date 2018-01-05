@@ -1,10 +1,10 @@
 module Words.Messages exposing (..)
 
-import App.Models exposing (WebData)
 import Entries.Models exposing (Entry, EntryId)
 import Http exposing (Error)
 import Material
 import Material.Snackbar as Snackbar
+import RemoteData exposing (WebData)
 import Votes.Messages as VotesMsgs
 import Words.Models exposing (..)
 

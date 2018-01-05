@@ -1,6 +1,5 @@
 module Entries.Partials.TrendingEntriesBlock exposing (view)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Routing exposing (Route(PopularRoute), routeToPath)
 import App.Translations exposing (..)
 import Entries.Messages exposing (Msg)
@@ -10,6 +9,7 @@ import Entries.Partials.EntriesGridBlockFailure exposing (gridBlockFailure)
 import Entries.Partials.EntriesGridBlockLoading exposing (gridBlockLoading)
 import Html exposing (Html, div, text)
 import List exposing (isEmpty, take)
+import RemoteData exposing (RemoteData(..), WebData)
 
 
 view : WebData (List Entry) -> Language -> Html Msg
@@ -25,6 +25,9 @@ view trendingEntries language =
             routeToPath PopularRoute
     in
     case trendingEntries of
+        NotAsked ->
+            gridBlockLoading title ""
+
         Loading ->
             gridBlockLoading title (translate language LoadingText)
 

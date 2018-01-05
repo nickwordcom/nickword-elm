@@ -1,7 +1,7 @@
 module Countries.Messages exposing (..)
 
-import App.Models exposing (WebData)
 import Countries.Models exposing (Country)
+import RemoteData exposing (WebData)
 
 
 type Msg

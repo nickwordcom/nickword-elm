@@ -1,9 +1,9 @@
 module Votes.Messages exposing (..)
 
-import App.Models exposing (WebData)
 import Countries.Models exposing (EntryVotedCountries)
 import Http exposing (Error)
 import Material.Snackbar as Snackbar
+import RemoteData exposing (WebData)
 import Votes.Models exposing (..)
 
 

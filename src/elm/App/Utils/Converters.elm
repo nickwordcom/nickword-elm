@@ -1,11 +1,8 @@
 module App.Utils.Converters exposing (..)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (Language(..), TranslationId(VotesAmountK), translate)
 import List
-import Result
 import String
-import Votes.Models exposing (Vote, VoteSlim)
 import Words.Models exposing (EmotionInfo, Word)
 
 
@@ -71,52 +68,6 @@ convertVotes votes language =
         toString votes
 
 
-wordsVotesCount : WebData (List Word) -> Maybe Int
-wordsVotesCount words =
-    case words of
-        Loading ->
-            Nothing
-
-        Failure err ->
-            Nothing
-
-        Success words ->
-            words
-                |> List.map (\w -> w.votesCount)
-                |> List.sum
-                |> Just
-
-
-votesSize : WebData (List Vote) -> Maybe Int
-votesSize votes =
-    case votes of
-        Loading ->
-            Nothing
-
-        Failure err ->
-            Nothing
-
-        Success votes ->
-            votes
-                |> List.length
-                |> Just
-
-
-votesSlimSize : WebData (List VoteSlim) -> Maybe Int
-votesSlimSize votes =
-    case votes of
-        Loading ->
-            Nothing
-
-        Failure err ->
-            Nothing
-
-        Success votes ->
-            votes
-                |> List.length
-                |> Just
-
-
 increaseEntryEmotions : Word -> List EmotionInfo -> List EmotionInfo
 increaseEntryEmotions word entryEmotions =
     let
@@ -145,18 +96,6 @@ recalculateEmotionPct votesAmount emotionInfo =
             toFloat (emotionInfo.sum * 100) / toFloat votesAmount
     in
     { emotionInfo | percent = newPct }
-
-
-{-| Convert a `Result Error`, probably produced from elm-http, to a RemoteData value.
--}
-fromResult : Result e a -> RemoteData e a
-fromResult result =
-    case result of
-        Err e ->
-            Failure e
-
-        Ok x ->
-            Success x
 
 
 

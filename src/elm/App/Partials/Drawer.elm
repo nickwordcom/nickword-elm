@@ -1,7 +1,6 @@
 module App.Partials.Drawer exposing (drawer)
 
 import App.Messages exposing (Msg(MDL, Navigate))
-import App.Models exposing (RemoteData(..), WebData)
 import App.Routing exposing (Route(CategoryRoute, PopularRoute, UserEntriesRoute), routeToPath)
 import App.Translations exposing (..)
 import App.Utils.Links exposing (linkTo)
@@ -11,6 +10,7 @@ import Html.Attributes exposing (class, tabindex)
 import Html.Events exposing (onMouseUp)
 import List exposing (append, filterMap)
 import Material.Layout as Layout
+import RemoteData exposing (RemoteData(..), WebData)
 
 
 drawer : WebData (List Category) -> Language -> List (Html Msg)
@@ -32,6 +32,9 @@ categoryLinks categories language =
     let
         allCategories =
             case categories of
+                NotAsked ->
+                    [ loremCategory ]
+
                 Loading ->
                     [ { loremCategory | title = translate language LoadingText } ]
 

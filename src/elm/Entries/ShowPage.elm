@@ -1,6 +1,6 @@
 module Entries.ShowPage exposing (..)
 
-import App.Models exposing (Model, RemoteData(..))
+import App.Models exposing (Model)
 import App.Routing exposing (Route(EntryCloudRoute, EntryMapRoute, EntryRoute, EntryVotesRoute))
 import App.Translations exposing (Language, TranslationId(ErrorText, LoadingText), translate)
 import Entries.Messages exposing (Msg(WordsMsg))
@@ -16,6 +16,7 @@ import Html.Attributes exposing (..)
 import Maps.EntryVotesMapTab as EntryVotesMapTab
 import Material.Options exposing (css)
 import Material.Spinner as Spinner
+import RemoteData exposing (RemoteData(..))
 import Votes.Partials.EntryVotesTab as EntryVotesTab
 import Words.Partials.EntryWordsCloudTab as EntryWordsCloudTab
 import Words.Partials.EntryWordsTab as EntryWordsTab
@@ -24,6 +25,9 @@ import Words.Partials.EntryWordsTab as EntryWordsTab
 view : Model -> Html Msg
 view { entry, entryPrefetched, entryWords, entryTopWord, entryVotes, entryVotesSlim, entryFilters, wordSearchValue, newWordValue, popularEntries, newWordFieldActive, user, entryVotedCountries, entryTabIndex, entryVotedWords, categories, countries, entryEmotionsInfo, route, appLanguage, mdl } =
     case entry of
+        NotAsked ->
+            entryLoadingSpinner
+
         Loading ->
             case entryPrefetched of
                 Just entry ->

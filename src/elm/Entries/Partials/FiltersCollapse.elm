@@ -1,6 +1,5 @@
 module Entries.Partials.FiltersCollapse exposing (view)
 
-import App.Models exposing (WebData)
 import App.Translations exposing (Language, TranslationId(FiltersText, HideText, ShowText), translate)
 import Countries.Models exposing (Country, EntryVotedCountries)
 import Entries.Messages exposing (Msg(ToggleEntryFilters))
@@ -10,6 +9,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Material
+import RemoteData exposing (WebData)
 
 
 view : WebData (List Country) -> EntryVotedCountries -> FiltersConfig -> Language -> Material.Model -> Html Msg

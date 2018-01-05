@@ -1,6 +1,5 @@
 module Entries.Partials.EntrySidebar exposing (..)
 
-import App.Models exposing (WebData)
 import App.Translations exposing (Language, TranslationId(FiltersText), translate)
 import Countries.Models exposing (Country, EntryVotedCountries)
 import Entries.Messages exposing (Msg)
@@ -9,6 +8,7 @@ import Entries.Partials.VoteFilters as VoteFilters
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Material
+import RemoteData exposing (WebData)
 
 
 view : WebData (List Country) -> EntryVotedCountries -> FiltersConfig -> Language -> Material.Model -> Html Msg

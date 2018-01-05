@@ -2,13 +2,12 @@ module Categories.Commands exposing (..)
 
 import App.Translations exposing (Language(..), decodeLang)
 import App.Utils.Config exposing (apiUrl)
-import App.Utils.Converters exposing (fromResult)
 import App.Utils.Requests exposing (encodeUrl)
 import Categories.Messages exposing (Msg(..))
 import Categories.Models exposing (Category, CategoryId)
-import Entries.Commands exposing (entryDecoder)
 import Http
 import Json.Decode as Decode exposing (field)
+import RemoteData
 
 
 -- HTTP Requests
@@ -17,7 +16,8 @@ import Json.Decode as Decode exposing (field)
 fetchAll : Language -> Cmd Msg
 fetchAll language =
     Http.get (categoriesUrl False language) categoryListDecoder
-        |> Http.send (CategoriesResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map CategoriesResponse
 
 
 

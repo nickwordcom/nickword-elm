@@ -1,7 +1,7 @@
 module App.Update exposing (..)
 
 import App.Messages exposing (Msg(..))
-import App.Models exposing (Model, RemoteData(..))
+import App.Models exposing (Model)
 import App.Ports exposing (removeLocalJWT, setLocalJWT, setLocalLanguage)
 import App.Routing exposing (Route(EntryRoute, SearchRoute), navigateTo, parseLocation, routeToPath)
 import App.UrlUpdate exposing (urlUpdate)
@@ -15,6 +15,7 @@ import Material.Helpers exposing (map1st, map2nd)
 import Material.Layout exposing (mainId)
 import Material.Snackbar as Snackbar
 import Navigation
+import RemoteData exposing (RemoteData(Loading))
 import ShareDialog.Update as ShareDialogUpdate
 import String exposing (length)
 import Task

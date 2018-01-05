@@ -1,6 +1,5 @@
 module Words.Partials.NewWordForm exposing (..)
 
-import App.Models exposing (RemoteData(Success), WebData)
 import App.Translations exposing (Language, TranslationId(DescribeIOWText, DescribeText, IEJustText, LoginText, NewWordFormWarning, YourWordText), translate)
 import Entries.Models exposing (EntryId)
 import Html exposing (..)
@@ -10,6 +9,7 @@ import Json.Decode as Json exposing (map)
 import Material exposing (Model)
 import Material.Button as Button
 import Material.Options as Options exposing (cs, nop, onClick)
+import RemoteData exposing (RemoteData(Success), WebData)
 import Users.Models exposing (UserStatus(..))
 import Words.Messages exposing (Msg(AddNewWord, MDL, NoOp, SetElevation, ShowTopLoginForm, UpdateNewWordValue))
 import Words.Models exposing (EntryVotedWords, Word)

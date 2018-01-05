@@ -1,6 +1,6 @@
 module Votes.Update exposing (..)
 
-import App.Models exposing (Model, RemoteData(..), WebData)
+import App.Models exposing (Model)
 import App.Ports exposing (entryVotesMap, setLocalJWT)
 import App.Translations exposing (..)
 import App.Utils.Converters exposing (increaseEntryEmotions)
@@ -10,6 +10,7 @@ import List.Extra as ListEx
 import Material.Helpers exposing (map1st, map2nd)
 import Material.Snackbar as Snackbar
 import Regex
+import RemoteData exposing (RemoteData(..), WebData)
 import Users.Utils exposing (activateUser)
 import Votes.Messages exposing (Msg(..))
 import Votes.Models exposing (..)
@@ -111,14 +112,11 @@ update msg model =
 updateEntryWords : WebData (List Word) -> VoteResponse -> WebData (List Word)
 updateEntryWords entryWords voteResponse =
     case entryWords of
-        Loading ->
-            entryWords
-
-        Failure err ->
-            entryWords
-
         Success entryWords ->
             Success (updateWord voteResponse entryWords)
+
+        _ ->
+            entryWords
 
 
 updateWord : VoteResponse -> List Word -> List Word
@@ -139,12 +137,6 @@ updateWord { word, counted } =
 updateEntryVotesCounter : WebData Entry -> VoteResponse -> WebData Entry
 updateEntryVotesCounter entry { entryId, counted } =
     case entry of
-        Loading ->
-            entry
-
-        Failure err ->
-            entry
-
         Success entry ->
             let
                 updatedEntry =
@@ -155,19 +147,19 @@ updateEntryVotesCounter entry { entryId, counted } =
             in
             Success updatedEntry
 
+        _ ->
+            entry
+
 
 updateEntryVotedWords : VoteResponse -> WebData EntryVotedWords -> WebData EntryVotedWords
 updateEntryVotedWords { word, entryId, counted } entryVotedWords =
     if counted then
         case entryVotedWords of
-            Loading ->
-                Success { entryId = entryId, ids = word.id :: [] }
-
-            Failure err ->
-                Success { entryId = entryId, ids = word.id :: [] }
-
             Success votedIds ->
                 Success { votedIds | ids = word.id :: votedIds.ids }
+
+            _ ->
+                Success { entryId = entryId, ids = word.id :: [] }
     else
         entryVotedWords
 
@@ -216,19 +208,19 @@ updateEmotionsInfo { word, counted } emotionsInfo =
 sendVotesToMap : WebData (List VoteSlim) -> Cmd Msg
 sendVotesToMap entryVotes =
     case entryVotes of
-        Loading ->
-            Cmd.none
-
-        Failure err ->
-            Cmd.none
-
         Success votes ->
             entryVotesMap votes
+
+        _ ->
+            Cmd.none
 
 
 votesFromResponse : WebData VotesSlimResponse -> FiltersConfig -> WebData (List VoteSlim)
 votesFromResponse response filtersConfig =
     case response of
+        NotAsked ->
+            NotAsked
+
         Loading ->
             Loading
 
@@ -245,14 +237,11 @@ votesFromResponse response filtersConfig =
 distributionFromResponse : WebData VotesSlimResponse -> Maybe (List EmotionInfo)
 distributionFromResponse response =
     case response of
-        Loading ->
-            Nothing
-
-        Failure error ->
-            Nothing
-
         Success { votes, distribution } ->
             Just distribution
+
+        _ ->
+            Nothing
 
 
 countNumberOfVotes : WebData EntryVotedWords -> Int

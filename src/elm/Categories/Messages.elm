@@ -1,7 +1,7 @@
 module Categories.Messages exposing (..)
 
-import App.Models exposing (WebData)
 import Categories.Models exposing (..)
+import RemoteData exposing (WebData)
 
 
 type Msg

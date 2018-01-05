@@ -1,10 +1,10 @@
 module Entries.Messages exposing (..)
 
-import App.Models exposing (WebData)
 import Categories.Messages as CategoriesMsgs
 import Entries.Models exposing (Entry, EntryId, EntrySlug, FilterType)
 import Entries.NewEntry.Messages as NewEntryMsgs
 import Material
+import RemoteData exposing (WebData)
 import Votes.Messages as VotesMsgs
 import Words.Messages as WordsMsgs
 

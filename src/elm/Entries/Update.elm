@@ -1,6 +1,6 @@
 module Entries.Update exposing (..)
 
-import App.Models exposing (Model, RemoteData(..), WebData)
+import App.Models exposing (Model)
 import App.Routing exposing (Route(..), navigateTo, routeToPath)
 import App.Translations exposing (Language)
 import App.Utils.Title exposing (setEntryDescription, setEntryTitle)
@@ -13,6 +13,7 @@ import Entries.NewEntry.Update as NewEntryUpdate
 import Material
 import Material.Layout exposing (mainId)
 import Navigation
+import RemoteData exposing (RemoteData(..), WebData)
 import Task
 import Votes.Commands exposing (fetchEntryVotes, fetchEntryVotesSlim)
 import Votes.Update as VotesUpdate
@@ -160,6 +161,9 @@ update msg model =
 randomEntryCmd : WebData Entry -> Cmd Msg
 randomEntryCmd entry =
     case entry of
+        NotAsked ->
+            Cmd.none
+
         Loading ->
             Cmd.none
 
@@ -173,12 +177,6 @@ randomEntryCmd entry =
 modifyEntryUrl : WebData Entry -> Route -> Cmd Msg
 modifyEntryUrl entry route =
     case entry of
-        Loading ->
-            Cmd.none
-
-        Failure err ->
-            Cmd.none
-
         Success entry ->
             let
                 ( oldSlug, entryRoute ) =
@@ -206,6 +204,9 @@ modifyEntryUrl entry route =
                     |> Navigation.modifyUrl
             else
                 Cmd.none
+
+        _ ->
+            Cmd.none
 
 
 applyEntryFilters : Route -> FiltersConfig -> Cmd Msg
@@ -243,7 +244,12 @@ updateEntriesList response allEntries =
         ( Success entries, Success allEntries ) ->
             Success (List.append allEntries entries)
 
-        -- TODO: add more cases without deleting previous entries
+        ( Success entries, _ ) ->
+            Success entries
+
+        ( _, Success allEntries ) ->
+            Success allEntries
+
         _ ->
             response
 

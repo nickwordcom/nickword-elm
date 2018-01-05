@@ -9,22 +9,11 @@ import Entries.NewEntry.Models exposing (NewEntryModel, newEntryModelInit)
 import Http
 import Material
 import Material.Snackbar as Snackbar
+import RemoteData exposing (RemoteData(Loading), WebData)
 import ShareDialog.Models exposing (ShareDialog, initShareDialog)
 import Users.Models exposing (User)
 import Votes.Models exposing (..)
 import Words.Models exposing (EmotionInfo, EntryVotedWords, Word)
-
-
-type
-    RemoteData e a
-    -- = NotAsked
-    = Loading
-    | Failure e
-    | Success a
-
-
-type alias WebData a =
-    RemoteData Http.Error a
 
 
 type alias Flags =

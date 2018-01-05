@@ -23,6 +23,6 @@ loremCategory : Category
 loremCategory =
     { id = ""
     , slug = "lorem"
-    , title = "Lorem category"
+    , title = ""
     , entriesCount = 1
     }

@@ -1,27 +1,24 @@
 module Entries.Partials.EntryCategoryInfo exposing (view)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Routing exposing (Route(CategoryRoute), routeToPath)
 import App.Utils.Links exposing (linkTo)
 import Categories.Models exposing (Category, CategoryId)
 import Entries.Messages exposing (Msg(Navigate))
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import RemoteData exposing (RemoteData(..), WebData)
 
 
 view : WebData (List Category) -> CategoryId -> Html Msg
 view categories entryCategory =
     case categories of
-        Loading ->
-            blankLink
-
-        Failure err ->
-            blankLink
-
         Success categories ->
             List.filterMap (filterCategories entryCategory) categories
                 |> List.head
                 |> categoryItem
+
+        _ ->
+            blankLink
 
 
 filterCategories : CategoryId -> Category -> Maybe Category

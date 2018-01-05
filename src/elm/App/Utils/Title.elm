@@ -1,10 +1,10 @@
 module App.Utils.Title exposing (..)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Ports exposing (appDescription, appTitle)
 import Categories.Models exposing (Category, CategoryId)
 import Entries.Models exposing (Entry, EntryId)
 import List exposing (filterMap, head)
+import RemoteData exposing (RemoteData(..), WebData)
 import String exposing (length)
 
 
@@ -26,25 +26,16 @@ newAppTitle pageTitle =
 setEntryTitle : WebData Entry -> Cmd msg
 setEntryTitle entry =
     case entry of
-        Loading ->
-            Cmd.none
-
-        Failure err ->
-            Cmd.none
-
         Success entry ->
             appTitle (newAppTitle entry.title)
+
+        _ ->
+            Cmd.none
 
 
 setCategoryTitle : WebData (List Category) -> CategoryId -> Cmd msg
 setCategoryTitle categories categoryId =
     case categories of
-        Loading ->
-            Cmd.none
-
-        Failure err ->
-            Cmd.none
-
         Success categories ->
             let
                 checkCategory category =
@@ -63,15 +54,15 @@ setCategoryTitle categories categoryId =
                 Nothing ->
                     appTitle (newAppTitle "")
 
+        _ ->
+            Cmd.none
+
 
 setEntryDescription : WebData Entry -> Cmd msg
 setEntryDescription entry =
     case entry of
-        Loading ->
-            Cmd.none
-
-        Failure err ->
-            Cmd.none
-
         Success entry ->
             appDescription entry.description
+
+        _ ->
+            Cmd.none

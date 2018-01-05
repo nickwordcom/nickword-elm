@@ -1,12 +1,12 @@
 module Votes.Partials.EntryVotesTab exposing (votesList)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (..)
 import Entries.Messages exposing (Msg)
 import Html exposing (..)
 import Html.Attributes exposing (class, id, title)
 import Material.Options exposing (css)
 import Material.Spinner as Spinner
+import RemoteData exposing (RemoteData(..), WebData)
 import Votes.Models exposing (Vote)
 
 
@@ -15,6 +15,9 @@ votesList entryVotes language =
     let
         votesList =
             case entryVotes of
+                NotAsked ->
+                    div [] []
+
                 Loading ->
                     votesLoadingSpinner
 

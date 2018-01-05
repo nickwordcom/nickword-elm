@@ -1,6 +1,5 @@
 module Words.Partials.EntryWordsTab exposing (view)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (..)
 import Entries.Models exposing (Entry, EntryId, FiltersConfig)
 import FNV exposing (hashString)
@@ -13,6 +12,7 @@ import Material.Dialog as Dialog
 import Material.Icon as Icon
 import Material.Options as Options exposing (cs, css)
 import Material.Spinner as Spinner
+import RemoteData exposing (RemoteData(..), WebData)
 import String
 import Svg exposing (path, svg)
 import Svg.Attributes exposing (d, viewBox)
@@ -28,6 +28,9 @@ view entry entryWords entryFilters entryVotedWords language mdlModel =
 
         wordsContent =
             case entryWords of
+                NotAsked ->
+                    div [] []
+
                 Loading ->
                     div [] [ wordsLoadingSpinner ]
 
@@ -201,12 +204,6 @@ voteForWordButton word entryId entryVotedWords mdlModel =
                 ]
     in
     case entryVotedWords of
-        Loading ->
-            wordSimpleBtn
-
-        Failure err ->
-            wordSimpleBtn
-
         Success votedIds ->
             if List.member word.id votedIds.ids && (entryId == votedIds.entryId) then
                 wordVotedBtn
@@ -216,6 +213,9 @@ voteForWordButton word entryId entryVotedWords mdlModel =
                 wordSimpleBtn
             else
                 span [] []
+
+        _ ->
+            wordSimpleBtn
 
 
 openShareModal : Entry -> WordName -> Material.Model -> Html Msg

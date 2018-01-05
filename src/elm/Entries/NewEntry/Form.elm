@@ -1,6 +1,5 @@
 module Entries.NewEntry.Form exposing (view)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (..)
 import Categories.Models exposing (Category, CategoryId)
 import Entries.NewEntry.Messages exposing (Msg(..))
@@ -14,6 +13,7 @@ import List
 import Material.Button as Button
 import Material.Options as Options exposing (cs, css)
 import Material.Spinner as Spinner
+import RemoteData exposing (RemoteData(..), WebData)
 import String
 import String.Extra exposing (isBlank)
 import Users.Models exposing (User)
@@ -148,15 +148,12 @@ categoryOptions categories currentCategoryId language =
                 [ text <| translate language SelectCategoryText ]
     in
     case categories of
-        Loading ->
-            [ defaultValue ]
-
-        Failure error ->
-            [ defaultValue ]
-
         Success categories ->
             List.map (selectOption selectedCategoryId) categories
                 |> (::) defaultValue
+
+        _ ->
+            [ defaultValue ]
 
 
 selectOption : CategoryId -> Category -> Html Msg

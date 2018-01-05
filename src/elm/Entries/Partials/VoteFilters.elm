@@ -1,6 +1,5 @@
 module Entries.Partials.VoteFilters exposing (view)
 
-import App.Models exposing (WebData)
 import App.Translations exposing (..)
 import Countries.Models exposing (Country, EntryVotedCountries)
 import Countries.Partials.SelectList as SelectList
@@ -11,6 +10,7 @@ import Html.Attributes exposing (..)
 import Material
 import Material.Options as Options
 import Material.Toggles as Toggles
+import RemoteData exposing (WebData)
 import Words.Models exposing (wordEmotions)
 
 

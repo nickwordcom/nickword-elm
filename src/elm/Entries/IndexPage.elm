@@ -1,6 +1,5 @@
 module Entries.IndexPage exposing (..)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Routing exposing (Route(CategoryRoute, PopularRoute), routeToPath)
 import App.Translations exposing (..)
 import Categories.Models exposing (..)
@@ -16,6 +15,7 @@ import Html exposing (Html, div, text)
 import Html.Attributes exposing (class)
 import List exposing (isEmpty, take)
 import List.Extra as ListEx
+import RemoteData exposing (RemoteData(..), WebData)
 
 
 view : WebData (List Entry) -> WebData (List Entry) -> WebData (List Category) -> Language -> Html Msg

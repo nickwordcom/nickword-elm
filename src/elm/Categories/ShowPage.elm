@@ -1,6 +1,5 @@
 module Categories.ShowPage exposing (..)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (Language, TranslationId(ErrorText, LoadMoreText, LoadingText, NumberOfEntriesText), translate)
 import Categories.Models exposing (Category)
 import Entries.Messages exposing (Msg(LoadMoreEntries))
@@ -12,6 +11,7 @@ import Html exposing (Html, div, span, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Material.Spinner as Spinner
+import RemoteData exposing (RemoteData(..), WebData)
 
 
 view : WebData (List Entry) -> Category -> Language -> LoadMoreState -> Html Msg
@@ -25,6 +25,9 @@ view categoryEntries category language loadMoreState =
 
         gridBlock =
             case categoryEntries of
+                NotAsked ->
+                    [ gridBlockLoading title "" ]
+
                 Loading ->
                     [ gridBlockLoading title (translate language LoadingText) ]
 
@@ -45,7 +48,7 @@ loadMoreButton loadMoreState language =
     case loadMoreState of
         EntriesNotAsked ->
             div
-                [ class "entries-grid__load-more h-clickable mdl-shadow--2dp"
+                [ class "entries-grid__load-more mdl-color--primary mdl-color-text--white mdl-shadow--2dp h-clickable"
                 , onClick LoadMoreEntries
                 ]
                 [ text <| translate language LoadMoreText ]

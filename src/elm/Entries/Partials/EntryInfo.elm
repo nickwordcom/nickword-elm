@@ -1,6 +1,5 @@
 module Entries.Partials.EntryInfo exposing (..)
 
-import App.Models exposing (WebData)
 import App.Translations exposing (Language, TranslationId(ImageCaptionText, ImageSourceText, VotesReceivedText), translate)
 import App.Utils.Cloudinary exposing (cloudinaryUrl_240)
 import App.Utils.Converters exposing (convertVotes)
@@ -13,6 +12,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Material exposing (Model)
 import Material.Icon as Icon
+import RemoteData exposing (WebData)
 import String exposing (isEmpty)
 import Users.Models exposing (UserStatus)
 import Words.Models exposing (EntryVotedWords, Word)

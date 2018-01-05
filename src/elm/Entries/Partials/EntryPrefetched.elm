@@ -1,6 +1,5 @@
 module Entries.Partials.EntryPrefetched exposing (view)
 
-import App.Models exposing (WebData)
 import App.Translations exposing (Language)
 import Categories.Models exposing (Category)
 import Entries.Messages exposing (Msg)
@@ -11,6 +10,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Material.Options exposing (css)
 import Material.Spinner as Spinner
+import RemoteData exposing (WebData)
 
 
 view : Entry -> WebData (List Category) -> Language -> Html Msg

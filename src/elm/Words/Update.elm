@@ -1,21 +1,17 @@
 module Words.Update exposing (..)
 
--- import Regex
-
-import App.Models exposing (Model, RemoteData(..), WebData)
+import App.Models exposing (Model)
 import App.Ports exposing (entryWordCloud)
 import App.Routing exposing (Route(EntryCloudRoute, EntryRoute))
 import App.Translations exposing (..)
-import Dict
-import Dict.Extra as DictEx
 import Dom.Scroll as DScroll
 import Entries.Models exposing (Entry, EntryId, FiltersConfig)
 import List exposing (append, partition)
-import List.Extra as ListEx
 import Material
 import Material.Helpers exposing (map1st, map2nd)
 import Material.Layout exposing (mainId)
 import Material.Snackbar as Snackbar
+import RemoteData exposing (RemoteData(..), WebData)
 import String exposing (filter, toLower)
 import Task
 import Users.Models exposing (User, UserToken)
@@ -207,12 +203,6 @@ update msg model =
 updateEntryWords : WebData (List Word) -> Word -> WebData (List Word)
 updateEntryWords entryWords newWord =
     case entryWords of
-        Loading ->
-            entryWords
-
-        Failure err ->
-            entryWords
-
         Success entryWords ->
             let
                 findWord word =
@@ -230,6 +220,9 @@ updateEntryWords entryWords newWord =
 
                 Nothing ->
                     Success ({ newWord | votingFor = Just True } :: entryWords)
+
+        _ ->
+            entryWords
 
 
 updateVotedForWord : WebData (List Word) -> WordId -> WebData (List Word)
@@ -267,6 +260,9 @@ voteForNewWordCmd entry wordId token =
 wordsFromResponse : WebData WordsResponse -> WebData (List Word)
 wordsFromResponse response =
     case response of
+        NotAsked ->
+            NotAsked
+
         Loading ->
             Loading
 
@@ -280,14 +276,11 @@ wordsFromResponse response =
 distributionFromResponse : WebData WordsResponse -> Maybe (List EmotionInfo)
 distributionFromResponse response =
     case response of
-        Loading ->
-            Nothing
-
-        Failure error ->
-            Nothing
-
         Success { words, distribution } ->
             Just distribution
+
+        _ ->
+            Nothing
 
 
 checkForTopWord : WebData (List Word) -> Maybe Word

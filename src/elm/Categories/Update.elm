@@ -1,10 +1,11 @@
 module Categories.Update exposing (..)
 
-import App.Models exposing (Model, WebData)
+import App.Models exposing (Model)
 import App.Routing exposing (Route(CategoryRoute))
 import App.Utils.Title exposing (setCategoryTitle)
 import Categories.Messages exposing (Msg(..))
 import Categories.Models exposing (Category)
+import RemoteData exposing (WebData)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

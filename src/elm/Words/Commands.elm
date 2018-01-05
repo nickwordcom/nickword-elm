@@ -1,12 +1,12 @@
 module Words.Commands exposing (..)
 
 import App.Utils.Config exposing (apiUrl)
-import App.Utils.Converters exposing (fromResult)
 import App.Utils.Requests exposing (encodeUrl, getWithAuth, postWithAuth)
 import Entries.Models exposing (EntryId, FiltersConfig)
 import Http
 import Json.Decode as Decode exposing (field)
 import Json.Encode as Encode
+import RemoteData
 import Users.Models exposing (UserToken)
 import Words.Messages exposing (..)
 import Words.Models exposing (..)
@@ -18,13 +18,15 @@ import Words.Models exposing (..)
 fetchEntryWords : EntryId -> FiltersConfig -> Cmd Msg
 fetchEntryWords entryId filtersConfig =
     Http.get (entryWordsUrl entryId filtersConfig) wordsResponseDecoder
-        |> Http.send (EntryWordsResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntryWordsResponse
 
 
 fetchEntryVotedWords : EntryId -> UserToken -> Cmd Msg
 fetchEntryVotedWords entryId token =
     getWithAuth (entryVotedWordsUrl entryId) entryVotedWordsDecoder token
-        |> Http.send (EntryVotedWordsResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntryVotedWordsResponse
 
 
 addNewWord : WordName -> EntryId -> UserToken -> Cmd Msg

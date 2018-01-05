@@ -1,7 +1,7 @@
 module App.UrlUpdate exposing (..)
 
 import App.Messages exposing (Msg(..))
-import App.Models exposing (Model, RemoteData(..), WebData)
+import App.Models exposing (Model)
 import App.Ports exposing (appDescription, appTitle, updateGA)
 import App.Routing exposing (..)
 import App.Translations exposing (..)
@@ -18,6 +18,7 @@ import Http exposing (decodeUri)
 import Material.Layout
 import Navigation exposing (newUrl)
 import OAuth.Parser exposing (..)
+import RemoteData exposing (RemoteData(..), WebData)
 import String exposing (isEmpty)
 import Task
 import Users.Commands as UsersCmds
@@ -393,53 +394,41 @@ materialCmd =
 checkPopularEntries : WebData (List Entry) -> Language -> ( WebData (List Entry), Cmd Msg )
 checkPopularEntries entries language =
     case entries of
-        Loading ->
-            ( Loading, Cmd.map EntriesMsg <| EntriesCmds.fetchPopular language )
-
-        Failure error ->
-            ( Failure error, Cmd.map EntriesMsg <| EntriesCmds.fetchPopular language )
-
         Success entries ->
             ( Success entries, Cmd.none )
+
+        _ ->
+            ( entries, Cmd.map EntriesMsg <| EntriesCmds.fetchPopular language )
 
 
 checkFeaturedEntries : WebData (List Entry) -> Language -> ( WebData (List Entry), Cmd Msg )
 checkFeaturedEntries entries language =
     case entries of
-        Loading ->
-            ( Loading, Cmd.map EntriesMsg <| EntriesCmds.fetchFeatured language )
-
-        Failure error ->
-            ( Failure error, Cmd.map EntriesMsg <| EntriesCmds.fetchFeatured language )
-
         Success entries ->
             ( Success entries, Cmd.none )
+
+        _ ->
+            ( entries, Cmd.map EntriesMsg <| EntriesCmds.fetchFeatured language )
 
 
 checkCategories : WebData (List Category) -> Language -> ( WebData (List Category), Cmd Msg )
 checkCategories categories language =
     case categories of
-        Loading ->
-            ( Loading, Cmd.map CategoriesMsg <| CategoriesCmds.fetchAll language )
-
-        Failure error ->
-            ( Failure error, Cmd.map CategoriesMsg <| CategoriesCmds.fetchAll language )
-
         Success categories ->
             ( Success categories, Cmd.none )
+
+        _ ->
+            ( categories, Cmd.map CategoriesMsg <| CategoriesCmds.fetchAll language )
 
 
 checkCountries : WebData (List Country) -> Language -> ( WebData (List Country), Cmd Msg )
 checkCountries countries language =
     case countries of
-        Loading ->
-            ( Loading, Cmd.map CountriesMsg <| CountriesCmds.fetchAll language )
-
-        Failure error ->
-            ( Failure error, Cmd.map CountriesMsg <| CountriesCmds.fetchAll language )
-
         Success countries ->
             ( Success countries, Cmd.none )
+
+        _ ->
+            ( countries, Cmd.map CountriesMsg <| CountriesCmds.fetchAll language )
 
 
 checkEntry : WebData Entry -> EntryId -> Language -> ( WebData Entry, Cmd Msg )
@@ -449,17 +438,14 @@ checkEntry entry currentEntryId language =
             Cmd.map EntriesMsg <| EntriesCmds.fetchEntry currentEntryId language
     in
     case entry of
-        Loading ->
-            ( Loading, fetchCmd )
-
-        Failure error ->
-            ( Failure error, fetchCmd )
-
         Success entry ->
             if entry.id == currentEntryId then
                 ( Success entry, Cmd.none )
             else
                 ( Loading, fetchCmd )
+
+        _ ->
+            ( entry, fetchCmd )
 
 
 checkPrefetchedEntry : Maybe Entry -> EntryId -> Maybe Entry
@@ -485,17 +471,14 @@ checkEntryVotedWords entryVotedWords entryId user =
                 Cmd.none
     in
     case entryVotedWords of
-        Loading ->
-            ( entryVotedWords, fetchCmd )
-
-        Failure error ->
-            ( entryVotedWords, fetchCmd )
-
         Success votedIds ->
             if votedIds.entryId == entryId then
                 ( entryVotedWords, Cmd.none )
             else
                 ( Loading, fetchCmd )
+
+        _ ->
+            ( entryVotedWords, fetchCmd )
 
 
 checkEntryVotedCountries : EntryVotedCountries -> EntryId -> Cmd Msg

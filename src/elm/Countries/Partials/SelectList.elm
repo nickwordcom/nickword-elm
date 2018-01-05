@@ -1,6 +1,5 @@
 module Countries.Partials.SelectList exposing (view)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (Language, TranslationId(AllWorldText), translate)
 import Countries.Models exposing (..)
 import Entries.Messages exposing (Msg(ApplyFilters))
@@ -12,6 +11,7 @@ import Json.Decode as Json
 import List
 import Material.Icon as Icon
 import Material.Options exposing (cs)
+import RemoteData exposing (RemoteData(..), WebData)
 import String exposing (isEmpty, toLower)
 
 
@@ -39,17 +39,14 @@ countryOptions countries entryVotedCountries countryCodeStr language =
                 [ text <| translate language AllWorldText ]
     in
     case countries of
-        Loading ->
-            [ allWorldOption ]
-
-        Failure error ->
-            [ allWorldOption ]
-
         Success countries ->
             countries
                 |> filterCountries entryVotedCountries.countries
                 |> List.map (selectOption countryCodeStr)
                 |> (::) allWorldOption
+
+        _ ->
+            [ allWorldOption ]
 
 
 selectOption : CountryCode -> Country -> Html Msg

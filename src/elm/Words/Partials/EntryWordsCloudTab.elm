@@ -1,16 +1,19 @@
 module Words.Partials.EntryWordsCloudTab exposing (view)
 
-import App.Models exposing (RemoteData(..), WebData)
 import App.Translations exposing (Language, TranslationId(ErrorText), translate)
 import Html exposing (Html, div, section, text)
 import Html.Attributes exposing (class, id, style)
 import Material.Spinner as Spinner
+import RemoteData exposing (RemoteData(..), WebData)
 import Words.Models exposing (Word)
 
 
 view : WebData (List Word) -> Language -> Html a
 view words language =
     case words of
+        NotAsked ->
+            div [] []
+
         Loading ->
             wordsLoadingSpinner
 

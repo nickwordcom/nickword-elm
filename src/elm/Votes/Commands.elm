@@ -1,13 +1,13 @@
 module Votes.Commands exposing (..)
 
 import App.Utils.Config exposing (apiUrl)
-import App.Utils.Converters exposing (fromResult)
 import App.Utils.Requests exposing (encodeUrl, postWithAuth)
 import Countries.Models exposing (..)
 import Entries.Models exposing (EntryId, FiltersConfig)
 import Http
 import Json.Decode as Decode exposing (field)
 import Json.Encode as Encode
+import RemoteData
 import Users.Models exposing (UserToken)
 import Votes.Messages exposing (Msg(..))
 import Votes.Models exposing (..)
@@ -21,13 +21,15 @@ import Words.Models exposing (WordId)
 fetchEntryVotes : EntryId -> FiltersConfig -> Cmd Msg
 fetchEntryVotes entryId filtersConfig =
     Http.get (entryVotesUrl entryId filtersConfig) votesListDecoder
-        |> Http.send (EntryVotesResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntryVotesResponse
 
 
 fetchEntryVotesSlim : EntryId -> FiltersConfig -> Cmd Msg
 fetchEntryVotesSlim entryId filtersConfig =
     Http.get (entryVotesSlimUrl entryId filtersConfig) votesSlimResponseDecoder
-        |> Http.send (EntryVotesSlimResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntryVotesSlimResponse
 
 
 addNewVote : EntryId -> WordId -> UserToken -> Cmd Msg

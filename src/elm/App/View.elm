@@ -1,7 +1,7 @@
 module App.View exposing (..)
 
 import App.Messages exposing (Msg(..))
-import App.Models exposing (Model, RemoteData(..))
+import App.Models exposing (Model)
 import App.Partials.Drawer exposing (drawer)
 import App.Partials.Footer as Footer
 import App.Partials.Header exposing (appHeader)
@@ -21,6 +21,7 @@ import Pages.NotFoundPage as NotFoundPage
 import Pages.PopularPage as PopularPage
 import Pages.SearchPage as SearchPage
 import Pages.UserEntriesPage as UserEntriesPage
+import RemoteData exposing (RemoteData(..))
 import ShareDialog.Dialog as Dialog
 
 
@@ -113,16 +114,13 @@ categoryShowPage { categories, allEntries, appLanguage, loadMoreState } category
     let
         maybeCategory =
             case categories of
-                Loading ->
-                    Just { loremCategory | title = translate appLanguage LoadingText }
-
-                Failure error ->
-                    Just { loremCategory | title = translate appLanguage <| ErrorText (toString error) }
-
                 Success categories ->
                     categories
                         |> List.filter (\category -> category.id == categoryId)
                         |> List.head
+
+                _ ->
+                    Just { loremCategory | title = translate appLanguage LoadingText }
 
         category =
             case maybeCategory of

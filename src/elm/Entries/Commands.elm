@@ -2,13 +2,13 @@ module Entries.Commands exposing (..)
 
 import App.Translations exposing (Language(English), decodeLang)
 import App.Utils.Config exposing (apiUrl)
-import App.Utils.Converters exposing (fromResult)
 import App.Utils.Requests exposing (encodeUrl, getWithAuth)
 import Categories.Models exposing (CategoryId)
 import Entries.Messages exposing (..)
 import Entries.Models exposing (Entry, EntryId, EntryImage)
 import Http
 import Json.Decode as Decode exposing (field)
+import RemoteData
 import Users.Models exposing (User)
 
 
@@ -18,55 +18,64 @@ import Users.Models exposing (User)
 fetchAllFromCategory : CategoryId -> Language -> Int -> Cmd Msg
 fetchAllFromCategory categoryId language pageNumber =
     Http.get (categoryEntriesUrl categoryId language pageNumber) entryListDecoder
-        |> Http.send (CategoryEntriesResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map CategoryEntriesResponse
 
 
 fetchUserEntries : User -> Language -> Int -> Cmd Msg
 fetchUserEntries { jwt } language pageNumber =
     getWithAuth (userEntriesUrl language pageNumber) entryListDecoder jwt
-        |> Http.send (UserEntriesResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map UserEntriesResponse
 
 
 fetchPopular : Language -> Cmd Msg
 fetchPopular language =
     Http.get (entriesPopularUrl (Just 6) language) entryListDecoder
-        |> Http.send (EntriesPopularResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntriesPopularResponse
 
 
 fetchAllPopular : Language -> Cmd Msg
 fetchAllPopular language =
     Http.get (entriesPopularUrl Nothing language) entryListDecoder
-        |> Http.send (AllPopularEntriesResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map AllPopularEntriesResponse
 
 
 fetchFeatured : Language -> Cmd Msg
 fetchFeatured language =
     Http.get (entriesFeaturedUrl language) entryListDecoder
-        |> Http.send (EntriesFeaturedResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntriesFeaturedResponse
 
 
 fetchSimilar : EntryId -> Cmd Msg
 fetchSimilar entryId =
     Http.get (entrySimilarUrl entryId) entryListDecoder
-        |> Http.send (EntrySimilarResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntrySimilarResponse
 
 
 fetchEntry : EntryId -> Language -> Cmd Msg
 fetchEntry entryId language =
     Http.get (entryUrl entryId language) entrySingleDecoder
-        |> Http.send (EntryResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map EntryResponse
 
 
 fetchRandom : Language -> Cmd Msg
 fetchRandom language =
     Http.get (entriesRandomUrl language) entrySingleDecoder
-        |> Http.send (RandomEntryResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map RandomEntryResponse
 
 
 searchEntries : String -> Language -> Cmd Msg
 searchEntries query language =
     Http.get (searchUrl query language) entryListDecoder
-        |> Http.send (SearchEntriesResponse << fromResult)
+        |> RemoteData.sendRequest
+        |> Cmd.map SearchEntriesResponse
 
 
 
