@@ -6,7 +6,6 @@ import Categories.Models exposing (Category)
 import Countries.Models exposing (..)
 import Entries.Models exposing (Entry, FiltersConfig, LoadMoreState(EntriesNotAsked), filtersConfigInit)
 import Entries.NewEntry.Models exposing (NewEntryModel, newEntryModelInit)
-import Http
 import Material
 import Material.Snackbar as Snackbar
 import RemoteData exposing (RemoteData(Loading), WebData)

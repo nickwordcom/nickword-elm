@@ -40,7 +40,9 @@ type TranslationId
     | ShowAllTrendingText
     | NumberOfEntriesText Int
     | NumberOfVotesText Int
+    | CreateText
     | CreateEntryText
+    | RandomText
     | RandomEntryText
     | MyEntriesText
     | MyEntriesDescText
@@ -276,11 +278,25 @@ translate language translationId =
                     , spanish = pluralizeEs "voto" "votos" votesSize
                     }
 
+                CreateText ->
+                    { english = "Create"
+                    , ukrainian = "Створити"
+                    , russian = "Создать"
+                    , spanish = "Crear"
+                    }
+
                 CreateEntryText ->
                     { english = "Create Entry"
                     , ukrainian = "Створити Запис"
                     , russian = "Создать Запись"
                     , spanish = "Crear entrada"
+                    }
+
+                RandomText ->
+                    { english = "Random"
+                    , ukrainian = "Випадковий"
+                    , russian = "Случайная"
+                    , spanish = "Aleatorio"
                     }
 
                 RandomEntryText ->

@@ -4,6 +4,15 @@
 .mdl-layout__header {
   background-color: #fff;
   color: rgba(0,0,0,.87);
+
+  & .mdl-navigation__link {
+    opacity: 1;
+    
+    &.header-desktop {
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+  }
 }
 
 .mdl-layout__header .mdl-layout__drawer-button,
@@ -11,16 +20,16 @@
   color: inherit;
 }
 
-.mdl-navigation__link {
-  opacity: 1;
-}
 
 @media screen and (max-width: 839px) {
-  .mdl-layout__header-row .mdl-navigation {
-    margin-right: -14px;
-  }
-  .mdl-layout__header-row .mdl-navigation__link {
-    padding: 0px 12px;
+  .mdl-layout__header-row {
+    & .mdl-navigation {
+      margin-right: -14px;
+    }
+
+    & .mdl-navigation__link {
+      padding: 0px 12px;
+    }
   }
 }
 

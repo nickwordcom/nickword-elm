@@ -52,20 +52,20 @@ headerNavigation mdlModel searchOpen user language =
     Layout.navigation []
         [ linkTo newEntryPath
             (Navigate newEntryPath)
-            [ class "mdl-navigation__link header-desktop"
+            [ class "mdl-navigation__link mdl-color-text--primary header-desktop"
             , tabindex 1
             ]
-            [ text <| translate language CreateEntryText ]
+            [ text <| translate language CreateText ]
         , linkTo randomEntryPath
             (Navigate randomEntryPath)
-            [ class "mdl-navigation__link header-desktop"
+            [ class "mdl-navigation__link mdl-color-text--primary header-desktop"
             , tabindex 1
             ]
-            [ text <| translate language RandomEntryText ]
+            [ text <| translate language RandomText ]
         , linkTo userEntriesPath
             (Navigate userEntriesPath)
             [ classList
-                [ ( "mdl-navigation__link header-desktop", True )
+                [ ( "mdl-navigation__link mdl-color-text--primary header-desktop", True )
                 , ( "h-hidden", userIsUnknown user )
                 ]
             , tabindex 1
@@ -74,7 +74,7 @@ headerNavigation mdlModel searchOpen user language =
         , Layout.link
             [ Options.onClick ToggleTopLoginForm
             , Options.attribute <| Html.Attributes.tabindex 1
-            , cs "mdl-navigation__link header-desktop h-clickable"
+            , cs "mdl-navigation__link mdl-color-text--primary header-desktop h-clickable"
             , if userIsUnknown user then
                 nop
               else
