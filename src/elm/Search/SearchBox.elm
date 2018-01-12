@@ -38,7 +38,7 @@ searchBox searchOpen searchInputValue language =
                 , value searchInputValue
                 , onInput UpdateSearchField
                 , onEnter (SearchEntries searchInputValue)
-                , class "searchbox__input mdl-color--grey-50"
+                , class "searchbox__input mdl-color--grey-100"
                 , id "searchbox-input"
                 , placeholder <| translate language SearchPlaceholder
                 ]
