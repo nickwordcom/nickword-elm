@@ -139,6 +139,12 @@
     }
   }
 
+  &__login-form {
+    & .login-form__close {
+      display: none;
+    }
+  }
+
   // &__categories-select {
   //   &-block {
   //     position: absolute;

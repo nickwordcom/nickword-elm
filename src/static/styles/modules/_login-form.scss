@@ -1,6 +1,7 @@
 .login-form {
 
   &__wrapper {
+    position: relative;
     max-width: 380px;
     margin: 0 auto;
   }
@@ -81,5 +82,12 @@
     }
 
     &-label {}
+  }
+
+  &__close {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    opacity: .7;
   }
 }

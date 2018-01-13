@@ -99,7 +99,7 @@ page model =
                 NotFoundRoute ->
                     NotFoundPage.view model.appLanguage
     in
-    [ LoginLinks.topBlock model.user model.appLanguage model.route model.loginFormTopBlockOpen
+    [ LoginLinks.topBlock model.user model.appLanguage model.route model.loginFormTopBlockOpen ToggleTopLoginForm
     , page
     , Footer.view model.user model.appLanguage
     , Snackbar.view model.snackbar |> Html.map Snackbar

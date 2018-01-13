@@ -4,6 +4,8 @@ import App.Routing exposing (Route, routeToPath)
 import App.Translations exposing (..)
 import Html exposing (Html, a, div, h3, p, span, text)
 import Html.Attributes exposing (class, classList, href)
+import Html.Events exposing (onClick)
+import Material.Icon as Icon
 import OAuth.Config exposing (..)
 import Svg
 import Svg.Attributes
@@ -11,16 +13,16 @@ import Users.Models exposing (User)
 import Users.Utils exposing (userIsUnknown)
 
 
-view : User -> Language -> Route -> Html msg
-view user language route =
+view : User -> Language -> Route -> msg -> Html msg
+view user language route closeMsg =
     if userIsUnknown user then
-        loginForm (routeToPath route) language
+        loginForm (routeToPath route) language closeMsg
     else
         div [] []
 
 
-topBlock : User -> Language -> Route -> Bool -> Html msg
-topBlock user language route blockOpen =
+topBlock : User -> Language -> Route -> Bool -> msg -> Html msg
+topBlock user language route blockOpen closeMsg =
     div
         [ classList
             [ ( "mdl-color--blue-grey-900 mdl-color-text--white", True )
@@ -28,11 +30,11 @@ topBlock user language route blockOpen =
             , ( "h-hidden", not blockOpen )
             ]
         ]
-        [ view user language route ]
+        [ view user language route closeMsg ]
 
 
-loginForm : String -> Language -> Html msg
-loginForm path language =
+loginForm : String -> Language -> msg -> Html msg
+loginForm path language closeMsg =
     div [ class "login-form" ]
         [ div [ class "login-form__wrapper" ]
             [ div [ class "login-form__header" ]
@@ -80,5 +82,10 @@ loginForm path language =
                 ]
             , p [ class "login-form__description" ]
                 [ text <| translate language LoginFormSecondaryDescr ]
+            , div
+                [ class "login-form__close h-clickable"
+                , onClick closeMsg
+                ]
+                [ Icon.i "close" ]
             ]
         ]
