@@ -6,7 +6,7 @@ import App.Translations exposing (Language)
 import App.Utils.Title exposing (setEntryDescription, setEntryTitle)
 import Categories.Update as CategoriesUpdate
 import Dom.Scroll
-import Entries.Commands exposing (fetchAllFromCategory)
+import Entries.Commands exposing (fetchAllFromCategory, fetchUserEntries)
 import Entries.Messages exposing (Msg(..))
 import Entries.Models exposing (Entry, FilterType(..), FiltersConfig, LoadMoreState(..))
 import Entries.NewEntry.Update as NewEntryUpdate
@@ -15,6 +15,7 @@ import Material.Layout exposing (mainId)
 import Navigation
 import RemoteData exposing (RemoteData(..), WebData)
 import Task
+import Users.Models exposing (User)
 import Votes.Commands exposing (fetchEntryVotes, fetchEntryVotesSlim)
 import Votes.Update as VotesUpdate
 import Words.Commands exposing (fetchEntryWords)
@@ -72,7 +73,7 @@ update msg model =
                 | pageNumber = updatedPageNumber
                 , loadMoreState = EntriesLoading
             }
-                ! [ loadMoreEntiresCmd model.route model.appLanguage updatedPageNumber ]
+                ! [ loadMoreEntiresCmd model.route model.user model.appLanguage updatedPageNumber ]
 
         ApplyFilters filterType ->
             let
@@ -222,11 +223,14 @@ applyEntryFilters route filtersConfig =
             Cmd.none
 
 
-loadMoreEntiresCmd : Route -> Language -> Int -> Cmd Msg
-loadMoreEntiresCmd route language pageNumber =
+loadMoreEntiresCmd : Route -> User -> Language -> Int -> Cmd Msg
+loadMoreEntiresCmd route user language pageNumber =
     case route of
         CategoryRoute slug id ->
             fetchAllFromCategory id language pageNumber
+
+        UserEntriesRoute ->
+            fetchUserEntries user language pageNumber
 
         _ ->
             Cmd.none

@@ -79,7 +79,7 @@ page model =
                     categoryShowPage model id
 
                 UserEntriesRoute ->
-                    UserEntriesPage.view model.allEntries model.appLanguage
+                    UserEntriesPage.view model.allEntries model.loadMoreState model.appLanguage
                         |> Html.map EntriesMsg
 
                 PopularRoute ->
