@@ -1,7 +1,5 @@
 module Categories.Models exposing (..)
 
-import Entries.Models exposing (Entry)
-
 
 type alias CategoryId =
     String

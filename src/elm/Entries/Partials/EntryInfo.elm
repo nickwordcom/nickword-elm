@@ -25,16 +25,8 @@ entryInfo entry entryVotedWords entryTopWord newWordValue newWordFieldActive cat
         [ div [ class "entry-page__info-secondary" ]
             [ entryImage entry.image.url entry.title
             , entryImageSource entry.image language
-            , div [ class "entry-page__votes-counter" ]
-                [ div [ class "votes-counter__icon-block" ]
-                    [ Icon.i "record_voice_over" ]
-                , div [ class "votes-counter__info" ]
-                    [ span [ class "votes-counter__info-number", title (toString entry.votesCount) ]
-                        [ text (convertVotes entry.votesCount language) ]
-                    , span [ class "votes-counter__info-text" ]
-                        [ text <| translate language (VotesReceivedText entry.votesCount) ]
-                    ]
-                ]
+
+            -- , votesReceived entry.votesCount language
             ]
         , div [ class "entry-page__info-primary" ]
             [ h1 [ class "entry-page__title" ] [ text entry.title ]
@@ -76,3 +68,17 @@ entryImageSource { url, caption } language =
             ]
     else
         span [] []
+
+
+votesReceived : Int -> Language -> Html Msg
+votesReceived votesCount language =
+    div [ class "entry-page__votes-counter" ]
+        [ div [ class "votes-counter__icon-block" ]
+            [ Icon.i "record_voice_over" ]
+        , div [ class "votes-counter__info" ]
+            [ span [ class "votes-counter__info-number", title (toString votesCount) ]
+                [ text (convertVotes votesCount language) ]
+            , span [ class "votes-counter__info-text" ]
+                [ text <| translate language (VotesReceivedText votesCount) ]
+            ]
+        ]
