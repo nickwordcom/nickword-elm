@@ -1,41 +1,52 @@
 .new-word-field {
-  &__label {
-    display: block;
-    line-height: 16px;
-    margin-bottom: 8px;
-    font-size: 16px;
-    font-weight: 400;
-    color: #757575;
-  }
-
   &__wrapper {
     position: relative;
     width: 100%;
     height: 48px;
     border-radius: 2px;
-    overflow: hidden;
-    transition: box-shadow 250ms ease-in-out 0s;
   }
 
-  &__input {
+  &__input-block {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 64px;
+  }
+
+  &__input-field {
     width: 100%;
-    padding: 12px 104px 12px 16px;
+    padding: 12px 16px 12px 56px;
     line-height: 24px;
     font-size: 16px;
     box-sizing: border-box;
     border: none;
+    // transition: box-shadow 250ms ease-in-out 0s;
 
     &:focus {
       outline: none;
     }
   }
 
-  &__add-btn {
+  &__input-icon {
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 16px;
+  }
+
+  &__button-add {
     position: absolute;
     top: 0;
     right: 0;
     height: 48px;
-    border-radius: 0 2px 2px 0;
+    width: 48px;
+    min-width: 48px;
+    background: rgb(33,150,243) !important;
+
+    &:hover,
+    &:active {
+      background: rgb(33,150,243) !important;
+    }
   }
 
   &__description{

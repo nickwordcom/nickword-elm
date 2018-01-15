@@ -8,6 +8,7 @@ import Html.Events exposing (..)
 import Json.Decode as Json exposing (map)
 import Material exposing (Model)
 import Material.Button as Button
+import Material.Icon as Icon
 import Material.Options as Options exposing (cs, nop, onClick)
 import RemoteData exposing (RemoteData(Success), WebData)
 import Users.Models exposing (UserStatus(..))
@@ -18,15 +19,22 @@ import Words.Models exposing (EntryVotedWords, Word)
 addNewWordForm : String -> EntryId -> Bool -> WebData EntryVotedWords -> Maybe Word -> UserStatus -> Language -> Material.Model -> Html Msg
 addNewWordForm newWordValue entryId newWordFieldActive entryVotedWords entryTopWord userStatus language mdlModel =
     let
-        inputBlockClasses =
-            classList
-                [ ( "new-word-field__wrapper", True )
-                , ( "mdl-shadow--4dp", newWordFieldActive )
-                , ( "mdl-shadow--2dp", not newWordFieldActive )
-                ]
-
         maxVotes =
             reachedVotesLimit entryId entryVotedWords
+
+        showShadow =
+            if maxVotes then
+                False
+            else
+                not newWordFieldActive
+
+        inputFieldClasses =
+            classList
+                [ ( "new-word-field__input-field", True )
+                , ( "mdl-shadow--4dp", newWordFieldActive )
+                , ( "mdl-shadow--2dp", showShadow )
+                , ( "h-cursor-default", maxVotes )
+                ]
 
         addNewWordMsg =
             if maxVotes then
@@ -35,35 +43,38 @@ addNewWordForm newWordValue entryId newWordFieldActive entryVotedWords entryTopW
                 AddNewWord newWordValue entryId
     in
     section [ class "new-word-field" ]
-        [ label [ for "new-word-field", class "new-word-field__label" ]
-            [ text <| translate language DescribeIOWText ]
-        , div [ inputBlockClasses ]
-            [ input
-                [ class "new-word-field__input"
-                , id "new-word-field"
-                , onInput UpdateNewWordValue
-                , onEnter addNewWordMsg
-                , onFocus (SetElevation True)
-                , onBlur (SetElevation False)
-                , value newWordValue
-                , type_ "text"
-                , placeholder <| translate language YourWordText
-                , disabled maxVotes
+        [ div [ class "new-word-field__wrapper" ]
+            [ div [ class "new-word-field__input-block" ]
+                [ input
+                    [ id "new-word-field"
+                    , inputFieldClasses
+                    , onInput UpdateNewWordValue
+                    , onEnter addNewWordMsg
+                    , onFocus (SetElevation True)
+                    , onBlur (SetElevation False)
+                    , value newWordValue
+                    , type_ "text"
+                    , placeholder <| translate language DescribeIOWText
+                    , disabled maxVotes
+                    ]
+                    []
                 ]
-                []
+            , label [ for "new-word-field", class "new-word-field__input-icon mdl-color-text--grey-600" ]
+                [ Icon.i "record_voice_over" ]
             , Button.render MDL
                 [ 1 ]
                 mdlModel
-                [ Button.raised
+                [ Button.fab
+                , Button.ripple
                 , Button.colored
                 , if maxVotes then
                     Button.disabled
                   else
                     nop
                 , Options.onClick addNewWordMsg
-                , cs "new-word-field__add-btn"
+                , cs "new-word-field__button-add"
                 ]
-                [ text <| translate language DescribeText ]
+                [ Icon.i "add" ]
             ]
         , newWordDescription newWordFieldActive entryTopWord userStatus language
         ]
@@ -96,7 +107,7 @@ newWordDescription newWordFieldActive entryTopWord userStatus language =
                 ]
 
         _ ->
-            span [ class "new-word-field__description" ] []
+            text ""
 
 
 onEnter : Msg -> Attribute Msg
