@@ -9,6 +9,10 @@
   }
 
   &__head {
+    & > i {
+      float: left;
+      margin-right: 8px;
+    }
 
     &-title {
       display: inline-block;

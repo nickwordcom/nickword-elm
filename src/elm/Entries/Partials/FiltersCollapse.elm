@@ -9,6 +9,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Material
+import Material.Icon as Icon
 import RemoteData exposing (WebData)
 
 
@@ -19,7 +20,8 @@ view countries entryVotedCountries ({ filtersExpanded } as filtersConfig) langua
             [ class "filters-collapse__head h-clearfix h-clickable"
             , onClick ToggleEntryFilters
             ]
-            [ h4 [ class "filters-collapse__head-title" ]
+            [ Icon.i "filter_list"
+            , h4 [ class "filters-collapse__head-title" ]
                 [ text <| translate language FiltersText ]
             , span [ classList [ ( "filters-collapse__head-action", True ), ( "is-visible", not filtersExpanded ) ] ]
                 [ text <| translate language ShowText ]
