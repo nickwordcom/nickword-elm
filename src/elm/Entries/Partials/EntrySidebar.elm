@@ -8,6 +8,7 @@ import Entries.Partials.VoteFilters as VoteFilters
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Material
+import Material.Icon as Icon
 import RemoteData exposing (WebData)
 
 
@@ -15,8 +16,11 @@ view : WebData (List Country) -> EntryVotedCountries -> FiltersConfig -> Languag
 view countries entryVotedCountries filtersConfig language mdlModel =
     div [ class "entry-sidebar" ]
         [ div [ class "entry-sidebar__section" ]
-            [ h3 [ class "entry-sidebar__section-title h-overflow-ellipsis" ]
-                [ text <| translate language FilterText ]
+            [ div [ class "entry-sidebar__section-head h-overflow-ellipsis" ]
+                [ Icon.i "filter_list"
+                , h3 [ class "entry-sidebar__section-title" ]
+                    [ text <| translate language FilterText ]
+                ]
             , div [ class "entry-sidebar__section-content" ]
                 [ VoteFilters.view countries entryVotedCountries filtersConfig language mdlModel ]
             ]

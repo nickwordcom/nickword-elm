@@ -3,15 +3,24 @@
   &__section {
     margin-bottom: 32px;
 
-    &-title {
+    &-head {
       width: 100%;
       margin: 0 0 24px 0;
       padding: 12px 0;
-      font-size: 14px;
-      line-height: 24px;
+      line-height: 0;
       border-bottom: 1px solid #e0e0e0;
-      // color: rgba(0, 0, 0, 0.54);
+
+      & i {
+        margin-right: 8px;
+      }
+    }
+
+    &-title {
+      display: inline-block;
+      margin: 0;
       text-transform: uppercase;
+      line-height: 24px;
+      font-size: 14px;
       letter-spacing: 0.02em;
       vertical-align: top;
     }
