@@ -1,6 +1,6 @@
 module Entries.Partials.FiltersCollapse exposing (view)
 
-import App.Translations exposing (Language, TranslationId(FiltersText, HideText, ShowText), translate)
+import App.Translations exposing (Language, TranslationId(FilterText, HideText, ShowText), translate)
 import Countries.Models exposing (Country, EntryVotedCountries)
 import Entries.Messages exposing (Msg(ToggleEntryFilters))
 import Entries.Models exposing (FiltersConfig)
@@ -22,7 +22,7 @@ view countries entryVotedCountries ({ filtersExpanded } as filtersConfig) langua
             ]
             [ Icon.i "filter_list"
             , h4 [ class "filters-collapse__head-title" ]
-                [ text <| translate language FiltersText ]
+                [ text <| translate language FilterText ]
             , span [ classList [ ( "filters-collapse__head-action", True ), ( "is-visible", not filtersExpanded ) ] ]
                 [ text <| translate language ShowText ]
             , span [ classList [ ( "filters-collapse__head-action", True ), ( "is-visible", filtersExpanded ) ] ]

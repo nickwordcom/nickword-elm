@@ -30,7 +30,7 @@ type TranslationId
     | NotFound
     | ShowText
     | HideText
-    | FiltersText
+    | FilterText
     | CountryText
     | EmotionsText
     | TranslateWordsText
@@ -208,11 +208,11 @@ translate language translationId =
                     , spanish = "Ocultar"
                     }
 
-                FiltersText ->
-                    { english = "Filters"
-                    , ukrainian = "Фільтри"
-                    , russian = "Фильтры"
-                    , spanish = "Filtros"
+                FilterText ->
+                    { english = "Filter"
+                    , ukrainian = "Фільтрувати"
+                    , russian = "Фильтровать"
+                    , spanish = "Filtrar"
                     }
 
                 CountryText ->
