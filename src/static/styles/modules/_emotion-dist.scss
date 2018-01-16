@@ -1,11 +1,9 @@
 .emotion-dist {
-  margin: 24px 0;
+  margin: 16px 0;
 
   &__head {
     margin: 0 0 8px 0;
-    padding: 0 24px;
-    line-height: 30px;
-    font-size: 14px;
+    padding: 0 16px;
 
     @include breakpoint(840px) {
       line-height: 24px;
@@ -18,64 +16,19 @@
       background-color: #f8f8f8;
     }
 
-    &-votes {
-      display: inline-block;
-      margin: 0 8px 0 0;
-      line-height: inherit;
-      font-size: inherit;
-    }
-
-    &-info {
-      display: inline-block;
-      padding-left: 4px;
-    }
-
-    &-filters {
-      display: inline-block;
-      vertical-align: top;
-      font-size: 0;
-
-      & .mdl-chip {
-        height: 26px;
-        line-height: 26px;
-        margin: 2px 8px 2px 0;
-        padding-left: 10px;
-        vertical-align: middle;
-
-        @include breakpoint(840px) {
-          height: 24px;
-          line-height: 24px;
-          margin: 0 8px 0 0;
-        }
-
-        &:last-child {
-          margin-right: 0;
-        }
-      }
-
-      & .mdl-chip__action {
-        height: 26px;
-        width: 20px;
-
-        & i {
-          font-size: 18px;
-          vertical-align: middle;
-        }
-      }
+    & .mdl-chip {
+      margin-right: 8px;
     }
   }
 
-  &__wrapper {
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    overflow: hidden;
-  }
+  &__data {}
 
   &__stats {
     &-item {
       display: table-cell;
       width: 1%;
       padding: 10px 5px;
+      font-size: 16px;
       text-align: center;
       white-space: nowrap;
 
@@ -120,24 +73,26 @@
     width: 100%;
     display: table;
     overflow: hidden;
+    border-radius: 10px;
     white-space: nowrap;
 
     &-item {
       display: table-cell;
-      height: 8px;
-      -webkit-transition: width 0.5s linear;
-      -moz-transition: width 0.5s linear;
-      -o-transition: width 0.5s linear;
+      height: 10px;
+      border: 1px solid #fff;
+      border-width: 0 1px;
       transition: width 0.5s linear;
 
       &.-type-positive {
+        border-left-width: 0;
         background-color: #66BB6A;
-      }
-      &.-type-negative {
-        background-color: #EF5350;
       }
       &.-type-neutral {
         background-color: #FFCA28;
+      }
+      &.-type-negative {
+        border-right-width: 0;
+        background-color: #EF5350;
       }
     }
   }

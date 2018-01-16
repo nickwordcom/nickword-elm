@@ -9,6 +9,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import List.Extra as ListEx
 import Material.Chip as Chip
+import Material.Color as Color
+import Material.Options as Options
 import RemoteData exposing (RemoteData(..), WebData)
 import Words.Models exposing (EmotionInfo)
 
@@ -19,8 +21,7 @@ view distribution filtersConfig countries language =
         Just distribution ->
             div [ class "emotion-dist" ]
                 [ div [ class "emotion-dist__head" ]
-                    [ h3 [ class "emotion-dist__head-votes" ]
-                        [ text <| votesAmountText distribution language ]
+                    [ votesAmountChip distribution language
                     , votesFilterInfo filtersConfig countries language
                     ]
                 , distStats language <| normalizePct distribution
@@ -45,7 +46,7 @@ distStats language emotionsPct =
         negativePct =
             Dict.get "negative" emotionsPct |> Maybe.withDefault "0"
     in
-    div [ class "emotion-dist__wrapper" ]
+    div [ class "emotion-dist__data" ]
         [ div [ class "emotion-dist__stats" ]
             [ div [ class "emotion-dist__stats-item" ]
                 [ span [ class "emotion-dist__stats-item-color -type-positive" ] []
@@ -102,6 +103,20 @@ roundPct pct =
         |> toString
 
 
+votesAmountChip : List EmotionInfo -> Language -> Html Msg
+votesAmountChip distribution language =
+    Chip.span
+        [ Color.background Color.primary
+        , Color.text Color.white
+        ]
+        [ Chip.content
+            [ Options.css "font-size" "14px"
+            , Options.css "font-weight" "500"
+            ]
+            [ text <| votesAmountText distribution language ]
+        ]
+
+
 votesAmountText : List EmotionInfo -> Language -> String
 votesAmountText distribution language =
     let
@@ -129,7 +144,7 @@ emptyDistribution =
 
 votesFilterInfo : FiltersConfig -> WebData (List Country) -> Language -> Html Msg
 votesFilterInfo { country, emotions } countriesData language =
-    div [ class "emotion-dist__head-filters" ]
+    span [ class "emotion-dist__head-filters" ]
         [ countryFilterChip country countriesData
         , emotionsFilterChip emotions language
         ]
