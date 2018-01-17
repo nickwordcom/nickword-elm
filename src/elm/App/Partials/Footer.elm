@@ -30,31 +30,27 @@ view user language =
 
 languagesSection : Language -> Footer.Content Msg
 languagesSection language =
+    let
+        linkItem ( lang, linkText ) =
+            Footer.linkItem
+                [ Options.onClick (ChangeLanguage lang)
+                , Options.onMouseUp ScrollToTop
+                , cs "h-clickable"
+                ]
+                [ Footer.html (text linkText) ]
+
+        links =
+            [ ( English, "English" )
+            , ( Ukrainian, "Українська" )
+            , ( Russian, "Русский" )
+            , ( Spanish, "Español" )
+            ]
+                |> List.map linkItem
+    in
     Footer.dropdown []
         [ Footer.heading []
             [ Footer.html <| text <| translate language LanguagesText ]
-        , Footer.links []
-            [ Footer.linkItem
-                [ Options.onClick (ChangeLanguage English)
-                , cs "h-clickable"
-                ]
-                [ Footer.html <| text "English" ]
-            , Footer.linkItem
-                [ Options.onClick (ChangeLanguage Ukrainian)
-                , cs "h-clickable"
-                ]
-                [ Footer.html <| text "Українська" ]
-            , Footer.linkItem
-                [ Options.onClick (ChangeLanguage Russian)
-                , cs "h-clickable"
-                ]
-                [ Footer.html <| text "Русский" ]
-            , Footer.linkItem
-                [ Options.onClick (ChangeLanguage Spanish)
-                , cs "h-clickable"
-                ]
-                [ Footer.html <| text "Español" ]
-            ]
+        , Footer.links [] links
         ]
 
 
