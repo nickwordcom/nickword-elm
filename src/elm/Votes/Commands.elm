@@ -34,7 +34,7 @@ fetchEntryVotesSlim entryId filtersConfig =
 
 addNewVote : EntryId -> WordId -> UserToken -> Cmd Msg
 addNewVote entryId wordId token =
-    postWithAuth (votesUrl entryId wordId) newVoteEncoded createdVoteDecoder token
+    postWithAuth (votesUrl entryId wordId) Encode.null createdVoteDecoder token
         |> Http.send AddNewVote
 
 
@@ -191,8 +191,3 @@ countryWithVotes =
 
 
 -- ENCODERS
-
-
-newVoteEncoded : Encode.Value
-newVoteEncoded =
-    Encode.object [ ( "", Encode.string "" ) ]
