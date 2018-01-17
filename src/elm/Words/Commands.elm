@@ -31,12 +31,17 @@ fetchEntryVotedWords entryId token =
 
 addNewWord : WordName -> EntryId -> UserToken -> Cmd Msg
 addNewWord wordName entryId token =
-    postWithAuth (entryWordsUrlPOST entryId) (newWordEncoded wordName) wordSingleDecoder token
+    postWithAuth (entryWordsUrlStr entryId) (newWordEncoded wordName) wordSingleDecoder token
         |> Http.send AddNewWordData
 
 
 
 -- URLs
+
+
+entryWordsUrlStr : EntryId -> String
+entryWordsUrlStr entryId =
+    apiUrl ++ "/entries/" ++ entryId ++ "/words"
 
 
 entryWordsUrl : EntryId -> FiltersConfig -> String
@@ -82,11 +87,6 @@ entryWordsUrl entryId { country, emotions, translate, limit } =
                 |> List.filter (\p -> p /= ( "", "" ))
     in
     encodeUrl baseUrl params
-
-
-entryWordsUrlPOST : EntryId -> String
-entryWordsUrlPOST entryId =
-    apiUrl ++ "/p/entries/" ++ entryId ++ "/words"
 
 
 entryVotedWordsUrl : EntryId -> String

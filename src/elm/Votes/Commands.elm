@@ -34,7 +34,7 @@ fetchEntryVotesSlim entryId filtersConfig =
 
 addNewVote : EntryId -> WordId -> UserToken -> Cmd Msg
 addNewVote entryId wordId token =
-    postWithAuth (votesUrlPOST entryId wordId) newVoteEncoded createdVoteDecoder token
+    postWithAuth (votesUrl entryId wordId) newVoteEncoded createdVoteDecoder token
         |> Http.send AddNewVote
 
 
@@ -115,11 +115,6 @@ entryVotesSlimUrl entryId { country, emotions } =
 votesUrl : EntryId -> WordId -> String
 votesUrl entryId wordId =
     apiUrl ++ "/entries/" ++ entryId ++ "/words/" ++ wordId ++ "/votes"
-
-
-votesUrlPOST : EntryId -> WordId -> String
-votesUrlPOST entryId wordId =
-    apiUrl ++ "/p/entries/" ++ entryId ++ "/words/" ++ wordId ++ "/votes"
 
 
 entryVotedCountriesUrl : EntryId -> String

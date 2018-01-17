@@ -1,8 +1,7 @@
 module Entries.NewEntry.Commands exposing (..)
 
-import App.Utils.Config exposing (apiUrl)
 import App.Utils.Requests exposing (postWithAuth)
-import Entries.Commands exposing (entrySingleDecoder)
+import Entries.Commands exposing (entriesUrl, entrySingleDecoder)
 import Entries.Models exposing (NewEntry, newEntryInit)
 import Entries.NewEntry.Messages exposing (Msg(AddNewEntryData))
 import Entries.NewEntry.Models exposing (NewEntryModel)
@@ -17,17 +16,8 @@ import Users.Models exposing (UserToken)
 
 addNewEntry : NewEntry -> UserToken -> Cmd Msg
 addNewEntry newEntry token =
-    postWithAuth entriesUrlPOST (newEntryEncoded newEntry) entrySingleDecoder token
+    postWithAuth entriesUrl (newEntryEncoded newEntry) entrySingleDecoder token
         |> Http.send AddNewEntryData
-
-
-
--- URLs
-
-
-entriesUrlPOST : String
-entriesUrlPOST =
-    apiUrl ++ "/p/entries"
 
 
 
