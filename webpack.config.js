@@ -29,6 +29,9 @@ const extractCSS = new ExtractTextPlugin({
   disable: isDev === true
 });
 
+// debug: true
+const elmLoaderOptions = isDev ? { verbose: true, warn: true } : {}
+
 console.log('WEBPACK GO!');
 
 // Common webpack config (development and production)
@@ -59,6 +62,14 @@ var commonConfig = {
   module: {
     noParse: [/\.elm$/, /src\/static\/js\/vendor/],
     rules: [
+      {
+        test: /\.elm$/,
+        exclude: [/elm-stuff/, /node_modules/],
+        use: [{
+          loader: 'elm-webpack-loader',
+          options: elmLoaderOptions
+        }]
+      },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         use: [{
@@ -144,23 +155,6 @@ if ( isDev === true ) {
       historyApiFallback: true,
       contentBase: './src',
       hot: true
-    },
-
-    module: {
-      rules: [
-        {
-          test: /\.elm$/,
-          exclude: [/elm-stuff/, /node_modules/],
-          use: [{
-            loader: 'elm-webpack-loader',
-            options: {
-              verbose: true,
-              warn: true,
-              // debug: true
-            }
-          }]
-        }
-      ]
     }
   });
 }
@@ -173,16 +167,6 @@ if ( isProd === true ) {
 
     entry: {
       app: entryPath
-    },
-
-    module: {
-      rules: [
-        {
-          test: /\.elm$/,
-          exclude: [/elm-stuff/, /node_modules/],
-          use: 'elm-webpack-loader'
-        }
-      ]
     },
 
     plugins: [
