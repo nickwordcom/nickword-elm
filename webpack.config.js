@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
 const autoprefixer      = require( 'autoprefixer' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const InlineChunkWebpackPlugin
-                      = require( 'html-webpack-inline-chunk-plugin' );
+const ScriptExtHtmlWebpackPlugin
+                      = require( 'script-ext-html-webpack-plugin' );
 
 const prod = 'production';
 const dev = 'development';
@@ -32,7 +32,7 @@ const extractCSS = new ExtractTextPlugin({
 // debug: true
 const elmLoaderOptions = isDev ? { verbose: true, warn: true } : {}
 
-console.log('WEBPACK GO!');
+console.log('webpack is running...');
 
 // Common webpack config (development and production)
 var commonConfig = {
@@ -137,8 +137,8 @@ var commonConfig = {
   ],
 }
 
-// Development config ('npm run start')
-if ( isDev === true ) {
+// Development config
+if ( isDev ) {
   console.log('Development build');
 
   module.exports = merge( commonConfig, {
@@ -159,8 +159,8 @@ if ( isDev === true ) {
   });
 }
 
-// Production config ('npm run build')
-if ( isProd === true ) {
+// Production config
+if ( isProd ) {
   console.log('Production build');
 
   module.exports = merge( commonConfig, {
@@ -177,8 +177,9 @@ if ( isProd === true ) {
         },
       ]),
 
-      new InlineChunkWebpackPlugin({
-        inlineChunks: ['manifest']
+      new ScriptExtHtmlWebpackPlugin({
+        inline: /manifest/,
+        defaultAttribute: 'defer'
       }),
 
       new webpack.optimize.UglifyJsPlugin()
