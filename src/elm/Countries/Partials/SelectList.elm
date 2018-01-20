@@ -89,7 +89,7 @@ checkTargetValue val =
 
 flagUrl : CountryCode -> String
 flagUrl countryCodeStr =
-    "/static/img/flags/" ++ toLower countryCodeStr ++ ".png"
+    "https://flagicon.netlify.com/16/" ++ toLower countryCodeStr ++ ".png"
 
 
 flagImg : CountryCode -> Html Msg
