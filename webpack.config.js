@@ -1,24 +1,39 @@
-var path              = require( 'path' );
-var webpack           = require( 'webpack' );
-var merge             = require( 'webpack-merge' );
-var HtmlWebpackPlugin = require( 'html-webpack-plugin' );
-var autoprefixer      = require( 'autoprefixer' );
-var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
-var CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-var InlineChunkWebpackPlugin
+const path              = require( 'path' );
+const webpack           = require( 'webpack' );
+const merge             = require( 'webpack-merge' );
+const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
+const autoprefixer      = require( 'autoprefixer' );
+const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
+const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+const InlineChunkWebpackPlugin
                       = require( 'html-webpack-inline-chunk-plugin' );
-var entryPath         = path.join( __dirname, 'src/static/index.js' );
-var outputPath        = path.join( __dirname, 'dist' );
-var extractMDL = new ExtractTextPlugin( 'static/css/mdl-[contenthash].css' );
-var extractCSS = new ExtractTextPlugin( 'static/css/[name]-[contenthash].css', { allChunks: true } );
+
+const prod = 'production';
+const dev = 'development';
 
 // determine build env
-var TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? 'production' : 'development';
-var outputFilename = TARGET_ENV == 'production' ? '[name]-[chunkhash].js' : '[name].js'
+const TARGET_ENV = process.env.npm_lifecycle_event === 'build' ? prod : dev;
+const isDev = TARGET_ENV == dev;
+const isProd = TARGET_ENV == prod;
 
-console.log( 'WEBPACK GO!');
+// set entry and output path/filename
+const entryPath = path.join(__dirname, 'src/static/index.js');
+const outputPath = path.join(__dirname, 'dist');
+const outputFilename = isProd ? '[name]-[chunkhash].js' : '[name].js'
 
-// common webpack config
+// extract css into files
+const extractMDL = new ExtractTextPlugin({
+  filename: "static/css/mdl-[contenthash].css",
+});
+
+const extractCSS = new ExtractTextPlugin({
+  filename: "static/css/[name]-[contenthash].css",
+  allChunks: true
+});
+
+console.log('WEBPACK GO!');
+
+// Common webpack config (development and production)
 var commonConfig = {
 
   entry: {
@@ -34,24 +49,33 @@ var commonConfig = {
 
   output: {
     path:       outputPath,
-    filename:   path.join( 'static/js/', outputFilename ),
+    filename: `static/js/${outputFilename}`,
     publicPath: '/'
   },
 
   resolve: {
-    extensions: ['', '.js', '.elm']
+    extensions: ['.js', '.elm'],
+    modules: ['node_modules']
   },
 
   module: {
     noParse: [/\.elm$/, /src\/static\/js\/vendor/],
-    loaders: [
+    rules: [
       {
         test: /\.(png|eot|ttf|woff|woff2|svg)$/,
-        loader: 'url-loader?limit=100000'
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 100000
+          }
+        }]
       },
       {
         test: /\mdl.min.css$/,
-        loader: extractMDL.extract( 'style-loader', [ 'css-loader' ])
+        use: extractMDL.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
       }
     ]
   },
@@ -77,16 +101,19 @@ var commonConfig = {
       name: ['manifest']
     }),
 
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: [autoprefixer()]
+      }
+    }),
+
     extractMDL
   ],
-
-  postcss: [ autoprefixer( { browsers: ['last 2 versions'] } ) ],
-
 }
 
-// additional webpack settings for local env (when invoked by 'npm run start')
-if ( TARGET_ENV === 'development' ) {
-  console.log( 'Serving locally...');
+// Development config ('npm run start')
+if ( isDev === true ) {
+  console.log('Development build');
 
   module.exports = merge( commonConfig, {
 
@@ -99,36 +126,37 @@ if ( TARGET_ENV === 'development' ) {
 
     devServer: {
       // Serve index.html in place of 404 responses,
-      // useful when routing without the hash.
       historyApiFallback: true,
+      contentBase: './src',
+      hot: true
     },
 
     module: {
-      loaders: [
+      rules: [
         {
-          test:    /\.elm$/,
+          test: /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
-          // add '&debug=true' ar the end for debugging mode
-          loader:  'elm-hot!elm-webpack?verbose=true&warn=true'
+          use: [{
+            loader: 'elm-webpack-loader',
+            options: {
+              verbose: true,
+              warn: true,
+              // debug: true
+            }
+          }]
         },
         {
           test: /\.scss$/,
-          loaders: [
-            'style-loader',
-            'css-loader',
-            'postcss-loader',
-            'sass-loader'
-          ]
+          use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
         }
       ]
     }
-
   });
 }
 
-// additional webpack settings for prod env (when invoked via 'npm run build')
-if ( TARGET_ENV === 'production' ) {
-  console.log( 'Building for prod...');
+// Production config ('npm run build')
+if ( isProd === true ) {
+  console.log('Production build');
 
   module.exports = merge( commonConfig, {
 
@@ -137,19 +165,18 @@ if ( TARGET_ENV === 'production' ) {
     },
 
     module: {
-      loaders: [
+      rules: [
         {
           test:    /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
-          loader:  'elm-webpack'
+          use: 'elm-webpack-loader'
         },
         {
           test: /\.scss$/,
-          loader: extractCSS.extract( 'style-loader', [
-            'css-loader',
-            'postcss-loader',
-            'sass-loader'
-          ])
+          use: extractCSS.extract({
+            fallback: "style-loader",
+            use: ['css-loader', 'postcss-loader', 'sass-loader']
+          })
         }
       ]
     },
@@ -161,8 +188,6 @@ if ( TARGET_ENV === 'production' ) {
           to:   'static/img/'
         },
       ]),
-
-      new webpack.optimize.OccurenceOrderPlugin(),
 
       extractCSS,
 
@@ -177,6 +202,5 @@ if ( TARGET_ENV === 'production' ) {
           // mangle:  true
       })
     ]
-
   });
 }
