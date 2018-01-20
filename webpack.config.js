@@ -22,10 +22,7 @@ const outputPath = path.join(__dirname, 'dist');
 const outputFilename = isProd ? '[name]-[chunkhash].js' : '[name].js'
 
 // extract css into files
-const extractMDL = new ExtractTextPlugin({
-  filename: "static/css/mdl-[contenthash].css",
-});
-
+const extractMDL = new ExtractTextPlugin("static/css/mdl-[contenthash].css");
 const extractCSS = new ExtractTextPlugin({
   filename: "static/css/[name]-[contenthash].css",
   allChunks: true
@@ -62,11 +59,11 @@ var commonConfig = {
     noParse: [/\.elm$/, /src\/static\/js\/vendor/],
     rules: [
       {
-        test: /\.(png|eot|ttf|woff|woff2|svg)$/,
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 100000
+            limit: 10000
           }
         }]
       },
@@ -174,8 +171,12 @@ if ( isProd === true ) {
         {
           test: /\.scss$/,
           use: extractCSS.extract({
-            fallback: "style-loader",
-            use: ['css-loader', 'postcss-loader', 'sass-loader']
+            fallback: 'style-loader',
+            use: [
+              { loader: 'css-loader', options: { minimize: true } },
+              'postcss-loader',
+              'sass-loader'
+            ]
           })
         }
       ]
