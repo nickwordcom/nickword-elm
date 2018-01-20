@@ -116,6 +116,10 @@ var commonConfig = {
       { from: 'src/static/favicons' },
     ]),
 
+    new webpack.DefinePlugin({
+      PRODUCTION: JSON.stringify(isProd)
+    }),
+
     new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor'],
       minChunks: Infinity

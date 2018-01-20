@@ -56,8 +56,10 @@ app.ports.entryWordCloud.subscribe(function(wordsList) {
 });
 
 app.ports.updateGA.subscribe(function(page) {
+  if (PRODUCTION) {
     ga('set', 'page', page);
     ga('send', 'pageview');
+  }
 });
 
 
