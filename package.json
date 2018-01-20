@@ -15,7 +15,7 @@
     "reinstall": "npm i rimraf && rimraf node_modules && npm uninstall -g elm && npm i -g elm && npm i && elm package install"
   },
   "devDependencies": {
-    "autoprefixer": "^6.5.3",
+    "autoprefixer": "^7.2.5",
     "breakpoint-sass": "^2.7.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.26.1",

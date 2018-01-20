@@ -71,10 +71,14 @@ var commonConfig = {
       {
         test: /\.scss$/,
         use: extractCSS.extract({
+          // Adds CSS to the DOM by injecting a <style> tag
           fallback: 'style-loader',
           use: [
+            // interprets @import and url() like import/require() and will resolve them.
             { loader: 'css-loader', options: { minimize: true } },
+            // process CSS with PostCSS
             'postcss-loader',
+            // compiles Sass to CSS
             'sass-loader'
           ]
         })
@@ -174,7 +178,7 @@ if ( isProd === true ) {
     module: {
       rules: [
         {
-          test:    /\.elm$/,
+          test: /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
           use: 'elm-webpack-loader'
         }
