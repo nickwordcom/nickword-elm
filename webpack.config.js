@@ -25,7 +25,8 @@ const outputFilename = isProd ? '[name]-[chunkhash].js' : '[name].js'
 const extractMDL = new ExtractTextPlugin("static/css/mdl-[contenthash].css");
 const extractCSS = new ExtractTextPlugin({
   filename: "static/css/[name]-[contenthash].css",
-  allChunks: true
+  allChunks: true,
+  disable: isDev === true
 });
 
 console.log('WEBPACK GO!');
@@ -68,6 +69,17 @@ var commonConfig = {
         }]
       },
       {
+        test: /\.scss$/,
+        use: extractCSS.extract({
+          fallback: 'style-loader',
+          use: [
+            { loader: 'css-loader', options: { minimize: true } },
+            'postcss-loader',
+            'sass-loader'
+          ]
+        })
+      },
+      {
         test: /\mdl.min.css$/,
         use: extractMDL.extract({
           fallback: "style-loader",
@@ -104,7 +116,9 @@ var commonConfig = {
       }
     }),
 
-    extractMDL
+    extractMDL,
+
+    extractCSS
   ],
 }
 
@@ -141,10 +155,6 @@ if ( isDev === true ) {
               // debug: true
             }
           }]
-        },
-        {
-          test: /\.scss$/,
-          use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
         }
       ]
     }
@@ -167,17 +177,6 @@ if ( isProd === true ) {
           test:    /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
           use: 'elm-webpack-loader'
-        },
-        {
-          test: /\.scss$/,
-          use: extractCSS.extract({
-            fallback: 'style-loader',
-            use: [
-              { loader: 'css-loader', options: { minimize: true } },
-              'postcss-loader',
-              'sass-loader'
-            ]
-          })
         }
       ]
     },
@@ -190,18 +189,11 @@ if ( isProd === true ) {
         },
       ]),
 
-      extractCSS,
-
       new InlineChunkWebpackPlugin({
         inlineChunks: ['manifest']
       }),
 
-      // minify & mangle JS/CSS
-      new webpack.optimize.UglifyJsPlugin({
-          minimize:   true,
-          compressor: { warnings: false }
-          // mangle:  true
-      })
+      new webpack.optimize.UglifyJsPlugin()
     ]
   });
 }

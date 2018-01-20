@@ -29,7 +29,7 @@ entryInfo entry entryVotedWords entryTopWord newWordValue newWordFieldActive cat
             -- , votesReceived entry.votesCount language
             ]
         , div [ class "entry-page__info-primary" ]
-            [ h1 [ class "entry-page__title" ] [ text entry.title ]
+            [ h1 [ class "entry-page__title asd" ] [ text entry.title ]
             , CategoryInfo.view categories entry.categoryId
             , span [ class "entry-page__description" ] [ text entry.description ]
             , div [ class "entry-page__word-field" ]

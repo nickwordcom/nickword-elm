@@ -22,7 +22,7 @@
     "elm": "^0.18.0",
     "elm-webpack-loader": "^4.3.0",
     "extract-text-webpack-plugin": "^2.1.2",
-    "file-loader": "^0.11.0",
+    "file-loader": "^1.1.6",
     "html-webpack-inline-chunk-plugin": "^1.1.1",
     "html-webpack-plugin": "^2.29.0",
     "node-sass": "^4.7.2",
