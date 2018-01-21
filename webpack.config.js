@@ -18,6 +18,7 @@ const isProd = TARGET_ENV == prod;
 
 // set entry and output path/filename
 const entryPath = path.join(__dirname, 'src/static/index.js');
+const entryPathDev = [ 'webpack-dev-server/client?http://localhost:8080', entryPath ]
 const outputPath = path.join(__dirname, 'dist');
 const outputFilename = isProd ? '[name]-[chunkhash].js' : '[name].js'
 
@@ -38,6 +39,7 @@ console.log('webpack is running...');
 var commonConfig = {
 
   entry: {
+    app: isProd ? entryPath : entryPathDev,
     vendor: [
       "./src/static/js/vendor/d3.custom.min",
       "./src/static/js/vendor/d3.layout.cloud.min",
@@ -146,16 +148,7 @@ if ( isDev ) {
   console.log('Development build');
 
   module.exports = merge( commonConfig, {
-
-    entry: {
-      app: [
-        'webpack-dev-server/client?http://localhost:8080',
-        entryPath
-      ]
-    },
-
     devServer: {
-      // Serve index.html in place of 404 responses,
       historyApiFallback: true,
       contentBase: './src',
       hot: true
@@ -168,11 +161,6 @@ if ( isProd ) {
   console.log('Production build');
 
   module.exports = merge( commonConfig, {
-
-    entry: {
-      app: entryPath
-    },
-
     plugins: [
       new CopyWebpackPlugin([
         {
