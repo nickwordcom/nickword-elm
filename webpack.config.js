@@ -18,9 +18,9 @@ const isProd = TARGET_ENV == prod;
 
 // set entry and output path/filename
 const entryPath = path.join(__dirname, 'src/static/index.js');
-const entryPathDev = [ 'webpack-dev-server/client?http://localhost:8080', entryPath ]
+const entryPathDev = [ 'webpack-dev-server/client?http://localhost:8080', entryPath ];
 const outputPath = path.join(__dirname, 'dist');
-const outputFilename = isProd ? '[name]-[chunkhash].js' : '[name].js'
+const outputFilename = isProd ? '[name]-[chunkhash].js' : '[name].js';
 
 // extract css into files
 const extractMDL = new ExtractTextPlugin("static/css/mdl-[contenthash].css");
@@ -30,13 +30,10 @@ const extractCSS = new ExtractTextPlugin({
   disable: isDev === true
 });
 
-// debug: true
-const elmLoaderOptions = isDev ? { verbose: true, warn: true } : {}
-
-console.log('webpack is running...');
+const elmLoaderOptions = isDev ? { verbose: true, warn: true } : {};
 
 // Common webpack config (development and production)
-var commonConfig = {
+const commonConfig = {
 
   entry: {
     app: isProd ? entryPath : entryPathDev,
@@ -144,39 +141,37 @@ var commonConfig = {
 }
 
 // Development config
-if ( isDev ) {
-  console.log('Development build');
-
-  module.exports = merge( commonConfig, {
-    devServer: {
-      historyApiFallback: true,
-      contentBase: './src',
-      hot: true
-    }
-  });
+const developmentConfig = {
+  devServer: {
+    historyApiFallback: true,
+    contentBase: './src',
+    hot: true
+  }
 }
 
 // Production config
-if ( isProd ) {
-  console.log('Production build');
+const productionConfig = {
+  plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: 'src/static/img/',
+        to:   'static/img/'
+      },
+    ]),
 
-  module.exports = merge( commonConfig, {
-    plugins: [
-      new CopyWebpackPlugin([
-        {
-          from: 'src/static/img/',
-          to:   'static/img/'
-        },
-      ]),
+    new ScriptExtHtmlWebpackPlugin({
+      inline: /manifest/,
+      defaultAttribute: 'defer'
+    }),
 
-      new ScriptExtHtmlWebpackPlugin({
-        inline: /manifest/,
-        defaultAttribute: 'defer'
-      }),
-
-      new webpack.optimize.UglifyJsPlugin({
-        exclude: /vendor/
-      })
-    ]
-  });
+    new webpack.optimize.UglifyJsPlugin({
+      exclude: /vendor/
+    })
+  ]
 }
+
+console.log('webpack is running in ' + TARGET_ENV + ' mode');
+
+let envConfig = isDev ? developmentConfig : productionConfig;
+
+module.exports = merge( commonConfig, envConfig );
