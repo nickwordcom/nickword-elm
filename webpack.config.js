@@ -146,7 +146,11 @@ const developmentConfig = {
     historyApiFallback: true,
     contentBase: './src',
     hot: true
-  }
+  },
+
+  plugins: [
+    new webpack.NamedModulesPlugin()
+  ]
 }
 
 // Production config
