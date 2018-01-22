@@ -145,6 +145,7 @@ const developmentConfig = {
   devServer: {
     historyApiFallback: true,
     contentBase: './src',
+    stats: 'normal',
     hot: true
   },
 
