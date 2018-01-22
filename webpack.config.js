@@ -88,7 +88,7 @@ var commonConfig = {
           fallback: 'style-loader',
           use: [
             // interprets @import and url() like import/require() and will resolve them.
-            { loader: 'css-loader', options: { minimize: true } },
+            { loader: 'css-loader', options: { minimize: isProd } },
             // process CSS with PostCSS
             'postcss-loader',
             // compiles Sass to CSS
