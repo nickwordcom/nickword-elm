@@ -174,7 +174,9 @@ if ( isProd ) {
         defaultAttribute: 'defer'
       }),
 
-      new webpack.optimize.UglifyJsPlugin()
+      new webpack.optimize.UglifyJsPlugin({
+        exclude: /vendor/
+      })
     ]
   });
 }
