@@ -97,7 +97,7 @@ const commonConfig = {
         test: /\mdl.min.css$/,
         use: extractMDL.extract({
           fallback: "style-loader",
-          use: "css-loader"
+          use: "raw-loader"
         })
       }
     ]
