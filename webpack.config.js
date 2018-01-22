@@ -20,12 +20,12 @@ const isProd = TARGET_ENV == prod;
 const entryPath = path.join(__dirname, 'src/static/index.js');
 const entryPathDev = [ 'webpack-dev-server/client?http://localhost:8080', entryPath ];
 const outputPath = path.join(__dirname, 'dist');
-const outputFilename = isProd ? '[name]-[chunkhash].js' : '[name].js';
+const outputFilename = isProd ? '[name].[chunkhash:8].js' : '[name].js';
 
 // extract css into files
-const extractMDL = new ExtractTextPlugin("static/css/mdl-[contenthash].css");
+const extractMDL = new ExtractTextPlugin("static/css/mdl.[contenthash:8].css");
 const extractCSS = new ExtractTextPlugin({
-  filename: "static/css/[name]-[contenthash].css",
+  filename: "static/css/[name].[contenthash:8].css",
   allChunks: true,
   disable: isDev === true
 });
