@@ -124,6 +124,8 @@ const commonConfig = {
       PRODUCTION: JSON.stringify(isProd)
     }),
 
+    new webpack.NamedModulesPlugin(),
+
     new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor'],
       minChunks: Infinity
@@ -143,6 +145,10 @@ const commonConfig = {
 
     extractCSS
   ],
+
+  performance: {
+    maxAssetSize: 350000,
+  },
 }
 
 // Development config
@@ -153,10 +159,6 @@ const developmentConfig = {
     stats: 'normal',
     hot: true
   },
-
-  plugins: [
-    new webpack.NamedModulesPlugin()
-  ]
 }
 
 // Production config
