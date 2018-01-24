@@ -1,4 +1,4 @@
-@charset "UTF-8";
+@charset 'UTF-8';
 
 @import '~breakpoint-sass/stylesheets/_breakpoint';
 @import './vendor/_leaflet';
@@ -18,17 +18,17 @@
 @import './modules/_row-header';
 @import './modules/_searchbox';
 @import './modules/_header';
-@import "./modules/_new-word-field";
-@import "./modules/_new-entry";
-@import "./modules/_not-found";
-@import "./modules/_votes-counter";
-@import "./modules/_vote-filters";
-@import "./modules/_filters-collapse";
-@import "./modules/_countries-select";
-@import "./modules/_word-cloud";
-@import "./modules/_login-form";
-@import "./modules/_word-progress";
-@import "./modules/_emotion-dist";
+@import './modules/_new-word-field';
+@import './modules/_new-entry';
+@import './modules/_not-found';
+@import './modules/_votes-counter';
+@import './modules/_vote-filters';
+@import './modules/_filters-collapse';
+@import './modules/_countries-select';
+@import './modules/_word-cloud';
+@import './modules/_login-form';
+@import './modules/_word-progress';
+@import './modules/_emotion-dist';
 @import './helpers/_helpers';
 
 body {

@@ -38,24 +38,29 @@ const commonConfig = {
   entry: {
     app: isProd ? entryPath : entryPathDev,
     vendor: [
-      "./src/static/js/vendor/d3.custom.min",
-      "./src/static/js/vendor/d3.layout.cloud.min",
-      "./src/static/js/vendor/dialog-polyfill-0.4.9.min",
-      "./src/static/js/vendor/leaflet-1.2.0.min",
-      "./src/static/js/vendor/prunecluster-2.1.0.min",
-      "./src/static/js/vendor/leaflet.fullscreen-1.0.1.min",
+      'VendorJS/d3.custom.min',
+      'VendorJS/d3.layout.cloud.min',
+      'VendorJS/dialog-polyfill-0.4.9.min',
+      'VendorJS/leaflet-1.2.0.min',
+      'VendorJS/prunecluster-2.1.0.min',
+      'VendorJS/leaflet.fullscreen-1.0.1.min',
     ],
   },
 
   output: {
-    path:       outputPath,
+    path: outputPath,
     filename: `static/js/${outputFilename}`,
     publicPath: '/'
   },
 
   resolve: {
     extensions: ['.js', '.elm'],
-    modules: ['node_modules']
+    alias: {
+      ELM: path.resolve(__dirname, 'src/elm/'),
+      CSS: path.resolve(__dirname, 'src/static/styles/'),
+      JS: path.resolve(__dirname, 'src/static/js/'),
+      VendorJS: path.resolve(__dirname, 'src/static/js/vendor/'),
+    },
   },
 
   module: {

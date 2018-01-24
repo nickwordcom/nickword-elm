@@ -1,17 +1,17 @@
-require( './styles/vendor/mdl.min.css' );
-require( './styles/main.scss' );
+require( 'CSS/vendor/mdl.min.css' );
+require( 'CSS/main.scss' );
 
-var entryCloudBuilder = require( './js/entry-cloud-builder' );
-var navigatorLanguage = require( './js/navigator-language' );
-var waitForElement    = require( './js/wait-for-element' );
-var L                 = require( './js/vendor/leaflet-1.2.0.min' );
-var PruneCluster      = require("./js/vendor/prunecluster-2.1.0.min.js").PruneCluster;
-var PruneClusterForLeaflet = require("./js/vendor/prunecluster-2.1.0.min.js").PruneClusterForLeaflet;
-require( './js/vendor/leaflet.fullscreen-1.0.1.min' );
-require( './js/vendor/dialog-polyfill-0.4.9.min' );
-require( './js/vendor/lazysizes-4.0.1.min' );
+var entryCloudBuilder = require( 'JS/entry-cloud-builder' );
+var navigatorLanguage = require( 'JS/navigator-language' );
+var waitForElement    = require( 'JS/wait-for-element' );
+var L                 = require( 'VendorJS/leaflet-1.2.0.min' );
+var PruneCluster      = require( 'VendorJS/prunecluster-2.1.0.min' ).PruneCluster;
+var PruneClusterForLeaflet = require( 'VendorJS/prunecluster-2.1.0.min' ).PruneClusterForLeaflet;
+require( 'VendorJS/leaflet.fullscreen-1.0.1.min' );
+require( 'VendorJS/dialog-polyfill-0.4.9.min' );
+require( 'VendorJS/lazysizes-4.0.1.min' );
 
-var Elm = require( '../elm/Main' );
+var Elm = require( 'ELM/Main' );
 var mountNode = document.getElementById( 'main' );
 
 var localLanguage = localStorage.getItem('language');
