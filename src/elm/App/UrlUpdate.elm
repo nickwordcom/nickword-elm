@@ -2,10 +2,10 @@ module App.UrlUpdate exposing (..)
 
 import App.Messages exposing (Msg(..))
 import App.Models exposing (Model)
-import App.Ports exposing (appDescription, appTitle, updateGA)
+import App.Ports exposing (updateGA)
 import App.Routing exposing (..)
 import App.Translations exposing (..)
-import App.Utils.Title exposing (..)
+import App.Utils.PageInfo exposing (..)
 import Categories.Commands as CategoriesCmds
 import Categories.Models exposing (Category)
 import Countries.Commands as CountriesCmds
@@ -67,9 +67,9 @@ urlUpdate location model =
                   , featuredEntriesCmd
                   , popularEntriesCmd
                   , categoriesCmd
+                  , routePageInfo model.route model.appLanguage
                   , scrollToTop
                   , materialCmd
-                  , appTitle (newAppTitle "")
                   ]
 
         EntriesNewRoute ->
@@ -82,9 +82,9 @@ urlUpdate location model =
             }
                 ! [ updateGA (routeToPath model.route)
                   , categoriesCmd
+                  , routePageInfo model.route model.appLanguage
                   , materialCmd
                   , scrollToTop
-                  , appTitle (newAppTitle <| translate model.appLanguage CreateEntryText)
                   ]
 
         RandomEntryRoute ->
@@ -97,6 +97,7 @@ urlUpdate location model =
             }
                 ! [ updateGA (routeToPath model.route)
                   , EntriesCmds.fetchRandom model.appLanguage |> Cmd.map EntriesMsg
+                  , routePageInfo model.route model.appLanguage
                   , scrollToTop
                   , materialCmd
                   ]
@@ -112,12 +113,6 @@ urlUpdate location model =
                         userEntriesCmd
                     else
                         navigateTo EntriesNewRoute
-
-                updatedAppTitle =
-                    newAppTitle <| translate model.appLanguage MyEntriesText
-
-                updatedAppDescription =
-                    translate model.appLanguage MyEntriesDescText
             in
             { model
                 | categories = categories
@@ -130,16 +125,15 @@ urlUpdate location model =
                 ! [ updateGA (routeToPath model.route)
                   , userCmd
                   , categoriesCmd
+                  , routePageInfo model.route model.appLanguage
                   , scrollToTop
-                  , appTitle updatedAppTitle
-                  , appDescription updatedAppDescription
                   , materialCmd
                   ]
 
         EntryRoute entrySlug entryId ->
             let
                 ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.appLanguage
+                    checkEntry model.entry entryId model.route model.appLanguage
 
                 ( entryVotedWords, entryVotedWordsCmd ) =
                     checkEntryVotedWords model.entryVotedWords entryId model.user
@@ -179,8 +173,6 @@ urlUpdate location model =
                   , entryWordsCmd
                   , countriesCmd
                   , categoriesCmd
-                  , setEntryTitle entry
-                  , setEntryDescription entry
                   , entryCmd
                   , materialCmd
                   ]
@@ -188,7 +180,7 @@ urlUpdate location model =
         EntryCloudRoute entrySlug entryId ->
             let
                 ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.appLanguage
+                    checkEntry model.entry entryId model.route model.appLanguage
 
                 entryWordsCmd =
                     Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId model.entryFilters
@@ -211,7 +203,6 @@ urlUpdate location model =
                   , entryWordsCmd
                   , countriesCmd
                   , categoriesCmd
-                  , setEntryTitle entry
                   , entryCmd
                   , materialCmd
                   ]
@@ -219,7 +210,7 @@ urlUpdate location model =
         EntryMapRoute entrySlug entryId ->
             let
                 ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.appLanguage
+                    checkEntry model.entry entryId model.route model.appLanguage
 
                 entryVotesSlimCmd =
                     Cmd.map VotesMsg <| VotesCmds.fetchEntryVotesSlim entryId model.entryFilters
@@ -242,7 +233,6 @@ urlUpdate location model =
                   , entryVotesSlimCmd
                   , countriesCmd
                   , categoriesCmd
-                  , setEntryTitle entry
                   , entryCmd
                   , materialCmd
                   ]
@@ -250,7 +240,7 @@ urlUpdate location model =
         EntryVotesRoute entrySlug entryId ->
             let
                 ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.appLanguage
+                    checkEntry model.entry entryId model.route model.appLanguage
 
                 entryVotesCmd =
                     Cmd.map VotesMsg <| VotesCmds.fetchEntryVotes entryId model.entryFilters
@@ -274,7 +264,6 @@ urlUpdate location model =
                   , entryVotesCmd
                   , countriesCmd
                   , categoriesCmd
-                  , setEntryTitle entry
                   , entryCmd
                   , materialCmd
                   ]
@@ -295,7 +284,7 @@ urlUpdate location model =
             }
                 ! [ updateGA (routeToPath model.route)
                   , categoryEntriesCmd
-                  , setCategoryTitle categories categoryId
+                  , categoryPageInfo categories model.route
                   , categoriesCmd
                   , scrollToTop
                   , materialCmd
@@ -305,9 +294,6 @@ urlUpdate location model =
             let
                 popularEntriesCmd =
                     Cmd.map EntriesMsg <| EntriesCmds.fetchAllPopular model.appLanguage
-
-                updatedAppTitle =
-                    newAppTitle <| translate model.appLanguage TrendingTitle
             in
             { model
                 | allEntries = Loading
@@ -319,8 +305,8 @@ urlUpdate location model =
                 ! [ updateGA (routeToPath model.route)
                   , popularEntriesCmd
                   , categoriesCmd
+                  , routePageInfo model.route model.appLanguage
                   , scrollToTop
-                  , appTitle updatedAppTitle
                   , materialCmd
                   ]
 
@@ -333,9 +319,6 @@ urlUpdate location model =
 
                 searchEntriesCmd =
                     Cmd.map EntriesMsg <| EntriesCmds.searchEntries searchTerm model.appLanguage
-
-                updatedAppTitle =
-                    newAppTitle <| translate model.appLanguage (SearchWithTermText searchTerm)
             in
             { model
                 | allEntries = Loading
@@ -346,8 +329,8 @@ urlUpdate location model =
                 ! [ updateGA (routeToPath model.route)
                   , searchEntriesCmd
                   , categoriesCmd
+                  , routePageInfo model.route model.appLanguage
                   , scrollToTop
-                  , appTitle updatedAppTitle
                   , materialCmd
                   ]
 
@@ -359,7 +342,11 @@ urlUpdate location model =
             { model | user = user } ! [ userCmd, scrollToTop, materialCmd ]
 
         NotFoundRoute ->
-            model ! [ scrollToTop, materialCmd ]
+            model
+                ! [ scrollToTop
+                  , routePageInfo model.route model.appLanguage
+                  , materialCmd
+                  ]
 
 
 materialCmd : Cmd Msg
@@ -407,21 +394,21 @@ checkCountries countries language =
             ( countries, Cmd.map CountriesMsg <| CountriesCmds.fetchAll language )
 
 
-checkEntry : WebData Entry -> EntryId -> Language -> ( WebData Entry, Cmd Msg )
-checkEntry entry currentEntryId language =
+checkEntry : WebData Entry -> EntryId -> Route -> Language -> ( WebData Entry, Cmd Msg )
+checkEntry oldEntry currentEntryId route language =
     let
         fetchCmd =
             Cmd.map EntriesMsg <| EntriesCmds.fetchEntry currentEntryId language
     in
-    case entry of
+    case oldEntry of
         Success entry ->
             if entry.id == currentEntryId then
-                ( Success entry, Cmd.none )
+                ( oldEntry, entryPageInfo oldEntry route )
             else
                 ( Loading, fetchCmd )
 
         _ ->
-            ( entry, fetchCmd )
+            ( oldEntry, fetchCmd )
 
 
 checkPrefetchedEntry : Maybe Entry -> EntryId -> Maybe Entry

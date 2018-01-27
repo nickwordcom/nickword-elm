@@ -1,5 +1,6 @@
 port module App.Ports exposing (..)
 
+import App.Models exposing (PageInfo)
 import Votes.Models exposing (VoteSlim)
 import Words.Models exposing (Word)
 
@@ -9,10 +10,7 @@ import Words.Models exposing (Word)
 -- outgoing values
 
 
-port appTitle : String -> Cmd msg
-
-
-port appDescription : String -> Cmd msg
+port pageInfo : PageInfo -> Cmd msg
 
 
 port setLocalLanguage : String -> Cmd msg

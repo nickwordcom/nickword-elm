@@ -23,12 +23,13 @@ var app = Elm.Main.embed( mountNode, {
   localJWT: localJWT
 });
 
-app.ports.appTitle.subscribe(function(newTitle) {
-    document.title = newTitle;
-});
-
-app.ports.appDescription.subscribe(function(newDescription) {
-  document.head.querySelector("[name=description]").content = newDescription;
+app.ports.pageInfo.subscribe(function(page) {
+  document.title = page.title;
+  document.head.querySelector('meta[name=description]').content = page.description;
+  document.head.querySelector('meta[property="og:url"]').content = page.url
+  document.head.querySelector('meta[property="og:title"]').content = page.title
+  document.head.querySelector('meta[property="og:description"]').content = page.description
+  document.head.querySelector('meta[property="og:image"]').content = page.imageUrl
 });
 
 app.ports.setLocalLanguage.subscribe(function(lang) {

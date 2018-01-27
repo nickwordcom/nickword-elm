@@ -3,7 +3,7 @@ module Entries.Update exposing (..)
 import App.Models exposing (Model)
 import App.Routing exposing (Route(..), navigateTo, routeToPath)
 import App.Translations exposing (Language)
-import App.Utils.Title exposing (setEntryDescription, setEntryTitle)
+import App.Utils.PageInfo exposing (entryPageInfo)
 import Categories.Update as CategoriesUpdate
 import Dom.Scroll
 import Entries.Commands exposing (fetchAllFromCategory, fetchUserEntries)
@@ -57,8 +57,7 @@ update msg model =
         EntryResponse response ->
             { model | entry = response }
                 ! [ modifyEntryUrl response model.route
-                  , setEntryTitle response
-                  , setEntryDescription response
+                  , entryPageInfo response model.route
                   ]
 
         PrefetchEntry entry ->
@@ -106,7 +105,9 @@ update msg model =
 
         RandomEntryResponse response ->
             { model | entry = response }
-                ! [ randomEntryCmd response ]
+                ! [ entryPageInfo response (entryRouteFromResponse response)
+                  , randomEntryCmd response
+                  ]
 
         ToggleEntryFilters ->
             let
@@ -263,3 +264,13 @@ updateLoadMoreState response =
 
         _ ->
             EntriesFull
+
+
+entryRouteFromResponse : WebData Entry -> Route
+entryRouteFromResponse entry =
+    case entry of
+        Success { slug, id } ->
+            EntryRoute slug id
+
+        _ ->
+            EntriesRoute

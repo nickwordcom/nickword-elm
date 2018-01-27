@@ -21,6 +21,14 @@ type alias Flags =
     }
 
 
+type alias PageInfo =
+    { title : String
+    , description : String
+    , url : String
+    , imageUrl : String
+    }
+
+
 type alias Model =
     { user : User
     , allEntries : WebData (List Entry)
