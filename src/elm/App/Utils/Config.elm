@@ -1,6 +1,11 @@
 module App.Utils.Config exposing (..)
 
 
+mainTitle : String
+mainTitle =
+    "Nickword"
+
+
 apiUrl : String
 apiUrl =
     -- "http://localhost:4000/v1"

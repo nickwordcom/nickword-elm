@@ -1,6 +1,7 @@
 module App.Utils.Title exposing (..)
 
 import App.Ports exposing (appDescription, appTitle)
+import App.Utils.Config exposing (mainTitle)
 import Categories.Models exposing (Category, CategoryId)
 import Entries.Models exposing (Entry, EntryId)
 import List exposing (filterMap, head)
@@ -10,17 +11,10 @@ import String exposing (length)
 
 newAppTitle : String -> String
 newAppTitle pageTitle =
-    let
-        base =
-            "Nickword"
-
-        newTitle =
-            if String.length pageTitle == 0 then
-                base
-            else
-                pageTitle ++ " - " ++ base
-    in
-    newTitle
+    if length pageTitle == 0 then
+        mainTitle
+    else
+        pageTitle ++ " - " ++ mainTitle
 
 
 setEntryTitle : WebData Entry -> Cmd msg
