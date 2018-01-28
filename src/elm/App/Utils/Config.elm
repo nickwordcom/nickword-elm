@@ -1,8 +1,8 @@
 module App.Utils.Config exposing (..)
 
 
-mainTitle : String
-mainTitle =
+appName : String
+appName =
     "Nickword"
 
 

@@ -13,4 +13,4 @@ update msg model =
 
         CategoriesResponse response ->
             { model | categories = response }
-                ! [ categoryPageInfo response model.route ]
+                ! [ categoryPageInfo response model.route model.appLanguage ]

@@ -21,7 +21,9 @@ type alias TranslationSet =
 type TranslationId
     = InOneWordText
     | DescribeIOWText
+    | AppFullDescription
     | DescribeText
+    | SubmitWordCTA
     | WordText
     | HomePageText
     | LoadingText
@@ -145,11 +147,25 @@ translate language translationId =
                     , spanish = "Describir en una palabra"
                     }
 
+                AppFullDescription ->
+                    { english = "Describe anything you like in one word, and find out what people around the world also think about this."
+                    , ukrainian = "Опишіть все що завгодно одним словом, і дізнайтеся, що люди по всьому світу теж думають про це."
+                    , russian = "Опишите все что угодно одним словом, и узнайте, что люди по всему миру тоже думают об этом."
+                    , spanish = "Describir cualquier cosa que te gusta en una sola palabra, y averiguar lo que la gente de todo el mundo también pensar acerca de esto."
+                    }
+
                 DescribeText ->
                     { english = "Describe"
                     , ukrainian = "Описати"
                     , russian = "Описать"
                     , spanish = "Describir"
+                    }
+
+                SubmitWordCTA ->
+                    { english = "Submit your word, vote now"
+                    , ukrainian = "Додайте своє слово, проголосуйте зараз"
+                    , russian = "Добавьте своe слово, проголосуйте сейчас"
+                    , spanish = "Enviar su palabra, voto ahora"
                     }
 
                 WordText ->

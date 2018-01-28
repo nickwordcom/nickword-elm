@@ -6,7 +6,7 @@
 [![Website](https://img.shields.io/website/https/www.nickword.com.svg?label=nickword.com)](https://www.nickword.com/)
 [![Nickword](https://www.nickword.com/badge/e22.svg)](https://www.nickword.com/e/nickword/e22/)
 
-This repository contains frond-end code of [www.nickword.com](https://www.nickword.com/), written in [Elm](http://elm-lang.org/), where you can **describe anything you like in one word** and also find out what people around the world think about this.
+This repository contains frond-end code of [www.nickword.com](https://www.nickword.com/), written in [Elm](http://elm-lang.org/), where you can **describe anything you like in one word** and find out what people around the world also think about this.
 
 ## Development setup
 ```sh

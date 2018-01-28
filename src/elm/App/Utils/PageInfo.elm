@@ -4,41 +4,37 @@ import App.Models exposing (PageInfo)
 import App.Ports exposing (pageInfo)
 import App.Routing exposing (Route(..), routeToPath)
 import App.Translations exposing (..)
-import App.Utils.Config exposing (mainTitle, rootUrl)
+import App.Utils.Cloudinary exposing (cloudinaryEntryPosterUrl)
+import App.Utils.Config exposing (appName, rootUrl)
 import Categories.Models exposing (Category)
 import Entries.Models exposing (Entry)
 import Http exposing (decodeUri)
 import List
 import RemoteData exposing (RemoteData(..), WebData)
-import String exposing (length)
 
 
-pageInfoInit : PageInfo
-pageInfoInit =
-    { title = mainTitle
-    , description = translate English DescribeIOWText
+pageInfoInit : Language -> PageInfo
+pageInfoInit language =
+    { title = appName ++ ". " ++ translate language DescribeIOWText
+    , description = translate language AppFullDescription
     , url = rootUrl
     , imageUrl = rootUrl ++ "/android-chrome-256x256.png"
     }
 
 
-appTitle : String -> String
-appTitle pageTitle =
-    if length pageTitle == 0 then
-        mainTitle
-    else
-        pageTitle ++ " - " ++ mainTitle
+pageTitle : String -> String
+pageTitle title =
+    title ++ " | " ++ appName
 
 
-entryPageInfo : WebData Entry -> Route -> Cmd msg
-entryPageInfo entry route =
+entryPageInfo : WebData Entry -> Route -> Language -> Cmd msg
+entryPageInfo entry route language =
     case entry of
-        Success { title, description, image } ->
-            { pageInfoInit
-                | title = appTitle title
-                , description = description
-                , url = rootUrl ++ routeToPath route
-                , imageUrl = image.url
+        Success { title, description, image, votesCount } ->
+            { title = entryPageTitle title language
+            , description = entryPageDescription title description votesCount language
+            , url = rootUrl ++ routeToPath route
+            , imageUrl = cloudinaryEntryPosterUrl title image.url language
             }
                 |> pageInfo
 
@@ -49,31 +45,33 @@ entryPageInfo entry route =
 routePageInfo : Route -> Language -> Cmd msg
 routePageInfo route language =
     let
+        pageInfoLang =
+            pageInfoInit language
+
         info =
             case route of
                 EntriesNewRoute ->
-                    { pageInfoInit
-                        | title = appTitle <| translate language CreateEntryText
-                        , description = translate language CreateEntryText
+                    { pageInfoLang
+                        | title = pageTitle <| translate language CreateEntryText
                         , url = rootUrl ++ routeToPath route
                     }
 
                 UserEntriesRoute ->
-                    { pageInfoInit
-                        | title = appTitle <| translate language MyEntriesText
+                    { pageInfoLang
+                        | title = pageTitle <| translate language MyEntriesText
                         , description = translate language MyEntriesDescText
                         , url = rootUrl ++ routeToPath route
                     }
 
                 RandomEntryRoute ->
-                    { pageInfoInit
-                        | title = appTitle <| translate language RandomEntryText
+                    { pageInfoLang
+                        | title = pageTitle <| translate language RandomEntryText
                         , url = rootUrl ++ routeToPath route
                     }
 
                 PopularRoute ->
-                    { pageInfoInit
-                        | title = appTitle <| translate language TrendingNowText
+                    { pageInfoLang
+                        | title = pageTitle <| translate language TrendingNowText
                         , description = translate language TrendingNowSubTitle
                         , url = rootUrl ++ routeToPath route
                     }
@@ -85,29 +83,32 @@ routePageInfo route language =
                                 |> decodeUri
                                 |> Maybe.withDefault ""
                     in
-                    { pageInfoInit
-                        | title = appTitle <| translate language (SearchWithTermText searchTerm)
+                    { pageInfoLang
+                        | title = pageTitle <| translate language (SearchWithTermText searchTerm)
                         , url = rootUrl ++ routeToPath route
                     }
 
                 NotFoundRoute ->
-                    { pageInfoInit
-                        | title = appTitle <| translate language PageNotFoundText
+                    { pageInfoLang
+                        | title = pageTitle <| translate language PageNotFoundText
                         , description = translate language PageNotFoundDescription
                         , url = rootUrl ++ routeToPath route
                     }
 
                 _ ->
-                    pageInfoInit
+                    pageInfoLang
     in
     pageInfo info
 
 
-categoryPageInfo : WebData (List Category) -> Route -> Cmd msg
-categoryPageInfo webCategories route =
+categoryPageInfo : WebData (List Category) -> Route -> Language -> Cmd msg
+categoryPageInfo webCategories route language =
     case ( webCategories, route ) of
         ( Success categories, CategoryRoute slug id ) ->
             let
+                pageInfoLang =
+                    pageInfoInit language
+
                 category =
                     List.head (List.filterMap checkCategory categories)
 
@@ -120,15 +121,34 @@ categoryPageInfo webCategories route =
                 info =
                     case category of
                         Just { title } ->
-                            { pageInfoInit
-                                | title = appTitle title
+                            { pageInfoLang
+                                | title = pageTitle title
                                 , url = rootUrl ++ routeToPath route
                             }
 
                         Nothing ->
-                            pageInfoInit
+                            pageInfoLang
             in
             pageInfo info
 
         _ ->
             Cmd.none
+
+
+entryPageTitle : String -> Language -> String
+entryPageTitle title language =
+    translate language DescribeIOWText
+        |> String.toLower
+        |> (++) " - "
+        |> (++) title
+        |> pageTitle
+
+
+entryPageDescription : String -> String -> Int -> Language -> String
+entryPageDescription title description votes language =
+    description
+        |> (++) (title ++ " - ")
+        |> (++) ". "
+        |> (++) (translate language SubmitWordCTA)
+        |> (++) ". "
+        |> (++) (translate language (NumberOfVotesText votes))

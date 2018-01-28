@@ -1,5 +1,6 @@
 module App.Utils.Cloudinary exposing (..)
 
+import App.Translations exposing (Language, TranslationId(DescribeIOWText), translate)
 import App.Utils.Config exposing (cloudinaryName)
 import ShareDialog.Models exposing (ShareDialog, SocialNetwork(..))
 import String
@@ -24,14 +25,6 @@ cloudinaryUrl_240 imageUrl =
         "/static/img/placeholder240.jpeg"
     else
         cloudinaryBase ++ "/image/fetch/t_fill_grav_240,f_auto/" ++ imageUrl
-
-
-cloudinaryUrl_220_124 : ImageUrl -> String
-cloudinaryUrl_220_124 imageUrl =
-    if String.isEmpty imageUrl then
-        cloudinaryBase ++ "/image/upload/t_fill_220_124,f_auto/placeholder"
-    else
-        cloudinaryBase ++ "/image/fetch/t_fill_grav_220_124,f_auto/" ++ imageUrl
 
 
 cloudinaryPosterUrl : ShareDialog -> SocialNetwork -> String
@@ -83,6 +76,47 @@ cloudinaryPosterUrl dialog network =
 
         params =
             String.join "/" [ title, inoneword, word, imageUrl ]
+    in
+    baseUrl ++ params
+
+
+cloudinaryEntryPosterUrl : EntryTitle -> ImageUrl -> Language -> String
+cloudinaryEntryPosterUrl title imageUrl language =
+    let
+        baseUrl =
+            cloudinaryBase ++ "/image/fetch/t_poster_fill_600/"
+
+        fafafa =
+            cloudinaryBase ++ "/image/upload/v1482934813/fafafa.png"
+
+        mainImage =
+            if String.isEmpty imageUrl then
+                fafafa
+            else
+                imageUrl
+
+        titleSize =
+            textFontSize title |> toString
+
+        encodedTitle =
+            title
+                |> String.filter (\c -> not <| List.member c [ ',', '#', '%', '/', '?' ])
+                |> String.split " "
+                |> String.join "%20"
+
+        encodedSubTitle =
+            translate language DescribeIOWText
+                |> String.split " "
+                |> String.join "%20"
+
+        titleText =
+            "l_text:Roboto_" ++ titleSize ++ "_medium_letter_spacing_1:" ++ encodedTitle ++ ",co_rgb:fff,w_560,h_54,y_182,g_north,c_fit"
+
+        subTitleText =
+            "l_text:Roboto_48_bold_letter_spacing_1:" ++ encodedSubTitle ++ ",co_rgb:fff000,w_560,h_54,y_240,g_north,c_fit"
+
+        params =
+            String.join "/" [ titleText, subTitleText, mainImage ]
     in
     baseUrl ++ params
 

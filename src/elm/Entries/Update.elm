@@ -57,7 +57,7 @@ update msg model =
         EntryResponse response ->
             { model | entry = response }
                 ! [ modifyEntryUrl response model.route
-                  , entryPageInfo response model.route
+                  , entryPageInfo response model.route model.appLanguage
                   ]
 
         PrefetchEntry entry ->
@@ -105,7 +105,7 @@ update msg model =
 
         RandomEntryResponse response ->
             { model | entry = response }
-                ! [ entryPageInfo response (entryRouteFromResponse response)
+                ! [ entryPageInfo response (entryRouteFromResponse response) model.appLanguage
                   , randomEntryCmd response
                   ]
 

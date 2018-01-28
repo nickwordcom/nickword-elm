@@ -284,7 +284,7 @@ urlUpdate location model =
             }
                 ! [ updateGA (routeToPath model.route)
                   , categoryEntriesCmd
-                  , categoryPageInfo categories model.route
+                  , categoryPageInfo categories model.route model.appLanguage
                   , categoriesCmd
                   , scrollToTop
                   , materialCmd
@@ -403,7 +403,7 @@ checkEntry oldEntry currentEntryId route language =
     case oldEntry of
         Success entry ->
             if entry.id == currentEntryId then
-                ( oldEntry, entryPageInfo oldEntry route )
+                ( oldEntry, entryPageInfo oldEntry route language )
             else
                 ( Loading, fetchCmd )
 

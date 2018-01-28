@@ -4,7 +4,7 @@ import App.Messages exposing (Msg(..))
 import App.Models exposing (Model)
 import App.Routing exposing (Route(EntriesNewRoute, RandomEntryRoute, UserEntriesRoute), routeToPath)
 import App.Translations exposing (..)
-import App.Utils.Config exposing (mainTitle)
+import App.Utils.Config exposing (appName)
 import App.Utils.Links exposing (linkTo)
 import Html exposing (Html, text)
 import Html.Attributes exposing (class, classList, tabindex)
@@ -22,7 +22,7 @@ appHeader : Model -> List (Html Msg)
 appHeader { searchDialogOpen, searchValue, appLanguage, user, mdl } =
     [ Layout.row
         [ css "transition" "height 333ms ease-in-out 0s" ]
-        [ primaryTitle mainTitle searchDialogOpen
+        [ primaryTitle appName searchDialogOpen
         , searchBox searchDialogOpen searchValue appLanguage
         , Layout.spacer
         , headerNavigation mdl searchDialogOpen user appLanguage
