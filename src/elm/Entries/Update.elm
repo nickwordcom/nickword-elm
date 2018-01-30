@@ -173,7 +173,7 @@ randomEntryCmd entry =
             Cmd.none
 
         Failure err ->
-            navigateTo EntriesRoute
+            navigateTo IndexRoute
 
         Success { id, slug } ->
             navigateTo (EntryRoute slug id)
@@ -266,4 +266,4 @@ entryRouteFromResponse entry =
             EntryRoute slug id
 
         _ ->
-            EntriesRoute
+            IndexRoute

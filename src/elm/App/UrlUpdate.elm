@@ -54,7 +54,7 @@ urlUpdate location model =
             Dom.Scroll.toTop Material.Layout.mainId |> Task.attempt (always NoOp)
     in
     case model.route of
-        EntriesRoute ->
+        IndexRoute ->
             { model
                 | popularEntries = popularEntries
                 , categories = categories

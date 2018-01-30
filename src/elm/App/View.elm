@@ -48,7 +48,7 @@ page model =
     let
         page =
             case model.route of
-                EntriesRoute ->
+                IndexRoute ->
                     EntriesIndex.view model.popularEntries model.featuredEntries model.categories model.appLanguage
                         |> Html.map EntriesMsg
 

@@ -1,6 +1,6 @@
 module Entries.NewEntry.Update exposing (..)
 
-import App.Routing exposing (Route(EntriesRoute, EntryRoute), routeToPath)
+import App.Routing exposing (Route(EntryRoute, IndexRoute), routeToPath)
 import App.Translations exposing (Language)
 import App.Utils.Checkers exposing (..)
 import Dom.Scroll
@@ -57,7 +57,7 @@ update msg model appLanguage token =
                   ]
 
         AddNewEntryData (Err error) ->
-            model ! [ newUrl (routeToPath EntriesRoute) ]
+            model ! [ newUrl (routeToPath IndexRoute) ]
 
         -- Material
         MDL msg ->

@@ -10,7 +10,7 @@ import UrlParser exposing (..)
 
 
 type Route
-    = EntriesRoute
+    = IndexRoute
     | EntryRoute EntrySlug EntryId
     | CategoryRoute CategorySlug CategoryId
     | NewEntryRoute
@@ -29,7 +29,7 @@ type Route
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        [ map EntriesRoute top
+        [ map IndexRoute top
         , map EntryRoute (s "e" </> string </> string)
         , map CategoryRoute (s "c" </> string </> string)
         , map NewEntryRoute (s "new")
@@ -58,8 +58,14 @@ parseLocation location =
 routeToPath : Route -> String
 routeToPath route =
     case route of
-        EntriesRoute ->
+        IndexRoute ->
             "/"
+
+        EntryRoute entrySlug entryId ->
+            "/e/" ++ entrySlug ++ "/" ++ entryId
+
+        CategoryRoute categorySlug categoryId ->
+            "/c/" ++ categorySlug ++ "/" ++ categoryId
 
         NewEntryRoute ->
             "/new"
@@ -69,12 +75,6 @@ routeToPath route =
 
         UserEntriesRoute ->
             "/my"
-
-        EntryRoute entrySlug entryId ->
-            "/e/" ++ entrySlug ++ "/" ++ entryId
-
-        CategoryRoute categorySlug categoryId ->
-            "/c/" ++ categorySlug ++ "/" ++ categoryId
 
         TrendingRoute ->
             "/popular/"
