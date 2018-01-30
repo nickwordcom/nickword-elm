@@ -95,9 +95,6 @@ cloudinaryEntryPosterUrl title imageUrl language =
             else
                 imageUrl
 
-        titleSize =
-            textFontSize title |> toString
-
         encodedTitle =
             title
                 |> String.filter (\c -> not <| List.member c [ ',', '#', '%', '/', '?' ])
@@ -110,10 +107,10 @@ cloudinaryEntryPosterUrl title imageUrl language =
                 |> String.join "%20"
 
         titleText =
-            "l_text:Roboto_" ++ titleSize ++ "_medium_letter_spacing_1:" ++ encodedTitle ++ ",co_rgb:fff,w_560,h_54,y_182,g_north,c_fit"
+            "l_text:Roboto_40_medium_letter_spacing_1:" ++ encodedTitle ++ ",co_rgb:fff,w_560,h_54,y_182,g_north,c_fit"
 
         subTitleText =
-            "l_text:Roboto_48_bold_letter_spacing_1:" ++ encodedSubTitle ++ ",co_rgb:fff000,w_560,h_54,y_240,g_north,c_fit"
+            "l_text:Roboto_40_bold_letter_spacing_1:" ++ encodedSubTitle ++ ",co_rgb:fff000,w_560,h_54,y_230,g_north,c_fit"
 
         params =
             String.join "/" [ titleText, subTitleText, mainImage ]
