@@ -1,61 +1,41 @@
 module Entries.Partials.EntryTabs exposing (view)
 
-import App.Routing exposing (Route(EntryCloudRoute, EntryMapRoute, EntryRoute), routeToPath)
 import App.Translations exposing (..)
-import App.Utils.Links exposing (linkTo)
-import Entries.Messages exposing (Msg(MDL, Navigate))
-import Entries.Models exposing (EntryId, EntrySlug)
-import Html exposing (Html, span, text)
+import App.Utils.Converters exposing (entryTabToIndex)
+import Entries.Messages exposing (Msg(MDL, SelectEntryTab))
+import Entries.Models exposing (EntryTab)
+import Html exposing (Html, text)
 import Html.Attributes exposing (class)
 import Material exposing (Model)
-import Material.Options exposing (cs)
+import Material.Options as Options exposing (cs)
 import Material.Tabs as Tabs
 
 
-view : EntryId -> EntrySlug -> Int -> Language -> Material.Model -> Html Msg
-view entryId entrySlug entryTabIndex language mdlModel =
-    let
-        entryWordsPath =
-            routeToPath (EntryRoute entrySlug entryId)
-
-        entryCloudPath =
-            routeToPath (EntryCloudRoute entrySlug entryId)
-
-        entryMapPath =
-            routeToPath (EntryMapRoute entrySlug entryId)
-    in
+view : EntryTab -> Language -> Material.Model -> Html Msg
+view entryTab language mdlModel =
     Tabs.render MDL
         [ 1 ]
         mdlModel
-        [ Tabs.activeTab entryTabIndex ]
+        [ Tabs.activeTab (entryTabToIndex entryTab)
+        , Tabs.onSelectTab SelectEntryTab
+        ]
         [ Tabs.label [ cs "h-clickable" ]
-            [ span [ class "entry-page__tab-text--long" ] [ text <| translate language WordsTabText ]
-            , span [ class "entry-page__tab-text--short" ] [ text <| translate language WordsTabText ]
-            , linkTo entryWordsPath
-                (Navigate entryWordsPath)
-                [ class "click-block" ]
-                []
+            [ Options.span [ cs "entry-page__tab-text--long" ]
+                [ text <| translate language WordsTabText ]
+            , Options.span [ cs "entry-page__tab-text--short" ]
+                [ text <| translate language WordsTabText ]
             ]
         , Tabs.label [ cs "h-clickable" ]
-            [ span [ class "entry-page__tab-text--long" ] [ text <| translate language CloudTabLongText ]
-            , span [ class "entry-page__tab-text--short" ] [ text <| translate language CloudTabShortText ]
-            , linkTo entryCloudPath
-                (Navigate entryCloudPath)
-                [ class "click-block" ]
-                []
+            [ Options.span [ cs "entry-page__tab-text--long" ]
+                [ text <| translate language CloudTabLongText ]
+            , Options.span [ cs "entry-page__tab-text--short" ]
+                [ text <| translate language CloudTabShortText ]
             ]
         , Tabs.label [ cs "h-clickable" ]
-            [ span [ class "entry-page__tab-text--long" ] [ text <| translate language MapTabLongText ]
-            , span [ class "entry-page__tab-text--short" ] [ text <| translate language MapTabShortText ]
-            , linkTo entryMapPath
-                (Navigate entryMapPath)
-                [ class "click-block" ]
-                []
+            [ Options.span [ cs "entry-page__tab-text--long" ]
+                [ text <| translate language MapTabLongText ]
+            , Options.span [ cs "entry-page__tab-text--short" ]
+                [ text <| translate language MapTabShortText ]
             ]
-
-        -- , Tabs.label [ cs "h-clickable" ]
-        --     [ span [ class "entry-page__tab-text--long" ] [ text <| translate language VotesTabLongText ]
-        --     , span [ class "entry-page__tab-text--short" ] [ text <| translate language VotesTabShortText ]
-        --     , span [ onClick (Navigate entryMapPath), class "click-block" ] [] ]
         ]
         []

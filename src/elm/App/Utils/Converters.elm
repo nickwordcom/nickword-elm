@@ -1,6 +1,7 @@
 module App.Utils.Converters exposing (..)
 
 import App.Translations exposing (Language(..), TranslationId(VotesAmountK), translate)
+import Entries.Models exposing (EntryTab(..))
 import List
 import String
 import Words.Models exposing (EmotionInfo, Word)
@@ -24,6 +25,41 @@ determineLanguage maybeLanguage =
 
         _ ->
             English
+
+
+entryTabToIndex : EntryTab -> Int
+entryTabToIndex tab =
+    case tab of
+        WordList ->
+            0
+
+        WordCloud ->
+            1
+
+        VotesMap ->
+            2
+
+        VotesList ->
+            3
+
+
+entryTabFromIndex : Int -> EntryTab
+entryTabFromIndex index =
+    case index of
+        0 ->
+            WordList
+
+        1 ->
+            WordCloud
+
+        2 ->
+            VotesMap
+
+        3 ->
+            VotesList
+
+        _ ->
+            WordList
 
 
 

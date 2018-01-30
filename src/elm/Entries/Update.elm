@@ -3,12 +3,13 @@ module Entries.Update exposing (..)
 import App.Models exposing (Model)
 import App.Routing exposing (Route(..), navigateTo, routeToPath)
 import App.Translations exposing (Language)
+import App.Utils.Converters exposing (entryTabFromIndex)
 import App.Utils.PageInfo exposing (entryPageInfo)
 import Categories.Update as CategoriesUpdate
 import Dom.Scroll
 import Entries.Commands exposing (fetchAllFromCategory, fetchUserEntries)
 import Entries.Messages exposing (Msg(..))
-import Entries.Models exposing (Entry, FilterType(..), FiltersConfig, LoadMoreState(..))
+import Entries.Models exposing (Entry, EntryTab(..), FilterType(..), FiltersConfig, LoadMoreState(..))
 import Entries.NewEntry.Update as NewEntryUpdate
 import Material
 import Material.Layout exposing (mainId)
@@ -60,6 +61,12 @@ update msg model =
                   , entryPageInfo response model.route model.appLanguage
                   ]
 
+        RandomEntryResponse response ->
+            { model | entry = response }
+                ! [ entryPageInfo response (entryRouteFromResponse response) model.appLanguage
+                  , randomEntryCmd response
+                  ]
+
         PrefetchEntry entry ->
             { model | entryPrefetched = Just entry } ! []
 
@@ -95,19 +102,15 @@ update msg model =
                 , entryWords = Loading
                 , entryVotesSlim = Loading
             }
-                ! [ applyEntryFilters model.route updatedEntryFilters ]
+                ! [ applyEntryFilters model.entryTab model.route updatedEntryFilters ]
 
-        Navigate url ->
-            model ! [ Navigation.newUrl url ]
-
-        SelectEntryTab tabId ->
-            { model | entryTabIndex = tabId } ! []
-
-        RandomEntryResponse response ->
-            { model | entry = response }
-                ! [ entryPageInfo response (entryRouteFromResponse response) model.appLanguage
-                  , randomEntryCmd response
-                  ]
+        SelectEntryTab index ->
+            let
+                entryTab =
+                    entryTabFromIndex index
+            in
+            { model | entryTab = entryTab }
+                ! [ applyEntryFilters entryTab model.route model.entryFilters ]
 
         ToggleEntryFilters ->
             let
@@ -127,6 +130,13 @@ update msg model =
             in
             { model | newEntry = updatedNewEntryModel }
                 ! [ Cmd.map NewEntryMsg cmd ]
+
+        Navigate url ->
+            model ! [ Navigation.newUrl url ]
+
+        ScrollToTop ->
+            model
+                ! [ Dom.Scroll.toTop mainId |> Task.attempt (always NoOp) ]
 
         WordsMsg subMsg ->
             let
@@ -149,10 +159,6 @@ update msg model =
             in
             newModel ! [ Cmd.map CategoriesMsg cmd ]
 
-        ScrollToTop ->
-            model
-                ! [ Dom.Scroll.toTop mainId |> Task.attempt (always NoOp) ]
-
         MDL msg ->
             Material.update MDL msg model
 
@@ -169,35 +175,20 @@ randomEntryCmd entry =
         Failure err ->
             navigateTo EntriesRoute
 
-        Success entry ->
-            navigateTo (EntryRoute entry.slug entry.id)
+        Success { id, slug } ->
+            navigateTo (EntryRoute slug id)
 
 
 modifyEntryUrl : WebData Entry -> Route -> Cmd Msg
 modifyEntryUrl entry route =
     case entry of
-        Success entry ->
+        Success { id, slug } ->
             let
-                ( oldSlug, entryRoute ) =
-                    case route of
-                        EntryRoute slug _ ->
-                            ( slug, EntryRoute entry.slug entry.id )
-
-                        EntryCloudRoute slug _ ->
-                            ( slug, EntryCloudRoute entry.slug entry.id )
-
-                        EntryMapRoute slug _ ->
-                            ( slug, EntryMapRoute entry.slug entry.id )
-
-                        EntryVotesRoute slug _ ->
-                            ( slug, EntryVotesRoute entry.slug entry.id )
-
-                        _ ->
-                            ( "", NotFoundRoute )
+                newRoute =
+                    EntryRoute slug id
             in
-            if entry.slug /= oldSlug then
-                routeToPath entryRoute
-                    |> Navigation.modifyUrl
+            if route /= newRoute then
+                Navigation.modifyUrl (routeToPath newRoute)
             else
                 Cmd.none
 
@@ -205,20 +196,22 @@ modifyEntryUrl entry route =
             Cmd.none
 
 
-applyEntryFilters : Route -> FiltersConfig -> Cmd Msg
-applyEntryFilters route filtersConfig =
+applyEntryFilters : EntryTab -> Route -> FiltersConfig -> Cmd Msg
+applyEntryFilters entryTab route filtersConfig =
     case route of
-        EntryRoute slug id ->
-            fetchEntryWords id filtersConfig |> Cmd.map WordsMsg
+        EntryRoute _ entryId ->
+            case entryTab of
+                WordList ->
+                    fetchEntryWords entryId filtersConfig |> Cmd.map WordsMsg
 
-        EntryCloudRoute slug id ->
-            fetchEntryWords id filtersConfig |> Cmd.map WordsMsg
+                WordCloud ->
+                    fetchEntryWords entryId filtersConfig |> Cmd.map WordsMsg
 
-        EntryMapRoute slug id ->
-            fetchEntryVotesSlim id filtersConfig |> Cmd.map VotesMsg
+                VotesMap ->
+                    fetchEntryVotesSlim entryId filtersConfig |> Cmd.map VotesMsg
 
-        EntryVotesRoute slug id ->
-            fetchEntryVotes id filtersConfig |> Cmd.map VotesMsg
+                VotesList ->
+                    fetchEntryVotes entryId filtersConfig |> Cmd.map VotesMsg
 
         _ ->
             Cmd.none
@@ -227,7 +220,7 @@ applyEntryFilters route filtersConfig =
 loadMoreEntiresCmd : Route -> User -> Language -> Int -> Cmd Msg
 loadMoreEntiresCmd route user language pageNumber =
     case route of
-        CategoryRoute slug id ->
+        CategoryRoute _ id ->
             fetchAllFromCategory id language pageNumber
 
         UserEntriesRoute ->

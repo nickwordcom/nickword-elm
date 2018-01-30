@@ -13,6 +13,13 @@ type alias CategoryId =
     String
 
 
+type EntryTab
+    = WordList
+    | WordCloud
+    | VotesMap
+    | VotesList
+
+
 type alias Entry =
     { id : EntryId
     , slug : EntrySlug

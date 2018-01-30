@@ -63,18 +63,6 @@ page model =
                     EntriesShow.view model
                         |> Html.map EntriesMsg
 
-                EntryCloudRoute slug id ->
-                    EntriesShow.view model
-                        |> Html.map EntriesMsg
-
-                EntryMapRoute slug id ->
-                    EntriesShow.view model
-                        |> Html.map EntriesMsg
-
-                EntryVotesRoute slug id ->
-                    EntriesShow.view model
-                        |> Html.map EntriesMsg
-
                 CategoryRoute slug id ->
                     categoryShowPage model id
 

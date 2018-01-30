@@ -2,10 +2,9 @@ module Words.Update exposing (..)
 
 import App.Models exposing (Model)
 import App.Ports exposing (entryWordCloud)
-import App.Routing exposing (Route(EntryCloudRoute, EntryRoute))
 import App.Translations exposing (..)
 import Dom.Scroll as DScroll
-import Entries.Models exposing (Entry, EntryId, FiltersConfig)
+import Entries.Models exposing (Entry, EntryId, EntryTab(WordCloud), FiltersConfig)
 import List exposing (append, partition)
 import Material
 import Material.Helpers exposing (map1st, map2nd)
@@ -53,7 +52,7 @@ update msg model =
                 , entryEmotionsInfo = distribution
                 , entryFilters = updatedEntryFilters
             }
-                ! [ entryWordsResponseCmd words model.route ]
+                ! [ entryWordsResponseCmd words model.entryTab ]
 
         EntryVotedWordsResponse response ->
             { model | entryVotedWords = response } ! []
@@ -293,10 +292,10 @@ checkForTopWord entryWords =
             Nothing
 
 
-entryWordsResponseCmd : WebData (List Word) -> Route -> Cmd Msg
-entryWordsResponseCmd response route =
-    case route of
-        EntryCloudRoute _ _ ->
+entryWordsResponseCmd : WebData (List Word) -> EntryTab -> Cmd Msg
+entryWordsResponseCmd response entryTab =
+    case entryTab of
+        WordCloud ->
             sendWordsToCloud response
 
         _ ->

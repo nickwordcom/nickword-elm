@@ -1,9 +1,9 @@
 module Entries.ShowPage exposing (..)
 
 import App.Models exposing (Model)
-import App.Routing exposing (Route(EntryCloudRoute, EntryMapRoute, EntryRoute, EntryVotesRoute))
 import App.Translations exposing (Language, TranslationId(ErrorText, LoadingText), translate)
 import Entries.Messages exposing (Msg(WordsMsg))
+import Entries.Models exposing (Entry, EntryTab(..), FiltersConfig)
 import Entries.Partials.EmotionsDistribution as EmotionsDistribution
 import Entries.Partials.EntryInfo exposing (entryInfo)
 import Entries.Partials.EntryPrefetched as EntryPrefetched
@@ -14,71 +14,75 @@ import Entries.Partials.TrendingEntriesBlock as TrendingEntriesBlock
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Maps.EntryVotesMapTab as EntryVotesMapTab
+import Material
 import Material.Options exposing (css)
 import Material.Spinner as Spinner
-import RemoteData exposing (RemoteData(..))
-import Votes.Partials.EntryVotesTab as EntryVotesTab
+import RemoteData exposing (RemoteData(..), WebData)
+import Words.Models exposing (EntryVotedWords, Word)
 import Words.Partials.EntryWordsCloudTab as EntryWordsCloudTab
 import Words.Partials.EntryWordsTab as EntryWordsTab
 
 
 view : Model -> Html Msg
-view { entry, entryPrefetched, entryWords, entryTopWord, entryVotes, entryVotesSlim, entryFilters, wordSearchValue, newWordValue, popularEntries, newWordFieldActive, user, entryVotedCountries, entryTabIndex, entryVotedWords, categories, countries, entryEmotionsInfo, route, appLanguage, mdl } =
-    case entry of
+view model =
+    case model.entry of
         NotAsked ->
             entryLoadingSpinner
 
         Loading ->
-            case entryPrefetched of
+            case model.entryPrefetched of
                 Just entry ->
-                    EntryPrefetched.view entry categories appLanguage
+                    EntryPrefetched.view entry model.categories model.appLanguage
 
                 Nothing ->
                     entryLoadingSpinner
 
         Failure err ->
-            entryFailure <| translate appLanguage (ErrorText (toString err))
+            entryFailure <| translate model.appLanguage (ErrorText (toString err))
 
         Success entry ->
-            let
-                currentPageTab =
-                    case route of
-                        EntryRoute _ _ ->
-                            EntryWordsTab.view entry entryWords entryFilters entryVotedWords appLanguage mdl
-                                |> Html.map WordsMsg
-
-                        EntryCloudRoute _ _ ->
-                            EntryWordsCloudTab.view entryWords appLanguage
-
-                        EntryMapRoute _ _ ->
-                            EntryVotesMapTab.view
-
-                        EntryVotesRoute _ _ ->
-                            EntryVotesTab.votesList entryVotes appLanguage
-
-                        _ ->
-                            div [] []
-            in
             div []
-                [ div [ class "entry-page" ]
-                    [ div [ class "entry-page__wrapper mdl-shadow--2dp" ]
-                        [ entryInfo entry entryVotedWords entryTopWord newWordValue newWordFieldActive categories user.status appLanguage mdl
-                        , div [ class "entry-page__entry-sidebar" ]
-                            [ EntrySidebar.view countries entryVotedCountries entryFilters appLanguage mdl ]
-                        , div [ class "entry-page__entry-content" ]
-                            [ div [ class "entry-page__entry-tabs" ]
-                                [ EntryTabs.view entry.id entry.slug entryTabIndex appLanguage mdl ]
-                            , div [ class "entry-page__entry-filters-collapse" ]
-                                [ FiltersCollapse.view countries entryVotedCountries entryFilters appLanguage mdl ]
-                            , div [ class "entry-page__emotion-dist" ]
-                                [ EmotionsDistribution.view entryEmotionsInfo entryFilters countries appLanguage ]
-                            , currentPageTab
-                            ]
-                        ]
-                    ]
+                [ entryPageBlock entry model
                 , div [ class "entries-grid" ]
-                    [ TrendingEntriesBlock.view popularEntries appLanguage ]
+                    [ TrendingEntriesBlock.view model.popularEntries model.appLanguage ]
                 ]
+
+
+entryPageBlock : Entry -> Model -> Html Msg
+entryPageBlock entry { entryWords, entryTopWord, entryFilters, newWordValue, popularEntries, newWordFieldActive, user, entryVotedCountries, entryTab, entryVotedWords, categories, countries, entryEmotionsInfo, appLanguage, mdl } =
+    div [ class "entry-page" ]
+        [ div [ class "entry-page__wrapper mdl-shadow--2dp" ]
+            [ entryInfo entry entryVotedWords entryTopWord newWordValue newWordFieldActive categories user.status appLanguage mdl
+            , div [ class "entry-page__entry-sidebar" ]
+                [ EntrySidebar.view countries entryVotedCountries entryFilters appLanguage mdl ]
+            , div [ class "entry-page__entry-content" ]
+                [ div [ class "entry-page__entry-tabs" ]
+                    [ EntryTabs.view entryTab appLanguage mdl ]
+                , div [ class "entry-page__entry-filters-collapse" ]
+                    [ FiltersCollapse.view countries entryVotedCountries entryFilters appLanguage mdl ]
+                , div [ class "entry-page__emotion-dist" ]
+                    [ EmotionsDistribution.view entryEmotionsInfo entryFilters countries appLanguage ]
+                , currentEntryTab entry entryTab entryWords entryFilters entryVotedWords appLanguage mdl
+                ]
+            ]
+        ]
+
+
+currentEntryTab : Entry -> EntryTab -> WebData (List Word) -> FiltersConfig -> WebData EntryVotedWords -> Language -> Material.Model -> Html Msg
+currentEntryTab entry entryTab entryWords entryFilters entryVotedWords appLanguage mdl =
+    case entryTab of
+        WordList ->
+            EntryWordsTab.view entry entryWords entryFilters entryVotedWords appLanguage mdl
+                |> Html.map WordsMsg
+
+        WordCloud ->
+            EntryWordsCloudTab.view entryWords appLanguage
+
+        VotesMap ->
+            EntryVotesMapTab.view
+
+        VotesList ->
+            text "EntryVotesTab.votesList entryVotes appLanguage"
 
 
 entryLoadingSpinner : Html a

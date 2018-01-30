@@ -4,7 +4,7 @@ import App.Routing as Routing
 import App.Translations exposing (Language(Ukrainian))
 import Categories.Models exposing (Category)
 import Countries.Models exposing (..)
-import Entries.Models exposing (Entry, FiltersConfig, LoadMoreState(EntriesNotAsked), filtersConfigInit)
+import Entries.Models exposing (Entry, EntryTab(WordList), FiltersConfig, LoadMoreState(EntriesNotAsked), filtersConfigInit)
 import Entries.NewEntry.Models exposing (NewEntryModel, newEntryModelInit)
 import Material
 import Material.Snackbar as Snackbar
@@ -34,7 +34,6 @@ type alias Model =
     , allEntries : WebData (List Entry)
     , popularEntries : WebData (List Entry)
     , featuredEntries : WebData (List Entry)
-    , similarEntries : WebData (List Entry)
     , entry : WebData Entry
     , entryPrefetched : Maybe Entry
     , entryWords : WebData (List Word)
@@ -54,7 +53,7 @@ type alias Model =
     , searchDialogOpen : Bool
     , newWordFieldActive : Bool
     , loginFormTopBlockOpen : Bool
-    , entryTabIndex : Int
+    , entryTab : EntryTab
     , route : Routing.Route
     , mdl : Material.Model
     , snackbar : Snackbar.Model Int
@@ -73,7 +72,6 @@ initialModel route user language =
     , allEntries = Loading
     , popularEntries = Loading
     , featuredEntries = Loading
-    , similarEntries = Loading
     , entry = Loading
     , entryPrefetched = Nothing
     , entryWords = Loading
@@ -93,7 +91,7 @@ initialModel route user language =
     , searchDialogOpen = False
     , newWordFieldActive = False
     , loginFormTopBlockOpen = False
-    , entryTabIndex = 0
+    , entryTab = WordList
     , route = route
     , mdl = Material.model
     , snackbar = Snackbar.model

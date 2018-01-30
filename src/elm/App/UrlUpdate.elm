@@ -12,7 +12,7 @@ import Countries.Commands as CountriesCmds
 import Countries.Models exposing (Country, EntryVotedCountries)
 import Dom.Scroll
 import Entries.Commands as EntriesCmds
-import Entries.Models exposing (Entry, EntryId, FiltersConfig, filtersConfigInit)
+import Entries.Models exposing (Entry, EntryId, EntryTab(WordList), FiltersConfig, filtersConfigInit)
 import Entries.NewEntry.Models exposing (newEntryModelInit)
 import Http exposing (decodeUri)
 import Material.Layout
@@ -152,116 +152,24 @@ urlUpdate location model =
                 , entryPrefetched = updatedPrefetchedEntry
                 , popularEntries = popularEntries
                 , countries = countries
-                , similarEntries = Loading
                 , entryWords = Loading
+                , entryVotes = Loading
+                , entryVotesSlim = Loading
                 , entryVotedWords = entryVotedWords
                 , categories = categories
-                , entryTabIndex = 0
+                , entryTab = WordList
                 , entryFilters = updatedEntryFilters
                 , wordSearchValue = ""
                 , newWordValue = ""
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
                 , searchDialogOpen = False
-
-                -- , entryEmotionsInfo = Nothing
             }
                 ! [ updateGA (routeToPath model.route)
                   , popularEntriesCmd
                   , entryVotedCountriesCmd entryId
                   , entryVotedWordsCmd
                   , entryWordsCmd
-                  , countriesCmd
-                  , categoriesCmd
-                  , entryCmd
-                  , materialCmd
-                  ]
-
-        EntryCloudRoute entrySlug entryId ->
-            let
-                ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.route model.appLanguage
-
-                entryWordsCmd =
-                    Cmd.map WordsMsg <| WordsCmds.fetchEntryWords entryId model.entryFilters
-            in
-            { model
-                | entry = entry
-                , categories = categories
-                , countries = countries
-                , entryTabIndex = 1
-                , newWordValue = ""
-                , loginFormTopBlockOpen = False
-                , searchValue = ""
-                , searchDialogOpen = False
-                , entryWords = Loading
-                , popularEntries = popularEntries
-            }
-                ! [ updateGA (routeToPath model.route)
-                  , popularEntriesCmd
-                  , entryVotedCountriesCmd entryId
-                  , entryWordsCmd
-                  , countriesCmd
-                  , categoriesCmd
-                  , entryCmd
-                  , materialCmd
-                  ]
-
-        EntryMapRoute entrySlug entryId ->
-            let
-                ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.route model.appLanguage
-
-                entryVotesSlimCmd =
-                    Cmd.map VotesMsg <| VotesCmds.fetchEntryVotesSlim entryId model.entryFilters
-            in
-            { model
-                | entry = entry
-                , categories = categories
-                , countries = countries
-                , entryTabIndex = 2
-                , newWordValue = ""
-                , loginFormTopBlockOpen = False
-                , searchValue = ""
-                , searchDialogOpen = False
-                , entryVotesSlim = Loading
-                , popularEntries = popularEntries
-            }
-                ! [ updateGA (routeToPath model.route)
-                  , popularEntriesCmd
-                  , entryVotedCountriesCmd entryId
-                  , entryVotesSlimCmd
-                  , countriesCmd
-                  , categoriesCmd
-                  , entryCmd
-                  , materialCmd
-                  ]
-
-        EntryVotesRoute entrySlug entryId ->
-            let
-                ( entry, entryCmd ) =
-                    checkEntry model.entry entryId model.route model.appLanguage
-
-                entryVotesCmd =
-                    Cmd.map VotesMsg <| VotesCmds.fetchEntryVotes entryId model.entryFilters
-            in
-            { model
-                | entry = entry
-                , entryVotes = Loading
-                , categories = categories
-                , countries = countries
-                , popularEntries = popularEntries
-                , similarEntries = Loading
-                , entryTabIndex = 3
-                , newWordValue = ""
-                , loginFormTopBlockOpen = False
-                , searchValue = ""
-                , searchDialogOpen = False
-            }
-                ! [ updateGA (routeToPath model.route)
-                  , popularEntriesCmd
-                  , entryVotedCountriesCmd entryId
-                  , entryVotesCmd
                   , countriesCmd
                   , categoriesCmd
                   , entryCmd
