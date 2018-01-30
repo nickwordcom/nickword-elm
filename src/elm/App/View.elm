@@ -70,7 +70,7 @@ page model =
                     UserEntriesPage.view model.allEntries model.loadMoreState model.appLanguage
                         |> Html.map EntriesMsg
 
-                PopularRoute ->
+                TrendingRoute ->
                     PopularPage.view model.allEntries model.appLanguage
                         |> Html.map EntriesMsg
 

@@ -69,7 +69,7 @@ routePageInfo route language =
                         , url = rootUrl ++ routeToPath route
                     }
 
-                PopularRoute ->
+                TrendingRoute ->
                     { pageInfoLang
                         | title = pageTitle <| translate language TrendingNowText
                         , description = translate language TrendingNowSubTitle

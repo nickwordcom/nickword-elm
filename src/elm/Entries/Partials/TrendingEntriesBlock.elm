@@ -1,6 +1,6 @@
 module Entries.Partials.TrendingEntriesBlock exposing (view)
 
-import App.Routing exposing (Route(PopularRoute), routeToPath)
+import App.Routing exposing (Route(TrendingRoute), routeToPath)
 import App.Translations exposing (..)
 import Entries.Messages exposing (Msg)
 import Entries.Models exposing (Entry)
@@ -22,7 +22,7 @@ view trendingEntries language =
             translate language TrendingNowSubTitle
 
         showAllUrl =
-            routeToPath PopularRoute
+            routeToPath TrendingRoute
     in
     case trendingEntries of
         NotAsked ->

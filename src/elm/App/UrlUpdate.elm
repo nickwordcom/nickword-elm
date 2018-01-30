@@ -198,7 +198,7 @@ urlUpdate location model =
                   , materialCmd
                   ]
 
-        PopularRoute ->
+        TrendingRoute ->
             let
                 popularEntriesCmd =
                     Cmd.map EntriesMsg <| EntriesCmds.fetchAllPopular model.appLanguage

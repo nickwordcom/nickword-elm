@@ -1,7 +1,7 @@
 module App.Partials.Drawer exposing (drawer)
 
 import App.Messages exposing (Msg(MDL, Navigate))
-import App.Routing exposing (Route(CategoryRoute, PopularRoute, UserEntriesRoute), routeToPath)
+import App.Routing exposing (Route(CategoryRoute, TrendingRoute, UserEntriesRoute), routeToPath)
 import App.Translations exposing (..)
 import App.Utils.Links exposing (linkTo)
 import Categories.Models exposing (Category, loremCategory)
@@ -70,7 +70,7 @@ categoryLink category =
 popularLink : Language -> Html Msg
 popularLink language =
     translate language TrendingTitle
-        |> navLink (routeToPath PopularRoute)
+        |> navLink (routeToPath TrendingRoute)
 
 
 userEntriesLink : Language -> Html Msg

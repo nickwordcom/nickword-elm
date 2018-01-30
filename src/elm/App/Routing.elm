@@ -11,12 +11,12 @@ import UrlParser exposing (..)
 
 type Route
     = EntriesRoute
+    | EntryRoute EntrySlug EntryId
+    | CategoryRoute CategorySlug CategoryId
     | NewEntryRoute
     | RandomEntryRoute
     | UserEntriesRoute
-    | EntryRoute EntrySlug EntryId
-    | CategoryRoute CategorySlug CategoryId
-    | PopularRoute
+    | TrendingRoute
     | SearchRoute String
     | OAuthCallbackRoute String
     | NotFoundRoute
@@ -30,13 +30,12 @@ matchers : Parser (Route -> a) a
 matchers =
     oneOf
         [ map EntriesRoute top
+        , map EntryRoute (s "e" </> string </> string)
+        , map CategoryRoute (s "c" </> string </> string)
         , map NewEntryRoute (s "new")
         , map RandomEntryRoute (s "random")
         , map UserEntriesRoute (s "my")
-        , map EntryRoute (s "e" </> string </> string)
-        , map EntriesRoute (s "e")
-        , map CategoryRoute (s "c" </> string </> string)
-        , map PopularRoute (s "popular")
+        , map TrendingRoute (s "popular")
         , map SearchRoute (s "search" </> string)
         , map OAuthCallbackRoute (s "oauth" </> string)
         ]
@@ -77,7 +76,7 @@ routeToPath route =
         CategoryRoute categorySlug categoryId ->
             "/c/" ++ categorySlug ++ "/" ++ categoryId
 
-        PopularRoute ->
+        TrendingRoute ->
             "/popular/"
 
         SearchRoute searchTerm ->

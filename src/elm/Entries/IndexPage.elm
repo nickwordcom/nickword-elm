@@ -1,6 +1,6 @@
 module Entries.IndexPage exposing (..)
 
-import App.Routing exposing (Route(CategoryRoute, PopularRoute), routeToPath)
+import App.Routing exposing (Route(CategoryRoute), routeToPath)
 import App.Translations exposing (..)
 import Categories.Models exposing (..)
 import Dict
