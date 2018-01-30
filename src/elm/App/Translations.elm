@@ -1,4 +1,4 @@
-module App.Translations exposing (Language(..), TranslationId(..), decodeLang, translate)
+module App.Translations exposing (..)
 
 import App.Utils.Pluralize exposing (..)
 

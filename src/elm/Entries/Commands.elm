@@ -1,6 +1,6 @@
 module Entries.Commands exposing (..)
 
-import App.Translations exposing (Language(English), decodeLang)
+import App.Translations exposing (Language, decodeLang)
 import App.Utils.Config exposing (apiUrl)
 import App.Utils.Requests exposing (encodeUrl, getWithAuth)
 import Categories.Models exposing (CategoryId)

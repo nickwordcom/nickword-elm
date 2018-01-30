@@ -31,10 +31,7 @@ categoriesUrl includeEntries language =
             apiUrl ++ "/categories"
 
         localeParam =
-            if language == English then
-                ( "locale", "en" )
-            else
-                ( "locale", decodeLang language )
+            ( "locale", decodeLang language )
     in
     encodeUrl baseUrl [ localeParam ]
 

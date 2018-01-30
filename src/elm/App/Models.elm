@@ -1,7 +1,7 @@
 module App.Models exposing (..)
 
 import App.Routing as Routing
-import App.Translations exposing (Language(Ukrainian))
+import App.Translations exposing (Language)
 import Categories.Models exposing (Category)
 import Countries.Models exposing (..)
 import Entries.Models exposing (Entry, EntryTab(WordList), FiltersConfig, LoadMoreState(EntriesNotAsked), filtersConfigInit)
