@@ -50,7 +50,7 @@ routePageInfo route language =
 
         info =
             case route of
-                EntriesNewRoute ->
+                NewEntryRoute ->
                     { pageInfoLang
                         | title = pageTitle <| translate language CreateEntryText
                         , url = rootUrl ++ routeToPath route

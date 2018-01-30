@@ -1,6 +1,6 @@
 module Entries.Partials.EntriesGridBlockEmpty exposing (gridBlockEmpty)
 
-import App.Routing exposing (Route(EntriesNewRoute), routeToPath)
+import App.Routing exposing (Route(NewEntryRoute), routeToPath)
 import App.Translations exposing (Language, TranslationId(CreateEntryText), translate)
 import App.Utils.Links exposing (linkTo)
 import Entries.Messages exposing (Msg(Navigate))
@@ -40,4 +40,4 @@ gridBlockEmpty title subTitle language =
 
 newEntryPath : String
 newEntryPath =
-    routeToPath EntriesNewRoute
+    routeToPath NewEntryRoute

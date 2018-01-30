@@ -72,7 +72,7 @@ urlUpdate location model =
                   , materialCmd
                   ]
 
-        EntriesNewRoute ->
+        NewEntryRoute ->
             { model
                 | categories = categories
                 , newEntry = newEntryModelInit
@@ -112,7 +112,7 @@ urlUpdate location model =
                     if userIsActive model.user then
                         userEntriesCmd
                     else
-                        navigateTo EntriesNewRoute
+                        navigateTo NewEntryRoute
             in
             { model
                 | categories = categories

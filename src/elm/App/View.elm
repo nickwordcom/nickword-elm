@@ -52,7 +52,7 @@ page model =
                     EntriesIndex.view model.popularEntries model.featuredEntries model.categories model.appLanguage
                         |> Html.map EntriesMsg
 
-                EntriesNewRoute ->
+                NewEntryRoute ->
                     EntriesNew.view model.newEntry model.categories model.user model.appLanguage model.route
                         |> Html.map EntriesMsg
 

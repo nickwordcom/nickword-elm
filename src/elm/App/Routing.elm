@@ -11,7 +11,7 @@ import UrlParser exposing (..)
 
 type Route
     = EntriesRoute
-    | EntriesNewRoute
+    | NewEntryRoute
     | RandomEntryRoute
     | UserEntriesRoute
     | EntryRoute EntrySlug EntryId
@@ -30,7 +30,7 @@ matchers : Parser (Route -> a) a
 matchers =
     oneOf
         [ map EntriesRoute top
-        , map EntriesNewRoute (s "e" </> s "new")
+        , map NewEntryRoute (s "e" </> s "new")
         , map RandomEntryRoute (s "e" </> s "random")
         , map UserEntriesRoute (s "e" </> s "my")
         , map EntryRoute (s "e" </> string </> string)
@@ -62,7 +62,7 @@ routeToPath route =
         EntriesRoute ->
             "/"
 
-        EntriesNewRoute ->
+        NewEntryRoute ->
             "/e/new"
 
         RandomEntryRoute ->

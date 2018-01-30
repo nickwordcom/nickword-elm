@@ -2,7 +2,7 @@ module App.Partials.Header exposing (appHeader)
 
 import App.Messages exposing (Msg(..))
 import App.Models exposing (Model)
-import App.Routing exposing (Route(EntriesNewRoute, RandomEntryRoute, UserEntriesRoute), routeToPath)
+import App.Routing exposing (Route(NewEntryRoute, RandomEntryRoute, UserEntriesRoute), routeToPath)
 import App.Translations exposing (..)
 import App.Utils.Config exposing (appName)
 import App.Utils.Links exposing (linkTo)
@@ -161,7 +161,7 @@ headerNavigation mdlModel searchOpen user language =
 
 newEntryPath : String
 newEntryPath =
-    routeToPath EntriesNewRoute
+    routeToPath NewEntryRoute
 
 
 randomEntryPath : String
