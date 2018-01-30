@@ -30,9 +30,9 @@ matchers : Parser (Route -> a) a
 matchers =
     oneOf
         [ map EntriesRoute top
-        , map NewEntryRoute (s "e" </> s "new")
-        , map RandomEntryRoute (s "e" </> s "random")
-        , map UserEntriesRoute (s "e" </> s "my")
+        , map NewEntryRoute (s "new")
+        , map RandomEntryRoute (s "random")
+        , map UserEntriesRoute (s "my")
         , map EntryRoute (s "e" </> string </> string)
         , map EntriesRoute (s "e")
         , map CategoryRoute (s "c" </> string </> string)
@@ -63,13 +63,13 @@ routeToPath route =
             "/"
 
         NewEntryRoute ->
-            "/e/new"
+            "/new"
 
         RandomEntryRoute ->
-            "/e/random"
+            "/random"
 
         UserEntriesRoute ->
-            "/e/my"
+            "/my"
 
         EntryRoute entrySlug entryId ->
             "/e/" ++ entrySlug ++ "/" ++ entryId
