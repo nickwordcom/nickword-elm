@@ -4,6 +4,7 @@ require( 'CSS/main.scss' );
 var entryCloudBuilder = require( 'JS/entry-cloud-builder' );
 var navigatorLanguage = require( 'JS/navigator-language' );
 var waitForElement    = require( 'JS/wait-for-element' );
+var ogLocale          = require( 'JS/og-locale' );
 var L                 = require( 'VendorJS/leaflet-1.2.0.min' );
 var PruneCluster      = require( 'VendorJS/prunecluster-2.1.0.min' ).PruneCluster;
 var PruneClusterForLeaflet = require( 'VendorJS/prunecluster-2.1.0.min' ).PruneClusterForLeaflet;
@@ -25,11 +26,13 @@ var app = Elm.Main.embed( mountNode, {
 
 app.ports.pageInfo.subscribe(function(page) {
   document.title = page.title;
+  document.querySelector('html').lang = page.language;
   document.head.querySelector('meta[name=description]').content = page.description;
-  document.head.querySelector('meta[property="og:url"]').content = page.url
-  document.head.querySelector('meta[property="og:title"]').content = page.title
-  document.head.querySelector('meta[property="og:description"]').content = page.description
-  document.head.querySelector('meta[property="og:image"]').content = page.imageUrl
+  document.head.querySelector('meta[property="og:url"]').content = page.url;
+  document.head.querySelector('meta[property="og:title"]').content = page.title;
+  document.head.querySelector('meta[property="og:description"]').content = page.description;
+  document.head.querySelector('meta[property="og:image"]').content = page.imageUrl;
+  document.head.querySelector('meta[property="og:locale"]').content = ogLocale(page.language);
 });
 
 app.ports.setLocalLanguage.subscribe(function(lang) {

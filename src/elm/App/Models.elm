@@ -26,6 +26,7 @@ type alias PageInfo =
     , description : String
     , url : String
     , imageUrl : String
+    , language : String
     }
 
 

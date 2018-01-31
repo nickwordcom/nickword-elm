@@ -6,6 +6,7 @@ import App.Routing exposing (Route(..), routeToPath)
 import App.Translations exposing (..)
 import App.Utils.Cloudinary exposing (cloudinaryEntryPosterUrl)
 import App.Utils.Config exposing (appName, rootUrl)
+import App.Utils.Requests exposing (encodeUrl)
 import Categories.Models exposing (Category)
 import Entries.Models exposing (Entry)
 import Http exposing (decodeUri)
@@ -17,14 +18,10 @@ pageInfoInit : Language -> PageInfo
 pageInfoInit language =
     { title = appName ++ ". " ++ translate language DescribeIOWText
     , description = translate language AppFullDescription
-    , url = rootUrl
+    , url = routeURL IndexRoute language
     , imageUrl = rootUrl ++ "/android-chrome-256x256.png"
+    , language = encryptLang language
     }
-
-
-pageTitle : String -> String
-pageTitle title =
-    title ++ " | " ++ appName
 
 
 entryPageInfo : WebData Entry -> Route -> Language -> Cmd msg
@@ -33,8 +30,9 @@ entryPageInfo entry route language =
         Success { title, description, image, votesCount } ->
             { title = entryPageTitle title language
             , description = entryPageDescription title description votesCount language
-            , url = rootUrl ++ routeToPath route
+            , url = routeURL route language
             , imageUrl = cloudinaryEntryPosterUrl title image.url language
+            , language = encryptLang language
             }
                 |> pageInfo
 
@@ -48,32 +46,41 @@ routePageInfo route language =
         pageInfoLang =
             pageInfoInit language
 
+        translateText =
+            translate language
+
+        title textID =
+            pageTitle (translateText textID)
+
+        url =
+            routeURL route language
+
         info =
             case route of
                 NewEntryRoute ->
                     { pageInfoLang
-                        | title = pageTitle <| translate language CreateEntryText
-                        , url = rootUrl ++ routeToPath route
+                        | title = title CreateEntryText
+                        , url = url
                     }
 
                 UserEntriesRoute ->
                     { pageInfoLang
-                        | title = pageTitle <| translate language MyEntriesText
-                        , description = translate language MyEntriesDescText
-                        , url = rootUrl ++ routeToPath route
+                        | title = title MyEntriesText
+                        , description = translateText MyEntriesDescText
+                        , url = url
                     }
 
                 RandomEntryRoute ->
                     { pageInfoLang
-                        | title = pageTitle <| translate language RandomEntryText
-                        , url = rootUrl ++ routeToPath route
+                        | title = title RandomEntryText
+                        , url = url
                     }
 
                 TrendingRoute ->
                     { pageInfoLang
-                        | title = pageTitle <| translate language TrendingNowText
-                        , description = translate language TrendingNowSubTitle
-                        , url = rootUrl ++ routeToPath route
+                        | title = title TrendingNowText
+                        , description = translateText TrendingNowSubTitle
+                        , url = url
                     }
 
                 SearchRoute query ->
@@ -84,15 +91,15 @@ routePageInfo route language =
                                 |> Maybe.withDefault ""
                     in
                     { pageInfoLang
-                        | title = pageTitle <| translate language (SearchWithTermText searchTerm)
-                        , url = rootUrl ++ routeToPath route
+                        | title = title (SearchWithTermText searchTerm)
+                        , url = url
                     }
 
                 NotFoundRoute ->
                     { pageInfoLang
-                        | title = pageTitle <| translate language PageNotFoundText
-                        , description = translate language PageNotFoundDescription
-                        , url = rootUrl ++ routeToPath route
+                        | title = title PageNotFoundText
+                        , description = translateText PageNotFoundDescription
+                        , url = url
                     }
 
                 _ ->
@@ -123,7 +130,7 @@ categoryPageInfo webCategories route language =
                         Just { title } ->
                             { pageInfoLang
                                 | title = pageTitle title
-                                , url = rootUrl ++ routeToPath route
+                                , url = routeURL route language
                             }
 
                         Nothing ->
@@ -133,6 +140,11 @@ categoryPageInfo webCategories route language =
 
         _ ->
             Cmd.none
+
+
+pageTitle : String -> String
+pageTitle title =
+    title ++ " | " ++ appName
 
 
 entryPageTitle : String -> Language -> String
@@ -152,3 +164,16 @@ entryPageDescription title description votes language =
         |> (++) (translate language SubmitWordCTA)
         |> (++) ". "
         |> (++) (translate language (NumberOfVotesText votes))
+
+
+routeURL : Route -> Language -> String
+routeURL route language =
+    encodeUrl (rootUrl ++ routeToPath route) (urlParams language)
+
+
+urlParams : Language -> List ( String, String )
+urlParams language =
+    if language /= English then
+        [ ( "lang", encryptLang language ) ]
+    else
+        []
