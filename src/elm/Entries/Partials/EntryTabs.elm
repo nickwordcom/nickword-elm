@@ -5,7 +5,6 @@ import App.Utils.Converters exposing (entryTabToIndex)
 import Entries.Messages exposing (Msg(MDL, SelectEntryTab))
 import Entries.Models exposing (EntryTab)
 import Html exposing (Html, text)
-import Html.Attributes exposing (class)
 import Material exposing (Model)
 import Material.Options as Options exposing (cs)
 import Material.Tabs as Tabs

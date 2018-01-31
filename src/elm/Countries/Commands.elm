@@ -1,6 +1,6 @@
 module Countries.Commands exposing (..)
 
-import App.Translations exposing (Language(..), decodeLang)
+import App.Translations exposing (Language(..), encryptLang)
 import App.Utils.Config exposing (apiUrl)
 import App.Utils.Requests exposing (encodeUrl)
 import Countries.Messages exposing (Msg(..))
@@ -30,7 +30,7 @@ countriesUrl language =
         baseUrl =
             apiUrl ++ "/countries"
     in
-    encodeUrl baseUrl [ ( "locale", decodeLang language ) ]
+    encodeUrl baseUrl [ ( "locale", encryptLang language ) ]
 
 
 

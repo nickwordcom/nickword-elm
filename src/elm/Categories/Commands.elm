@@ -1,6 +1,6 @@
 module Categories.Commands exposing (..)
 
-import App.Translations exposing (Language(..), decodeLang)
+import App.Translations exposing (Language, encryptLang)
 import App.Utils.Config exposing (apiUrl)
 import App.Utils.Requests exposing (encodeUrl)
 import Categories.Messages exposing (Msg(..))
@@ -30,10 +30,10 @@ categoriesUrl includeEntries language =
         baseUrl =
             apiUrl ++ "/categories"
 
-        localeParam =
-            ( "locale", decodeLang language )
+        params =
+            [ ( "locale", encryptLang language ) ]
     in
-    encodeUrl baseUrl [ localeParam ]
+    encodeUrl baseUrl params
 
 
 

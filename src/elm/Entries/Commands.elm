@@ -1,6 +1,6 @@
 module Entries.Commands exposing (..)
 
-import App.Translations exposing (Language, decodeLang)
+import App.Translations exposing (Language, encryptLang)
 import App.Utils.Config exposing (apiUrl)
 import App.Utils.Requests exposing (encodeUrl, getWithAuth)
 import Categories.Models exposing (CategoryId)
@@ -87,7 +87,7 @@ entryUrl entryId language =
             entriesUrl ++ "/" ++ entryId
 
         params =
-            [ ( "locale", decodeLang language ) ]
+            [ ( "locale", encryptLang language ) ]
     in
     encodeUrl baseUrl params
 
@@ -107,7 +107,7 @@ entriesPopularUrl maybeLimit language =
                     ( "", "" )
 
         localeParam =
-            ( "locale", decodeLang language )
+            ( "locale", encryptLang language )
 
         params =
             [ limitParam, localeParam ]
@@ -123,7 +123,7 @@ entriesFeaturedUrl language =
             entriesUrl ++ "/featured"
 
         params =
-            [ ( "locale", decodeLang language ) ]
+            [ ( "locale", encryptLang language ) ]
     in
     encodeUrl baseUrl params
 
@@ -135,7 +135,7 @@ categoryEntriesUrl categoryId language pageNumber =
             apiUrl ++ "/categories/" ++ categoryId ++ "/entries"
 
         params =
-            [ ( "locale", decodeLang language )
+            [ ( "locale", encryptLang language )
             , ( "page", toString pageNumber )
             ]
     in
@@ -149,7 +149,7 @@ userEntriesUrl language pageNumber =
             entriesUrl ++ "/my"
 
         params =
-            [ ( "locale", decodeLang language )
+            [ ( "locale", encryptLang language )
             , ( "page", toString pageNumber )
             ]
     in
@@ -163,7 +163,7 @@ entriesRandomUrl language =
             entriesUrl ++ "/random"
 
         params =
-            [ ( "locale", decodeLang language ) ]
+            [ ( "locale", encryptLang language ) ]
     in
     encodeUrl baseUrl params
 
@@ -175,7 +175,7 @@ searchUrl query language =
             entriesUrl ++ "/search"
 
         params =
-            [ ( "locale", decodeLang language )
+            [ ( "locale", encryptLang language )
             , ( "title", query )
             ]
     in

@@ -889,8 +889,8 @@ translate language translationId =
             .spanish translationSet
 
 
-decodeLang : Language -> String
-decodeLang language =
+encryptLang : Language -> String
+encryptLang language =
     case language of
         English ->
             "en"
