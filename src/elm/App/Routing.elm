@@ -1,8 +1,10 @@
 module App.Routing exposing (..)
 
+import App.Translations exposing (Language, decryptLang)
 import Categories.Models exposing (CategoryId, CategorySlug)
 import Entries.Models exposing (EntryId, EntrySlug)
 import Navigation exposing (Location)
+import Regex
 import UrlParser exposing (..)
 
 
@@ -49,10 +51,31 @@ matchers =
 -}
 
 
-parseLocation : Location -> Route
+parseLocation : Location -> ( Route, Maybe Language )
 parseLocation location =
-    parsePath matchers location
-        |> Maybe.withDefault NotFoundRoute
+    let
+        route =
+            parsePath matchers location
+                |> Maybe.withDefault NotFoundRoute
+
+        urlLang =
+            parseLanguage location
+    in
+    ( route, urlLang )
+
+
+parseLanguage : Location -> Maybe Language
+parseLanguage { search } =
+    case Regex.find (Regex.AtMost 1) (Regex.regex "lang=(uk|ru|es)") search of
+        [ { submatches } ] ->
+            submatches
+                |> List.head
+                |> Maybe.withDefault Nothing
+                |> Maybe.withDefault ""
+                |> decryptLang
+
+        _ ->
+            Nothing
 
 
 routeToPath : Route -> String

@@ -903,3 +903,22 @@ encryptLang language =
 
         Spanish ->
             "es"
+
+
+decryptLang : String -> Maybe Language
+decryptLang isoCode =
+    case isoCode of
+        "en" ->
+            Just English
+
+        "uk" ->
+            Just Ukrainian
+
+        "ru" ->
+            Just Russian
+
+        "es" ->
+            Just Spanish
+
+        _ ->
+            Nothing

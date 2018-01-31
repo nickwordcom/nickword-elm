@@ -4,6 +4,7 @@ import App.Messages exposing (Msg(..))
 import App.Models exposing (Model)
 import App.Ports exposing (removeLocalJWT, setLocalJWT, setLocalLanguage)
 import App.Routing exposing (Route(EntryRoute, SearchRoute), navigateTo, parseLocation, routeToPath)
+import App.Translations exposing (encryptLang)
 import App.UrlUpdate exposing (urlUpdate)
 import Categories.Update as CategoriesUpdate
 import Countries.Update as CountriesUpdate
@@ -31,7 +32,7 @@ update msg model =
     case msg of
         OnLocationChange location ->
             let
-                currentRoute =
+                ( currentRoute, _ ) =
                     parseLocation location
             in
             urlUpdate location { model | route = currentRoute }
@@ -138,7 +139,7 @@ update msg model =
                 , featuredEntries = Loading
                 , popularEntries = Loading
             }
-                ! [ setLocalLanguage <| toString language
+                ! [ setLocalLanguage <| encryptLang language
                   , Navigation.modifyUrl <| routeToPath model.route
                   ]
 

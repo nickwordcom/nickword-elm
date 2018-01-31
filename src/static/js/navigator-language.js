@@ -5,13 +5,13 @@ function navigatorLanguage() {
 
   switch (language.slice(0, 2)) {
     case 'uk':
-      return 'Ukrainian';
+      return 'uk';
     case 'ru':
-      return 'Russian';
+      return 'ru';
     case 'es':
-      return 'Spanish';
+      return 'es';
     default:
-      return 'English'
+      return 'en'
   }
 }
 

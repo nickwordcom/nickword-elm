@@ -1,29 +1,32 @@
 module App.Utils.Converters exposing (..)
 
-import App.Translations exposing (Language(..), TranslationId(VotesAmountK), translate)
+import App.Translations exposing (Language(English), TranslationId(VotesAmountK), decryptLang, translate)
 import Entries.Models exposing (EntryTab(..))
 import List
 import String
 import Words.Models exposing (EmotionInfo, Word)
 
 
-determineLanguage : Maybe String -> Language
-determineLanguage maybeLanguage =
+determineLanguage : Maybe String -> Maybe Language -> Language
+determineLanguage localCode urlLang =
     let
-        language =
-            Maybe.withDefault "English" maybeLanguage
+        localLang : Maybe Language
+        localLang =
+            localCode
+                |> Maybe.withDefault ""
+                |> decryptLang
     in
-    case language of
-        "Ukrainian" ->
-            Ukrainian
+    case ( localLang, urlLang ) of
+        ( Just local, Just url ) ->
+            url
 
-        "Russian" ->
-            Russian
+        ( Just lang, Nothing ) ->
+            lang
 
-        "Spanish" ->
-            Spanish
+        ( Nothing, Just lang ) ->
+            lang
 
-        _ ->
+        ( Nothing, Nothing ) ->
             English
 
 
