@@ -82,25 +82,25 @@ linksList : ShareDialog -> Language -> Html Msg
 linksList dialog language =
     ul [ class "share-dialog__links-list" ]
         ([ imageLink dialog language, editButton language ]
-            |> List.append (linksListItems dialog)
+            |> List.append (linksListItems dialog language)
         )
 
 
-linksListItems : ShareDialog -> List (Html Msg)
-linksListItems dialog =
+linksListItems : ShareDialog -> Language -> List (Html Msg)
+linksListItems dialog language =
     [ facebookDialogLink, vkShareLink, pinterestPinItLink ]
         |> List.map
             (\link ->
                 li [ class "share-dialog__links-item" ]
-                    [ link dialog ]
+                    [ link dialog language ]
             )
 
 
-facebookDialogLink : ShareDialog -> Html Msg
-facebookDialogLink dialog =
+facebookDialogLink : ShareDialog -> Language -> Html Msg
+facebookDialogLink dialog language =
     let
         facebookShareLink =
-            facebookShareDialog dialog
+            facebookShareDialog dialog language
     in
     a [ class "share-dialog__links-link", href facebookShareLink, target "_blank" ]
         [ Svg.svg [ Svg.Attributes.viewBox "0 0 24 24", Svg.Attributes.class "share-dialog__links-link-svg" ]
@@ -109,11 +109,11 @@ facebookDialogLink dialog =
         ]
 
 
-vkShareLink : ShareDialog -> Html Msg
-vkShareLink dialog =
+vkShareLink : ShareDialog -> Language -> Html Msg
+vkShareLink dialog language =
     let
         shareLink =
-            vkLink dialog
+            vkLink dialog language
     in
     a [ class "share-dialog__links-link", href shareLink, target "_blank" ]
         [ Svg.svg [ Svg.Attributes.viewBox "0 0 24 24", Svg.Attributes.class "share-dialog__links-link-svg" ]
@@ -122,11 +122,11 @@ vkShareLink dialog =
         ]
 
 
-pinterestPinItLink : ShareDialog -> Html Msg
-pinterestPinItLink dialog =
+pinterestPinItLink : ShareDialog -> Language -> Html Msg
+pinterestPinItLink dialog language =
     let
         pinLink =
-            pinItLink dialog
+            pinItLink dialog language
     in
     a [ class "share-dialog__links-link", href pinLink, target "_blank" ]
         [ Svg.svg [ Svg.Attributes.viewBox "0 0 24 24", Svg.Attributes.class "share-dialog__links-link-svg" ]
