@@ -58,7 +58,7 @@ urlUpdate location model =
             { model
                 | popularEntries = popularEntries
                 , categories = categories
-                , popularEntries = popularEntries
+                , featuredEntries = featuredEntries
                 , loginFormTopBlockOpen = False
                 , searchValue = ""
                 , searchDialogOpen = False
