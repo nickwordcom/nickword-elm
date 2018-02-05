@@ -9,10 +9,7 @@ import Votes.Models exposing (..)
 
 type Msg
     = NoOp
-      -- Fetch entry votes
-    | EntryVotesResponse (WebData (List Vote))
-    | EntryVotesSlimResponse (WebData VotesSlimResponse)
-      -- New Vote responses
+    | EntryVotesResponse (WebData VotesResponse)
     | AddNewVote (Result Error VoteResponse)
     | EntryVotedCountriesResponse (Result Error EntryVotedCountries)
     | Snackbar (Snackbar.Msg Int)

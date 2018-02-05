@@ -154,7 +154,6 @@ urlUpdate location model =
                 , countries = countries
                 , entryWords = Loading
                 , entryVotes = Loading
-                , entryVotesSlim = Loading
                 , entryVotedWords = entryVotedWords
                 , categories = categories
                 , entryTab = WordList

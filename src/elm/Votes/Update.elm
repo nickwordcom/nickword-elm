@@ -24,9 +24,6 @@ update msg model =
             ( model, Cmd.none )
 
         EntryVotesResponse response ->
-            ( { model | entryVotes = response }, Cmd.none )
-
-        EntryVotesSlimResponse response ->
             let
                 votes =
                     votesFromResponse response model.entryFilters
@@ -34,7 +31,7 @@ update msg model =
                 distribution =
                     distributionFromResponse response
             in
-            { model | entryVotesSlim = votes, entryEmotionsInfo = distribution }
+            { model | entryVotes = votes, entryEmotionsInfo = distribution }
                 ! [ sendVotesToMap votes ]
 
         AddNewVote (Ok voteResponse) ->
@@ -77,7 +74,6 @@ update msg model =
             in
             { model
                 | entryWords = updateEntryWords model.entryWords voteResponse
-                , entry = updateEntryVotesCounter model.entry voteResponse
                 , entryVotedWords = updatedEntryVotedWords
                 , entryVotedCountries = updatedEntryVotedCountries
                 , entryEmotionsInfo = updatedEntryEmotionsInfo
@@ -134,23 +130,6 @@ updateWord { word, counted } =
     List.map select
 
 
-updateEntryVotesCounter : WebData Entry -> VoteResponse -> WebData Entry
-updateEntryVotesCounter entry { entryId, counted } =
-    case entry of
-        Success entry ->
-            let
-                updatedEntry =
-                    if entry.id == entryId && counted then
-                        { entry | votesCount = entry.votesCount + 1 }
-                    else
-                        entry
-            in
-            Success updatedEntry
-
-        _ ->
-            entry
-
-
 updateEntryVotedWords : VoteResponse -> WebData EntryVotedWords -> WebData EntryVotedWords
 updateEntryVotedWords { word, entryId, counted } entryVotedWords =
     if counted then
@@ -205,7 +184,7 @@ updateEmotionsInfo { word, counted } emotionsInfo =
         emotionsInfo
 
 
-sendVotesToMap : WebData (List VoteSlim) -> Cmd Msg
+sendVotesToMap : WebData (List Vote) -> Cmd Msg
 sendVotesToMap entryVotes =
     case entryVotes of
         Success votes ->
@@ -215,7 +194,7 @@ sendVotesToMap entryVotes =
             Cmd.none
 
 
-votesFromResponse : WebData VotesSlimResponse -> FiltersConfig -> WebData (List VoteSlim)
+votesFromResponse : WebData VotesResponse -> FiltersConfig -> WebData (List Vote)
 votesFromResponse response filtersConfig =
     case response of
         NotAsked ->
@@ -234,7 +213,7 @@ votesFromResponse response filtersConfig =
                 Success votes
 
 
-distributionFromResponse : WebData VotesSlimResponse -> Maybe (List EmotionInfo)
+distributionFromResponse : WebData VotesResponse -> Maybe (List EmotionInfo)
 distributionFromResponse response =
     case response of
         Success { votes, distribution } ->
@@ -254,17 +233,31 @@ countNumberOfVotes votedWords =
             0
 
 
-
--- TODO: update translateWords like in combineEntryWords
-
-
-translateWords : List VoteSlim -> List VoteSlim
+translateWords : List Vote -> List Vote
 translateWords votes =
     votes
-        |> ListEx.updateIf wordTranslated (\v -> { v | wordName = v.wordEn })
-        |> List.filter (\v -> Regex.contains (Regex.regex wordNameRegex) v.wordName)
+        |> ListEx.updateIf wordTranslated (\v -> { v | word = v.wordEn })
+        |> List.filter (\v -> Regex.contains (Regex.regex wordNameRegex) v.word)
 
 
-wordTranslated : VoteSlim -> Bool
+wordTranslated : Vote -> Bool
 wordTranslated vote =
     not (String.isEmpty vote.wordEn)
+
+
+
+-- updateEntryVotesCounter : WebData Entry -> VoteResponse -> WebData Entry
+-- updateEntryVotesCounter entry { entryId, counted } =
+--     case entry of
+--         Success entry ->
+--             let
+--                 updatedEntry =
+--                     if entry.id == entryId && counted then
+--                         { entry | votesCount = entry.votesCount + 1 }
+--                     else
+--                         entry
+--             in
+--             Success updatedEntry
+--
+--         _ ->
+--             entry

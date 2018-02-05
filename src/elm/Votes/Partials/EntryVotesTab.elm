@@ -41,7 +41,7 @@ voteItem vote =
         -- dateToAgo vote.createdAt currentTime
     in
     li [ class "entry-votes__item mdl-shadow--2dp" ]
-        [ h3 [ class "entry-votes__item-title", title vote.wordName ] [ text vote.wordName ]
+        [ h3 [ class "entry-votes__item-title", title vote.word ] [ text vote.word ]
         , span [ class "entry-votes__item-info" ] [ text (vote.city ++ ", " ++ voteTime) ]
         ]
 

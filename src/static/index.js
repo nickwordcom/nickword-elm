@@ -205,24 +205,24 @@ function entryMapBuilder(selector, votesList) {
   });
 
   votesList.forEach(function(vote) {
-    if (layerGroups[vote.wordName] == undefined) {
-   		layerGroups[vote.wordName] = new PruneClusterForLeaflet();
+    if (layerGroups[vote.word] == undefined) {
+   		layerGroups[vote.word] = new PruneClusterForLeaflet();
     }
 
-    if (wordsCounter[vote.wordName] == undefined) {
-      wordsCounter[vote.wordName] = 1;
+    if (wordsCounter[vote.word] == undefined) {
+      wordsCounter[vote.word] = 1;
     } else {
-      wordsCounter[vote.wordName] += 1;
+      wordsCounter[vote.word] += 1;
     }
 
     marker = new PruneCluster.Marker(vote.lat, vote.lon);
-    marker.data.popup = vote.wordName;
+    marker.data.popup = vote.word;
 
-    if (vote.wordEmotion == "positive") {
+    if (vote.emotion == "positive") {
       marker.category = 0;
-    } else if (vote.wordEmotion == "negative") {
+    } else if (vote.emotion == "negative") {
       marker.category = 1;
-    } else if (vote.wordEmotion == "neutral") {
+    } else if (vote.emotion == "neutral") {
       marker.category = 2;
     } else {
       marker.category = 3;
@@ -230,7 +230,7 @@ function entryMapBuilder(selector, votesList) {
 
     marker.data.icon = customColorIcon;
 
-    layerGroups[vote.wordName].RegisterMarker(marker);
+    layerGroups[vote.word].RegisterMarker(marker);
     allWords.RegisterMarker(marker);
   });
 
@@ -242,9 +242,9 @@ function entryMapBuilder(selector, votesList) {
     return wordsCounter[b]-wordsCounter[a]
   });
 
-  sortedWords.forEach(function(wordName) {
-    wordText = wordName + ' (' + wordsCounter[wordName] + ')';
-    control.addBaseLayer(layerGroups[wordName], wordText);
+  sortedWords.forEach(function(word) {
+    wordText = word + ' (' + wordsCounter[word] + ')';
+    control.addBaseLayer(layerGroups[word], wordText);
   });
 
   control.addTo(entryMapElement);

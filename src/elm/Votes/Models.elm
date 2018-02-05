@@ -4,23 +4,17 @@ import Entries.Models exposing (EntryId)
 import Words.Models exposing (EmotionInfo, Word)
 
 
-type alias VotesSlimResponse =
-    { votes : List VoteSlim
+type alias VotesResponse =
+    { votes : List Vote
     , distribution : List EmotionInfo
     }
 
 
-type alias VoteSlim =
-    { wordName : String
-    , wordEmotion : String
-    , wordEn : String
-    , lat : Float
-    , lon : Float
-    }
-
-
 type alias Vote =
-    { wordName : String
+    { word : String
+    , wordEn : String
+    , emotion : String
+    , country : String
     , city : String
     , lat : Float
     , lon : Float

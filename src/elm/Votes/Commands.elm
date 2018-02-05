@@ -20,16 +20,9 @@ import Words.Models exposing (WordId)
 
 fetchEntryVotes : EntryId -> FiltersConfig -> Cmd Msg
 fetchEntryVotes entryId filtersConfig =
-    Http.get (entryVotesUrl entryId filtersConfig) votesListDecoder
+    Http.get (entryVotesUrl entryId filtersConfig) votesResponseDecoder
         |> RemoteData.sendRequest
         |> Cmd.map EntryVotesResponse
-
-
-fetchEntryVotesSlim : EntryId -> FiltersConfig -> Cmd Msg
-fetchEntryVotesSlim entryId filtersConfig =
-    Http.get (entryVotesSlimUrl entryId filtersConfig) votesSlimResponseDecoder
-        |> RemoteData.sendRequest
-        |> Cmd.map EntryVotesSlimResponse
 
 
 addNewVote : EntryId -> WordId -> UserToken -> Cmd Msg
@@ -54,9 +47,6 @@ entryVotesUrl entryId { country, emotions } =
         baseUrl =
             apiUrl ++ "/entries/" ++ entryId ++ "/votes"
 
-        limitParam =
-            ( "limit", "100" )
-
         countryParam =
             case country of
                 Just code ->
@@ -74,39 +64,7 @@ entryVotesUrl entryId { country, emotions } =
                     ( "", "" )
 
         params =
-            [ limitParam, countryParam, emotionsParam ]
-                |> List.filter (\p -> p /= ( "", "" ))
-    in
-    encodeUrl baseUrl params
-
-
-entryVotesSlimUrl : EntryId -> FiltersConfig -> String
-entryVotesSlimUrl entryId { country, emotions } =
-    let
-        baseUrl =
-            apiUrl ++ "/entries/" ++ entryId ++ "/votes"
-
-        selectParam =
-            ( "select", "slim" )
-
-        countryParam =
-            case country of
-                Just code ->
-                    ( "country", code )
-
-                Nothing ->
-                    ( "", "" )
-
-        emotionsParam =
-            case emotions of
-                Just emotion ->
-                    ( "emotions", emotion )
-
-                Nothing ->
-                    ( "", "" )
-
-        params =
-            [ selectParam, countryParam, emotionsParam ]
+            [ countryParam, emotionsParam ]
                 |> List.filter (\p -> p /= ( "", "" ))
     in
     encodeUrl baseUrl params
@@ -126,43 +84,24 @@ entryVotedCountriesUrl entryId =
 -- DECODERS
 
 
-votesListDecoder : Decode.Decoder (List Vote)
-votesListDecoder =
-    Decode.map identity
+votesResponseDecoder : Decode.Decoder VotesResponse
+votesResponseDecoder =
+    Decode.map2 VotesResponse
         (field "data" (Decode.list voteDecoder))
-
-
-votesSlimResponseDecoder : Decode.Decoder VotesSlimResponse
-votesSlimResponseDecoder =
-    Decode.map2 VotesSlimResponse
-        (field "data" (Decode.list voteSlimDecoder))
         (field "distribution" (Decode.list emotionInfoDecoder))
-
-
-votesSlimListDecoder : Decode.Decoder (List VoteSlim)
-votesSlimListDecoder =
-    Decode.map identity
-        (field "data" (Decode.list voteSlimDecoder))
 
 
 voteDecoder : Decode.Decoder Vote
 voteDecoder =
-    Decode.map5 Vote
-        (field "word_name" Decode.string)
+    Decode.map8 Vote
+        (field "word" Decode.string)
+        (field "word_en" Decode.string)
+        (field "emotion" Decode.string)
+        (field "country" Decode.string)
         (field "city" Decode.string)
         (field "lat" Decode.float)
         (field "lon" Decode.float)
         (field "created_at" Decode.string)
-
-
-voteSlimDecoder : Decode.Decoder VoteSlim
-voteSlimDecoder =
-    Decode.map5 VoteSlim
-        (field "word_name" Decode.string)
-        (field "word_emotion" Decode.string)
-        (field "word_en" Decode.string)
-        (field "lat" Decode.float)
-        (field "lon" Decode.float)
 
 
 createdVoteDecoder : Decode.Decoder VoteResponse

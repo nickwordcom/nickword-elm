@@ -1,4 +1,4 @@
-module Maps.EntryVotesMapTab exposing (view)
+module Votes.Partials.EntryVotesMapTab exposing (view)
 
 import Html exposing (Html, section)
 import Html.Attributes exposing (class, id)

@@ -40,7 +40,6 @@ type alias Model =
     , entryWords : WebData (List Word)
     , entryTopWord : Maybe Word
     , entryVotes : WebData (List Vote)
-    , entryVotesSlim : WebData (List VoteSlim)
     , entryVotedWords : WebData EntryVotedWords
     , entryVotedCountries : EntryVotedCountries
     , entryEmotionsInfo : Maybe (List EmotionInfo)
@@ -78,7 +77,6 @@ initialModel route user language =
     , entryWords = Loading
     , entryTopWord = Nothing
     , entryVotes = Loading
-    , entryVotesSlim = Loading
     , entryVotedWords = Loading
     , entryVotedCountries = entryVotedCountriesInit
     , entryEmotionsInfo = Nothing

@@ -17,7 +17,7 @@ import Navigation
 import RemoteData exposing (RemoteData(..), WebData)
 import Task
 import Users.Models exposing (User)
-import Votes.Commands exposing (fetchEntryVotes, fetchEntryVotesSlim)
+import Votes.Commands exposing (fetchEntryVotes)
 import Votes.Update as VotesUpdate
 import Words.Commands exposing (fetchEntryWords)
 import Words.Update as WordsUpdate
@@ -100,7 +100,7 @@ update msg model =
             { model
                 | entryFilters = updatedEntryFilters
                 , entryWords = Loading
-                , entryVotesSlim = Loading
+                , entryVotes = Loading
             }
                 ! [ applyEntryFilters model.entryTab model.route updatedEntryFilters ]
 
@@ -208,7 +208,7 @@ applyEntryFilters entryTab route filtersConfig =
                     fetchEntryWords entryId filtersConfig |> Cmd.map WordsMsg
 
                 VotesMap ->
-                    fetchEntryVotesSlim entryId filtersConfig |> Cmd.map VotesMsg
+                    fetchEntryVotes entryId filtersConfig |> Cmd.map VotesMsg
 
                 VotesList ->
                     fetchEntryVotes entryId filtersConfig |> Cmd.map VotesMsg

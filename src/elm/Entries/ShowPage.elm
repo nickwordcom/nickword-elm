@@ -13,11 +13,11 @@ import Entries.Partials.FiltersCollapse as FiltersCollapse
 import Entries.Partials.TrendingEntriesBlock as TrendingEntriesBlock
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Maps.EntryVotesMapTab as EntryVotesMapTab
 import Material
 import Material.Options exposing (css)
 import Material.Spinner as Spinner
 import RemoteData exposing (RemoteData(..), WebData)
+import Votes.Partials.EntryVotesMapTab as EntryVotesMapTab
 import Words.Models exposing (EntryVotedWords, Word)
 import Words.Partials.EntryWordsCloudTab as EntryWordsCloudTab
 import Words.Partials.EntryWordsTab as EntryWordsTab
