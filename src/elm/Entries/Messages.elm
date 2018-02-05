@@ -19,7 +19,7 @@ type Msg
     | SearchEntriesResponse (WebData (List Entry))
     | RandomEntryResponse (WebData Entry)
     | EntryResponse (WebData Entry)
-    | PrefetchEntry Entry
+    | PopulateEntry Entry
     | LoadMoreEntries
     | ApplyFilters FilterType
     | Navigate String

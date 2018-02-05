@@ -138,9 +138,6 @@ urlUpdate location model =
                 ( entryVotedWords, entryVotedWordsCmd ) =
                     checkEntryVotedWords model.entryVotedWords entryId model.user
 
-                updatedPrefetchedEntry =
-                    checkPrefetchedEntry model.entryPrefetched entryId
-
                 updatedEntryFilters =
                     checkEntryFilters model.entry entryId model.entryFilters
 
@@ -149,7 +146,6 @@ urlUpdate location model =
             in
             { model
                 | entry = entry
-                , entryPrefetched = updatedPrefetchedEntry
                 , popularEntries = popularEntries
                 , countries = countries
                 , entryWords = Loading
@@ -316,19 +312,6 @@ checkEntry oldEntry currentEntryId route language =
 
         _ ->
             ( oldEntry, fetchCmd )
-
-
-checkPrefetchedEntry : Maybe Entry -> EntryId -> Maybe Entry
-checkPrefetchedEntry entryPrefetched entryId =
-    case entryPrefetched of
-        Just entry ->
-            if entry.id == entryId then
-                entryPrefetched
-            else
-                Nothing
-
-        Nothing ->
-            entryPrefetched
 
 
 checkEntryVotedWords : WebData EntryVotedWords -> EntryId -> User -> ( WebData EntryVotedWords, Cmd Msg )

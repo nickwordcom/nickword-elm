@@ -67,8 +67,8 @@ update msg model =
                   , randomEntryCmd response
                   ]
 
-        PrefetchEntry entry ->
-            { model | entryPrefetched = Just entry } ! []
+        PopulateEntry entry ->
+            { model | entry = Success entry } ! []
 
         LoadMoreEntries ->
             let

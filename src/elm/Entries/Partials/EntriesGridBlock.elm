@@ -4,7 +4,7 @@ import App.Routing exposing (Route(EntryRoute), routeToPath)
 import App.Translations exposing (Language, TranslationId(NumberOfVotesText, ShowAllText), translate)
 import App.Utils.Cloudinary exposing (cloudinaryUrl_240)
 import App.Utils.Links exposing (linkTo)
-import Entries.Messages exposing (Msg(Navigate, PrefetchEntry, ScrollToTop))
+import Entries.Messages exposing (Msg(Navigate, PopulateEntry, ScrollToTop))
 import Entries.Models exposing (Entry)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -68,7 +68,7 @@ entryItem language entry =
             li
                 [ id entry.id
                 , class "egrid-item"
-                , onMouseUp (PrefetchEntry entry)
+                , onMouseUp (PopulateEntry entry)
                 ]
                 [ linkTo entryPath
                     (Navigate entryPath)

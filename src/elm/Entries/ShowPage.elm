@@ -6,7 +6,6 @@ import Entries.Messages exposing (Msg(WordsMsg))
 import Entries.Models exposing (Entry, EntryTab(..), FiltersConfig)
 import Entries.Partials.EmotionsDistribution as EmotionsDistribution
 import Entries.Partials.EntryInfo exposing (entryInfo)
-import Entries.Partials.EntryPrefetched as EntryPrefetched
 import Entries.Partials.EntrySidebar as EntrySidebar
 import Entries.Partials.EntryTabs as EntryTabs
 import Entries.Partials.FiltersCollapse as FiltersCollapse
@@ -30,12 +29,7 @@ view model =
             entryLoadingSpinner
 
         Loading ->
-            case model.entryPrefetched of
-                Just entry ->
-                    EntryPrefetched.view entry model.categories model.appLanguage
-
-                Nothing ->
-                    entryLoadingSpinner
+            entryLoadingSpinner
 
         Failure err ->
             entryFailure <| translate model.appLanguage (ErrorText (toString err))

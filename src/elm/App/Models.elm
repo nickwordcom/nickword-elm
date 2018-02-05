@@ -36,7 +36,6 @@ type alias Model =
     , popularEntries : WebData (List Entry)
     , featuredEntries : WebData (List Entry)
     , entry : WebData Entry
-    , entryPrefetched : Maybe Entry
     , entryWords : WebData (List Word)
     , entryTopWord : Maybe Word
     , entryVotes : WebData (List Vote)
@@ -73,7 +72,6 @@ initialModel route user language =
     , popularEntries = Loading
     , featuredEntries = Loading
     , entry = Loading
-    , entryPrefetched = Nothing
     , entryWords = Loading
     , entryTopWord = Nothing
     , entryVotes = Loading
