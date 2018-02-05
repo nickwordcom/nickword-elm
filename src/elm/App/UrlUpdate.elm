@@ -151,6 +151,7 @@ urlUpdate location model =
                 , entryWords = Loading
                 , entryVotes = Loading
                 , entryVotedWords = entryVotedWords
+                , entryEmotionsInfo = Nothing
                 , categories = categories
                 , entryTab = WordList
                 , entryFilters = updatedEntryFilters

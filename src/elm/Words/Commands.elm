@@ -113,14 +113,13 @@ wordSingleDecoder =
 
 wordDecoder : Decode.Decoder Word
 wordDecoder =
-    Decode.map7 Word
+    Decode.map6 Word
         (field "id" Decode.string)
         (field "name" Decode.string)
         (field "en" Decode.string)
         (field "lang" Decode.string)
         (field "emotion" Decode.string)
         (field "votes_count" Decode.int)
-        (Decode.maybe (field "status" Decode.bool))
 
 
 emotionInfoDecoder : Decode.Decoder EmotionInfo

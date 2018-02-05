@@ -6,6 +6,7 @@ import App.Translations exposing (..)
 import Dom.Scroll as DScroll
 import Entries.Models exposing (Entry, EntryId, EntryTab(WordCloud), FiltersConfig)
 import List exposing (append, partition)
+import List.Extra as ListEx
 import Material
 import Material.Helpers exposing (map1st, map2nd)
 import Material.Layout exposing (mainId)
@@ -69,7 +70,7 @@ update msg model =
 
         VoteForWord wordId entryId ->
             if userIsActive model.user then
-                { model | entryWords = updateVotedForWord model.entryWords wordId }
+                { model | entryVotedWords = updateEntryVotedWords wordId model.entryVotedWords }
                     ! [ VotesCmds.addNewVote entryId wordId model.user.jwt |> Cmd.map VotesMsg ]
             else
                 let
@@ -127,15 +128,19 @@ update msg model =
                 toastMessage =
                     translate model.appLanguage (WordSuccessfullyAdded newWord.name)
 
+                voteCmd =
+                    voteForNewWordCmd model.entry newWord.id model.user.jwt
+
                 ( snackbar, snackEffect ) =
                     Snackbar.add (Snackbar.toast 0 toastMessage) model.snackbar
                         |> map2nd (Cmd.map Snackbar)
             in
             { model
-                | entryWords = updateEntryWords model.entryWords newWord
+                | entryWords = pushWordToList newWord model.entryWords
+                , entryVotedWords = updateEntryVotedWords newWord.id model.entryVotedWords
                 , snackbar = snackbar
             }
-                ! [ snackEffect, voteForNewWordCmd model.entry newWord.id model.user.jwt ]
+                ! [ snackEffect, voteCmd ]
 
         AddNewWordData (Err _) ->
             let
@@ -199,51 +204,29 @@ update msg model =
 -- Helpers
 
 
-updateEntryWords : WebData (List Word) -> Word -> WebData (List Word)
-updateEntryWords entryWords newWord =
-    case entryWords of
-        Success entryWords ->
-            let
-                findWord word =
-                    if word.id == newWord.id then
-                        Just word
-                    else
-                        Nothing
+updateEntryVotedWords : String -> WebData EntryVotedWords -> WebData EntryVotedWords
+updateEntryVotedWords wordId entryVotedWords =
+    case entryVotedWords of
+        Success votedIds ->
+            Success { votedIds | ids = wordId :: votedIds.ids }
 
-                existingWord =
-                    List.head (List.filterMap findWord entryWords)
-            in
-            case existingWord of
+        _ ->
+            entryVotedWords
+
+
+pushWordToList : Word -> WebData (List Word) -> WebData (List Word)
+pushWordToList newWord entryWords =
+    case entryWords of
+        Success words ->
+            case ListEx.find (\w -> w.id == newWord.id) words of
                 Just word ->
-                    Success entryWords
+                    entryWords
 
                 Nothing ->
-                    Success ({ newWord | votingFor = Just True } :: entryWords)
+                    Success (newWord :: words)
 
         _ ->
             entryWords
-
-
-updateVotedForWord : WebData (List Word) -> WordId -> WebData (List Word)
-updateVotedForWord entryWords wordId =
-    case entryWords of
-        Success entryWords ->
-            Success (updateWordStatus wordId entryWords)
-
-        _ ->
-            entryWords
-
-
-updateWordStatus : WordId -> List Word -> List Word
-updateWordStatus wordId =
-    let
-        select existingWord =
-            if existingWord.id == wordId then
-                { existingWord | votingFor = Just True }
-            else
-                existingWord
-    in
-    List.map select
 
 
 voteForNewWordCmd : WebData Entry -> WordId -> UserToken -> Cmd Msg

@@ -28,7 +28,6 @@ type alias Word =
     , lang : String
     , emotion : String
     , votesCount : Int
-    , votingFor : Maybe Bool
     }
 
 
@@ -63,5 +62,4 @@ initWord =
     , lang = ""
     , emotion = ""
     , votesCount = 0
-    , votingFor = Nothing
     }

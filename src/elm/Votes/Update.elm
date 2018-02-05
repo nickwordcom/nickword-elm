@@ -55,7 +55,7 @@ update msg model =
                     translate model.appLanguage <| NVotesOutOfText numberOfVotes 5
 
                 ( snackbar, snackEffect ) =
-                    if voteResponse.counted && numberOfVotes >= 4 then
+                    if voteResponse.counted && List.member numberOfVotes [ 4, 5 ] then
                         Snackbar.add (Snackbar.toast 0 numberOfVotesMessage) model.snackbar
                             |> map2nd (Cmd.map Snackbar)
                     else if voteResponse.counted then
@@ -118,29 +118,30 @@ updateEntryWords entryWords voteResponse =
 updateWord : VoteResponse -> List Word -> List Word
 updateWord { word, counted } =
     let
-        select existingWord =
-            if existingWord.id == word.id then
-                if counted then
-                    { existingWord | votingFor = Nothing, votesCount = existingWord.votesCount + 1 }
-                else
-                    { existingWord | votingFor = Nothing }
-            else
-                existingWord
+        predicate w =
+            w.id == word.id && counted
+
+        update w =
+            { w | votesCount = w.votesCount + 1 }
     in
-    List.map select
+    ListEx.updateIf predicate update
 
 
 updateEntryVotedWords : VoteResponse -> WebData EntryVotedWords -> WebData EntryVotedWords
 updateEntryVotedWords { word, entryId, counted } entryVotedWords =
     if counted then
+        entryVotedWords
+    else
         case entryVotedWords of
-            Success votedIds ->
-                Success { votedIds | ids = word.id :: votedIds.ids }
+            Success votedWords ->
+                let
+                    ids =
+                        ListEx.remove word.id votedWords.ids
+                in
+                Success { votedWords | ids = ids }
 
             _ ->
-                Success { entryId = entryId, ids = word.id :: [] }
-    else
-        entryVotedWords
+                entryVotedWords
 
 
 updateEntryVotedCountries : VoteResponse -> EntryVotedCountries -> EntryVotedCountries
