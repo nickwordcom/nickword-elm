@@ -1,17 +1,15 @@
 module Entries.Partials.EntryInfo exposing (..)
 
+import App.Routing exposing (Route(CategoryRoute), routeToPath)
 import App.Translations exposing (Language, TranslationId(ImageCaptionText, ImageSourceText, VotesReceivedText), translate)
 import App.Utils.Cloudinary exposing (cloudinaryUrl_240)
-import App.Utils.Converters exposing (convertVotes)
-import App.Utils.Links exposing (getLinkHostName)
+import App.Utils.Links exposing (getLinkHostName, linkTo)
 import Categories.Models exposing (Category)
-import Entries.Messages exposing (Msg(WordsMsg))
+import Entries.Messages exposing (Msg(Navigate, WordsMsg))
 import Entries.Models exposing (Entry, EntryImage)
-import Entries.Partials.EntryCategoryInfo as CategoryInfo
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Material exposing (Model)
-import Material.Icon as Icon
 import RemoteData exposing (WebData)
 import String exposing (isEmpty)
 import Users.Models exposing (UserStatus)
@@ -25,12 +23,10 @@ entryInfo entry entryVotedWords entryTopWord newWordValue newWordFieldActive cat
         [ div [ class "entry-page__info-secondary" ]
             [ entryImage entry.image.url entry.title
             , entryImageSource entry.image language
-
-            -- , votesReceived entry.votesCount language
             ]
         , div [ class "entry-page__info-primary" ]
             [ h1 [ class "entry-page__title" ] [ text entry.title ]
-            , CategoryInfo.view categories entry.categoryId
+            , categoryLink entry.category
             , span [ class "entry-page__description" ] [ text entry.description ]
             , div [ class "entry-page__word-field" ]
                 [ Html.map WordsMsg (addNewWordForm newWordValue entry.id newWordFieldActive entryVotedWords entryTopWord userStatus language mdlModel) ]
@@ -70,15 +66,28 @@ entryImageSource { url, caption } language =
         span [] []
 
 
-votesReceived : Int -> Language -> Html Msg
-votesReceived votesCount language =
-    div [ class "entry-page__votes-counter" ]
-        [ div [ class "votes-counter__icon-block" ]
-            [ Icon.i "record_voice_over" ]
-        , div [ class "votes-counter__info" ]
-            [ span [ class "votes-counter__info-number", title (toString votesCount) ]
-                [ text (convertVotes votesCount language) ]
-            , span [ class "votes-counter__info-text" ]
-                [ text <| translate language (VotesReceivedText votesCount) ]
-            ]
-        ]
+categoryLink : Category -> Html Msg
+categoryLink { id, slug, title } =
+    let
+        categoryPath =
+            routeToPath <| CategoryRoute slug id
+    in
+    linkTo categoryPath
+        (Navigate categoryPath)
+        [ class "entry-page__category-link" ]
+        [ text title ]
+
+
+
+-- votesReceived : Int -> Language -> Html Msg
+-- votesReceived votesCount language =
+--     div [ class "entry-page__votes-counter" ]
+--         [ div [ class "votes-counter__icon-block" ]
+--             [ Icon.i "record_voice_over" ]
+--         , div [ class "votes-counter__info" ]
+--             [ span [ class "votes-counter__info-number", title (toString votesCount) ]
+--                 [ text (convertVotes votesCount language) ]
+--             , span [ class "votes-counter__info-text" ]
+--                 [ text <| translate language (VotesReceivedText votesCount) ]
+--             ]
+--         ]

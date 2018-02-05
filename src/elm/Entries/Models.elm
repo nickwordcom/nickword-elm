@@ -1,5 +1,7 @@
 module Entries.Models exposing (..)
 
+import Categories.Models exposing (Category)
+
 
 type alias EntryId =
     String
@@ -26,7 +28,7 @@ type alias Entry =
     , title : String
     , description : String
     , image : EntryImage
-    , categoryId : CategoryId
+    , category : Category
     , votesCount : Int
     }
 

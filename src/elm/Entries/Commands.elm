@@ -3,6 +3,7 @@ module Entries.Commands exposing (..)
 import App.Translations exposing (Language, encryptLang)
 import App.Utils.Config exposing (apiUrl)
 import App.Utils.Requests exposing (encodeUrl, getWithAuth)
+import Categories.Commands exposing (categoryDecoder)
 import Categories.Models exposing (CategoryId)
 import Entries.Messages exposing (..)
 import Entries.Models exposing (Entry, EntryId, EntryImage)
@@ -206,7 +207,7 @@ entryDecoder =
         (field "title" Decode.string)
         (field "description" Decode.string)
         (field "image" entryImageDecoder)
-        (field "category_id" Decode.string)
+        (field "category" categoryDecoder)
         (field "votes_count" Decode.int)
 
 

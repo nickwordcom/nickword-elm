@@ -32,7 +32,7 @@ featuredEntriesBlock featuredEntries categoriesData language =
         ( Success entries, Success categories ) ->
             let
                 groupedEntries =
-                    DictEx.groupBy (\c -> c.categoryId) entries
+                    DictEx.groupBy (\e -> e.category.id) entries
                         |> Dict.toList
             in
             div [] (List.map (setCategoryBlock language categories) groupedEntries)
